@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>AWK Knowledge Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    background: #09090b;
+    color: #e4e4e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 13px;
+  }
+  .shell {
+    width: 1000px;
+    height: 640px;
+    background: #0f0f12;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 32px 64px -12px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  /* TITLEBAR */
+  .titlebar {
+    height: 40px;
+    background: #0f0f12;
+    border-bottom: 1px solid #1c1c1f;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .tl-dots { display:flex; gap:6px; }
+  .tl-dot { width:11px; height:11px; border-radius:50%; }
+  .tl-dot:nth-child(1){background:#3f3f46;}
+  .tl-dot:nth-child(2){background:#3f3f46;}
+  .tl-dot:nth-child(3){background:#3f3f46;}
+  .tl-breadcrumb { display:flex; align-items:center; gap:6px; margin-left:10px; }
+  .tl-breadcrumb span { font-size:12px; color:#52525b; }
+  .tl-breadcrumb .active { color:#a1a1aa; }
+  .tl-sep { color:#3f3f46; font-size:10px; }
+  .tl-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .pill {
+    display: flex; align-items: center; gap:5px;
+    background: #18181b; border: 1px solid #27272a;
+    border-radius: 5px; padding: 3px 10px; font-size: 11px; color: #71717a;
+  }
+  .pill .dot { width:6px; height:6px; border-radius:50%; background:#22c55e; flex-shrink:0; box-shadow: 0 0 0 2px #14532d; }
+  .pill.model { color: #a1a1aa; }
+
+  /* LAYOUT */
+  .body { display:flex; flex:1; overflow:hidden; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 196px;
+    background: #0c0c0e;
+    border-right: 1px solid #1c1c1f;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .sb-project {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid #1c1c1f;
+  }
+  .sb-project-name { font-size:12px; font-weight:600; color:#e4e4e7; }
+  .sb-project-sub { font-size:11px; color:#52525b; margin-top:1px; }
+  .sb-section { padding: 14px 14px 4px; font-size:10px; color:#3f3f46; letter-spacing:.08em; font-weight:600; }
+  .sb-item {
+    display: flex; align-items: center; gap:9px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #71717a;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .sb-item.active { color:#e4e4e7; background:#18181b; border-left-color: #6366f1; }
+  .sb-item svg { width:14px; height:14px; opacity:.6; flex-shrink:0; }
+  .sb-item.active svg { opacity:1; }
+  .sb-badge { margin-left:auto; background:#1e1e24; color:#71717a; font-size:10px; padding:1px 6px; border-radius:4px; }
+
+  /* MAIN */
+  .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .main-header {
+    padding: 0 20px;
+    height: 48px;
+    border-bottom: 1px solid #1c1c1f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .main-header h2 { font-size:13px; font-weight:600; color:#e4e4e7; }
+  .main-header .sub { font-size:12px; color:#52525b; }
+  .header-actions { margin-left:auto; display:flex; gap:8px; }
+  .btn {
+    height:28px; padding:0 12px; border-radius:5px;
+    font-size:12px; cursor:pointer; display:flex; align-items:center; gap:5px;
+  }
+  .btn-ghost { background:transparent; border:1px solid #27272a; color:#a1a1aa; }
+  .btn-primary { background:#6366f1; border:1px solid #6366f1; color:#fff; font-weight:500; }
+
+  .main-body { flex:1; display:grid; grid-template-columns:1fr 268px; overflow:hidden; }
+
+  /* TABLE */
+  .table-wrap { display:flex; flex-direction:column; overflow:hidden; }
+  .table-toolbar {
+    padding: 10px 16px;
+    border-bottom: 1px solid #1c1c1f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .search-box {
+    flex:1; display:flex; align-items:center; gap:7px;
+    background:#18181b; border:1px solid #27272a; border-radius:5px;
+    padding:5px 10px;
+  }
+  .search-box svg { width:13px; height:13px; color:#52525b; flex-shrink:0; }
+  .search-box input {
+    background:none; border:none; outline:none;
+    font-size:12px; color:#a1a1aa; width:100%;
+  }
+  .search-box input::placeholder { color:#3f3f46; }
+  .filter-btn { height:28px; padding:0 10px; background:#18181b; border:1px solid #27272a; border-radius:5px; font-size:11px; color:#71717a; display:flex; align-items:center; gap:5px; cursor:pointer; }
+
+  .progress-row {
+    padding: 8px 16px;
+    background: #0c1a0c;
+    border-bottom: 1px solid #14301a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progress-row .label { font-size:11px; color:#4ade80; white-space:nowrap; }
+  .progress-track { flex:1; height:3px; background:#1c2a1c; border-radius:2px; }
+  .progress-fill { height:3px; background:#22c55e; border-radius:2px; width:68%; }
+  .progress-pct { font-size:11px; color:#4ade80; white-space:nowrap; }
+
+  .table { flex:1; overflow-y:auto; }
+  .table-head {
+    display: grid;
+    grid-template-columns: 24px 1fr 68px 60px 72px 24px;
+    gap: 8px;
+    padding: 7px 16px;
+    font-size:10px; color:#52525b; font-weight:600; letter-spacing:.06em;
+    border-bottom: 1px solid #1c1c1f;
+    position:sticky; top:0; background:#0f0f12; z-index:1;
+  }
+  .tr {
+    display: grid;
+    grid-template-columns: 24px 1fr 68px 60px 72px 24px;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #141418;
+    align-items: center;
+    cursor: pointer;
+  }
+  .tr:hover { background:#141418; }
+  .tr.sel { background:#13131a; }
+  .tr .icon { font-size:13px; }
+  .tr .fname { font-size:12px; color:#d4d4d8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tr .fsize { font-size:11px; color:#52525b; }
+  .tr .chunks { font-size:11px; color:#71717a; text-align:center; }
+  .status { display:inline-flex; align-items:center; gap:5px; font-size:10px; padding:2px 8px; border-radius:4px; white-space:nowrap; }
+  .status.ok { background:#0f2318; color:#4ade80; border:1px solid #14532d; }
+  .status.proc { background:#1c1804; color:#facc15; border:1px solid #3d2e04; }
+  .tr .more { opacity:0; color:#52525b; font-size:15px; line-height:1; cursor:pointer; }
+  .tr:hover .more { opacity:1; }
+
+  /* RIGHT PANEL */
+  .right { border-left:1px solid #1c1c1f; display:flex; flex-direction:column; overflow:hidden; background:#0c0c0e; }
+  .rp { padding:14px 16px; border-bottom:1px solid #1c1c1f; }
+  .rp-title { font-size:10px; color:#3f3f46; font-weight:600; letter-spacing:.08em; margin-bottom:10px; }
+
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .stat { background:#141418; border:1px solid #1c1c1f; border-radius:5px; padding:10px; }
+  .stat-val { font-size:20px; font-weight:700; color:#f4f4f5; letter-spacing:-.5px; }
+  .stat-lbl { font-size:10px; color:#52525b; margin-top:1px; }
+  .stat-trend { font-size:10px; color:#22c55e; margin-top:3px; }
+
+  /* VIZ */
+  .viz-wrap { background:#0a0a0d; border:1px solid #1c1c1f; border-radius:5px; height:96px; position:relative; overflow:hidden; }
+  .viz-axis-x { position:absolute; bottom:12px; left:0; right:0; height:1px; background:#1c1c1f; }
+  .viz-axis-y { position:absolute; top:0; bottom:0; left:12px; width:1px; background:#1c1c1f; }
+  .viz-pt { position:absolute; border-radius:50%; }
+  .viz-label { position:absolute; bottom:2px; right:6px; font-size:9px; color:#3f3f46; }
+
+  /* QUERY LOG */
+  .qlog-item { padding:7px 0; border-bottom:1px solid #141418; }
+  .qlog-item:last-child { border:none; }
+  .qlog-q { font-size:11px; color:#a1a1aa; margin-bottom:3px; }
+  .qlog-q span { color:#6366f1; margin-right:4px; }
+  .qlog-meta { display:flex; gap:10px; font-size:10px; }
+  .qlog-chunks { color:#52525b; }
+  .qlog-score { color:#22c55e; }
+  .qlog-time { color:#3f3f46; }
+
+  /* STATUS BAR */
+  .statusbar {
+    height:26px; background:#09090b; border-top:1px solid #1c1c1f;
+    display:flex; align-items:center; padding:0 16px; gap:16px;
+    flex-shrink:0;
+  }
+  .sb-s { font-size:10px; color:#3f3f46; display:flex; align-items:center; gap:5px; }
+  .sb-s .ok { color:#22c55e; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- TITLEBAR -->
+  <div class="titlebar">
+    <div class="tl-dots">
+      <div class="tl-dot"></div><div class="tl-dot"></div><div class="tl-dot"></div>
+    </div>
+    <div class="tl-breadcrumb">
+      <span>AWK Media</span>
+      <span class="tl-sep">/</span>
+      <span>Knowledge Base</span>
+      <span class="tl-sep">/</span>
+      <span class="active">Documents</span>
+    </div>
+    <div class="tl-right">
+      <div class="pill"><span class="dot"></span> Model active</div>
+      <div class="pill model">claude-sonnet-4-6</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-project">
+        <div class="sb-project-name">Rosso Beef S.A.</div>
+        <div class="sb-project-sub">Production · 23 documents</div>
+      </div>
+      <div class="sb-section">KNOWLEDGE BASE</div>
+      <div class="sb-item active">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v1H2V3zm0 3h12v7a1 1 0 01-1 1H3a1 1 0 01-1-1V6z"/></svg>
+        Documents <span class="sb-badge">23</span>
+      </div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a.5.5 0 01.5.5v1.5H13a.5.5 0 010 1h-1v1.5a.5.5 0 01-1 0V4.5H5v1a.5.5 0 01-1 0V4.5H3a.5.5 0 010-1h4.5V2a.5.5 0 01.5-.5z"/></svg>
+        Query Tester
+      </div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H1z"/></svg>
+        Conversations
+      </div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1V2zm0 5a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1V7zm0 5a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1v-2z"/></svg>
+        Analytics
+      </div>
+      <div class="sb-section">SETTINGS</div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z" clip-rule="evenodd"/><path d="M8 4a.75.75 0 01.75.75V8H11a.75.75 0 010 1.5H8.25a.75.75 0 01-.75-.75V4.75A.75.75 0 018 4z"/></svg>
+        Model config
+      </div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 1A2.75 2.75 0 001 3.75v8.5A2.75 2.75 0 003.75 15h8.5A2.75 2.75 0 0015 12.25v-8.5A2.75 2.75 0 0012.25 1h-8.5zM2.5 3.75c0-.69.56-1.25 1.25-1.25h8.5c.69 0 1.25.56 1.25 1.25v8.5c0 .69-.56 1.25-1.25 1.25h-8.5c-.69 0-1.25-.56-1.25-1.25v-8.5z"/></svg>
+        Widget embed
+      </div>
+      <div class="sb-item">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a2 2 0 012 2v1.5h1A2.5 2.5 0 0113.5 7v6A2.5 2.5 0 0111 15.5H5A2.5 2.5 0 012.5 13V7A2.5 2.5 0 015 4.5h1V3a2 2 0 012-2zm0 1.5a.5.5 0 00-.5.5v1.5h1V3a.5.5 0 00-.5-.5z"/></svg>
+        API keys
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="main-header">
+        <h2>Documents</h2>
+        <span class="sub">— Rosso Beef S.A.</span>
+        <div class="header-actions">
+          <div class="btn btn-ghost">Re-index all</div>
+          <div class="btn btn-primary">+ Add documents</div>
+        </div>
+      </div>
+
+      <div class="main-body">
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="search-box">
+              <svg viewBox="0 0 16 16" fill="#52525b"><path d="M6 1a5 5 0 100 10A5 5 0 006 1zM0 6a6 6 0 1110.89 3.477l3.817 3.816a.75.75 0 01-1.06 1.061l-3.816-3.817A6 6 0 010 6z"/></svg>
+              <input placeholder="Search documents..." />
+            </div>
+            <div class="filter-btn">
+              <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 010 1.5H1.75A.75.75 0 011 2.75zm3 4.5A.75.75 0 014.75 7h6.5a.75.75 0 010 1.5h-6.5A.75.75 0 014 7.25zm2.75 4.5a.75.75 0 000 1.5h2.5a.75.75 0 000-1.5h-2.5z"/></svg>
+              Filter
+            </div>
+          </div>
+
+          <div class="progress-row">
+            <span class="label">Indexing: katalog_produktow_2024.pdf</span>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <span class="progress-pct">68%</span>
+          </div>
+
+          <div class="table">
+            <div class="table-head">
+              <span></span><span>NAME</span><span>SIZE</span><span style="text-align:center">CHUNKS</span><span>STATUS</span><span></span>
+            </div>
+            <div class="tr">
+              <span style="font-size:12px;color:#52525b">PDF</span>
+              <span class="fname">cennik_hurt_2024_Q4.pdf</span>
+              <span class="fsize">1.2 MB</span>
+              <span class="chunks">147</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr sel">
+              <span style="font-size:12px;color:#52525b">PDF</span>
+              <span class="fname">katalog_produktow_2024.pdf</span>
+              <span class="fsize">4.8 MB</span>
+              <span class="chunks">—</span>
+              <span class="status proc">Processing</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr">
+              <span style="font-size:11px;color:#52525b">DOC</span>
+              <span class="fname">faq_klienci_b2b.docx</span>
+              <span class="fsize">340 KB</span>
+              <span class="chunks">89</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr">
+              <span style="font-size:12px;color:#52525b">PDF</span>
+              <span class="fname">procedury_reklamacje.pdf</span>
+              <span class="fsize">210 KB</span>
+              <span class="chunks">44</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr">
+              <span style="font-size:11px;color:#52525b">XLS</span>
+              <span class="fname">warunki_wspolpracy_2024.xlsx</span>
+              <span class="fsize">88 KB</span>
+              <span class="chunks">31</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr">
+              <span style="font-size:12px;color:#52525b">PDF</span>
+              <span class="fname">certyfikaty_jakosci_EU.pdf</span>
+              <span class="fsize">2.1 MB</span>
+              <span class="chunks">58</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+            <div class="tr">
+              <span style="font-size:12px;color:#52525b">PDF</span>
+              <span class="fname">instrukcja_zamowien_online.pdf</span>
+              <span class="fsize">156 KB</span>
+              <span class="chunks">27</span>
+              <span class="status ok">Indexed</span>
+              <span class="more">···</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right">
+          <div class="rp">
+            <div class="rp-title">INDEX STATS</div>
+            <div class="stats-grid">
+              <div class="stat"><div class="stat-val">396</div><div class="stat-lbl">Total chunks</div><div class="stat-trend">+89 today</div></div>
+              <div class="stat"><div class="stat-val">23</div><div class="stat-lbl">Documents</div></div>
+              <div class="stat"><div class="stat-val">1536</div><div class="stat-lbl">Embed dims</div></div>
+              <div class="stat"><div class="stat-val">98.2%</div><div class="stat-lbl">Avg relevance</div><div class="stat-trend">Good</div></div>
+            </div>
+          </div>
+
+          <div class="rp">
+            <div class="rp-title">EFEKT BIZNESOWY</div>
+            <div style="background:#0f2318;border:1px solid #14532d;border-radius:6px;padding:10px 12px;">
+              <div style="font-size:11px;color:#4ade80;font-weight:700;margin-bottom:3px;">Zwrot z inwestycji: 2,1 miesiąca</div>
+              <div style="font-size:10px;color:#71717a;line-height:1.5;">Koszt wdrożenia: 6 000 PLN · Oszczędność: ~2 800 PLN/mies. (czas zespołu na szukanie dokumentów)</div>
+            </div>
+          </div>
+
+          <div class="rp">
+            <div class="rp-title">VECTOR SPACE (t-SNE)</div>
+            <div class="viz-wrap">
+              <div class="viz-axis-x"></div>
+              <div class="viz-axis-y"></div>
+              <div class="viz-pt" style="width:7px;height:7px;background:#6366f1;opacity:.85;top:18px;left:42px;box-shadow:0 0 8px #6366f180"></div>
+              <div class="viz-pt" style="width:5px;height:5px;background:#6366f1;opacity:.6;top:26px;left:56px"></div>
+              <div class="viz-pt" style="width:6px;height:6px;background:#6366f1;opacity:.75;top:14px;left:50px"></div>
+              <div class="viz-pt" style="width:4px;height:4px;background:#6366f1;opacity:.4;top:34px;left:38px"></div>
+              <div class="viz-pt" style="width:5px;height:5px;background:#8b5cf6;opacity:.7;top:52px;left:120px"></div>
+              <div class="viz-pt" style="width:6px;height:6px;background:#8b5cf6;opacity:.8;top:62px;left:134px;box-shadow:0 0 6px #8b5cf680"></div>
+              <div class="viz-pt" style="width:4px;height:4px;background:#8b5cf6;opacity:.5;top:46px;left:128px"></div>
+              <div class="viz-pt" style="width:5px;height:5px;background:#22c55e;opacity:.7;top:30px;left:192px"></div>
+              <div class="viz-pt" style="width:6px;height:6px;background:#22c55e;opacity:.8;top:42px;left:204px;box-shadow:0 0 6px #22c55e60"></div>
+              <div class="viz-pt" style="width:4px;height:4px;background:#f59e0b;opacity:.7;top:64px;left:68px"></div>
+              <div class="viz-pt" style="width:5px;height:5px;background:#f59e0b;opacity:.8;top:72px;left:80px;box-shadow:0 0 6px #f59e0b60"></div>
+              <div class="viz-pt" style="width:4px;height:4px;background:#ef4444;opacity:.6;top:20px;left:168px"></div>
+              <div class="viz-pt" style="width:5px;height:5px;background:#ef4444;opacity:.7;top:30px;left:180px"></div>
+              <div class="viz-label">pgvector · cosine</div>
+            </div>
+          </div>
+
+          <div class="rp" style="flex:1;overflow-y:auto;border-bottom:none;">
+            <div class="rp-title">RECENT RAG QUERIES</div>
+            <div class="qlog-item">
+              <div class="qlog-q"><span>›</span>minimalne zamówienie dla restauracji</div>
+              <div class="qlog-meta"><span class="qlog-chunks">3 chunks</span><span class="qlog-score">score 0.94</span><span class="qlog-time">1.2s</span></div>
+            </div>
+            <div class="qlog-item">
+              <div class="qlog-q"><span>›</span>dostępność wołowiny Wagyu A5</div>
+              <div class="qlog-meta"><span class="qlog-chunks">2 chunks</span><span class="qlog-score">score 0.91</span><span class="qlog-time">0.9s</span></div>
+            </div>
+            <div class="qlog-item">
+              <div class="qlog-q"><span>›</span>warunki płatności B2B 30 dni</div>
+              <div class="qlog-meta"><span class="qlog-chunks">4 chunks</span><span class="qlog-score">score 0.88</span><span class="qlog-time">1.4s</span></div>
+            </div>
+            <div class="qlog-item">
+              <div class="qlog-q"><span>›</span>procedura zwrotu towaru</div>
+              <div class="qlog-meta"><span class="qlog-chunks">2 chunks</span><span class="qlog-score">score 0.96</span><span class="qlog-time">0.8s</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="statusbar">
+    <span class="sb-s"><span class="ok">●</span> claude-sonnet-4-6</span>
+    <span class="sb-s">text-embedding-3-large</span>
+    <span class="sb-s">Supabase pgvector</span>
+    <span class="sb-s" style="margin-left:auto">Synced 2 min ago</span>
+  </div>
+</div>
+</body>
+</html>
