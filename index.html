@@ -124,6 +124,7 @@
   .pkg-starter { background: #3b82f622; color: #60a5fa; }
   .pkg-growth { background: #22c55e22; color: #4ade80; }
   .pkg-pro { background: #f59e0b22; color: #fbbf24; }
+  .pkg-enterprise { background: #a855f722; color: #c084fc; }
   #automatyzacje-w-akcji .card img { width: 100%; border-radius: 8px; margin-bottom: 10px; border: 1px solid #27272a; }
   .cta-final { text-align: center; }
   .cta-final .section-sub { margin-left: auto; margin-right: auto; }
@@ -300,6 +301,12 @@
           <td class="price">3 000 zł*</td>
           <td class="zakres">Wszystko z Growth + Voice Agent (odbiera telefon zamiast recepcji), priorytetowe wsparcie</td>
         </tr>
+        <tr>
+          <td>Enterprise</td>
+          <td class="price">wycena indywidualna</td>
+          <td class="price">wycena indywidualna</td>
+          <td class="zakres">Prawdziwy AI Agent (pamięć, wnioskowanie, własne narzędzia) zamiast reguł if/else — AI Recepcjonista 360 obsługujący cały cykl kontaktu, oraz agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów</td>
+        </tr>
       </tbody>
     </table>
     <p class="pricing-note">*Pro zawiera limit rozmów głosowych w pakiecie, nadwyżka rozliczana osobno. Płatność: 100% setupu z góry, retainer miesięcznie z góry. Wycena indywidualna po bezpłatnej konsultacji.</p>
@@ -360,6 +367,27 @@
         <strong>Rozwiązanie:</strong> AI generuje odpowiedź na żywo (prawdziwe wywołanie modelu) na podstawie transkrypcji rozmowy; podłączenie do realnej linii telefonicznej (STT/TTS, numer telefonu) to kolejny krok wdrożenia, pokazany tu jako architektura, nie w pełni zautomatyzowany.<br>
         <strong>Efekt:</strong> gotowa logika odpowiedzi AI od pierwszego dnia, telefonię dopinamy przy wdrożeniu.</p>
       </div>
+      <div class="card">
+        <span class="pkg-tag pkg-enterprise">Enterprise</span>
+        <h3>AI Recepcjonista 360</h3>
+        <img src="demos/screenshots/enterprise_recepcjonista_360.png" alt="Workflow n8n — AI Recepcjonista 360, prawdziwy AI Agent z pamięcią i narzędziami" loading="lazy">
+        <p><strong>Problem:</strong> proste boty z regułami if/else nie radzą sobie z realną rozmową — nie pamiętają kontekstu i nie umieją zdecydować co dalej.<br>
+        <strong>Rozwiązanie:</strong> prawdziwy AI Agent (nie wywołanie modelu z jednym promptem) z pamięcią rozmowy i własnym narzędziem sprawdzającym historię klienta — sam klasyfikuje wiadomość i rozgałęzia się na rezerwację terminu, wycenę, reklamację lub inne, każda ścieżka z realną wysyłką maila/Sheets/Telegrama.<br>
+        <strong>Efekt:</strong> jeden system obsługuje cały pierwszy kontakt z klientem, 24/7, z pełnym logiem w CRM.</p>
+      </div>
+      <div class="card">
+        <span class="pkg-tag pkg-enterprise">Enterprise</span>
+        <h3>Cykl Życia Klienta: Opinia i Upsell</h3>
+        <img src="demos/screenshots/enterprise_cykl_zycia_klienta.png" alt="Workflow n8n — Cykl Życia Klienta, agent analizujący potencjał sprzedaży dodatkowej i opinie" loading="lazy">
+        <p><strong>Problem:</strong> po zakończonym zleceniu nikt nie ma czasu przeanalizować notatek technika pod kątem dosprzedaży, ani systematycznie zbierać opinii.<br>
+        <strong>Rozwiązanie:</strong> AI Agent czyta notatki i historię klienta, sam ocenia potencjał upsellu i przygotowuje treść oferty oraz prośby o opinię; przy negatywnej opinii agent przygotowuje szkic przeprosin — ale jako <strong>draft w Gmailu do akceptacji</strong>, nigdy nie wysyła automatycznie odpowiedzi na skargę.<br>
+        <strong>Efekt:</strong> żadna szansa sprzedażowa ani zła opinia nie umyka, a decyzja o wrażliwej odpowiedzi zawsze zostaje przy człowieku.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3>Jak to wygląda „pod maską"</h3>
+      <img src="demos/screenshots/enterprise_opisy.png" alt="Opisy architektury obu workflowów Enterprise wprost z n8n" loading="lazy">
+      <p>Dokumentacja wbudowana bezpośrednio w workflow (sticky notes w n8n) — dokładnie to, co zobaczy każdy, kto otworzy go do edycji.</p>
     </div>
   </section>
 
