@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://awkmediasolutions-creator.github.io/awk-media-landing/sitemap.xml
