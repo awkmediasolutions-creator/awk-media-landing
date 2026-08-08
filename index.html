@@ -1,228 +1,568 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AWK Media Solutions buduje systemy automatyzacji AI dla małych i średnich firm usługowych — obsługa klientów, zarządzanie leadami, przypomnienia, bez zatrudniania kolejnej osoby.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AWK Media Solutions — Automatyzacje AI dla firm usługowych</title>
+<meta name="description" content="Automatyzacje AI dla firm usługowych: agent odpowiada na zapytania 24/7, kwalifikuje leada i pilnuje follow-upu. Działający system AI, zwrot w 2,1–3 miesiące.">
 <link rel="canonical" href="https://awkmedia.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AWK Media Solutions">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:title" content="AWK Media Solutions — Automatyzacje AI dla firm usługowych">
-<meta property="og:description" content="Systemy AI, które odpowiadają klientom, kwalifikują leady i pilnują follow-upu — bez zatrudniania kolejnej osoby. Realne workflow n8n, nie mockupy.">
+<meta property="og:description" content="Agent odpowiada 24/7, kwalifikuje leada i pilnuje follow-upu. Działający system AI, nie mockupy.">
 <meta property="og:url" content="https://awkmedia.com/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230B0C08'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%2335A06E' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<meta property="og:image" content="https://awkmedia.com/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,600;9..144,700&family=Epilogue:wght@400;500;600;700&display=swap">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"AWK Media Solutions","url":"https://awkmedia.com/","telephone":"+48736840712","email":"awk.mediasolutions@gmail.com","areaServed":"PL","description":"Systemy automatyzacji AI (n8n + modele językowe) dla małych i średnich firm usługowych w Polsce.","makesOffer":[{"@type":"Offer","name":"Starter","price":"4000","priceCurrency":"PLN"},{"@type":"Offer","name":"Growth","price":"8000","priceCurrency":"PLN"},{"@type":"Offer","name":"Pro","price":"15000","priceCurrency":"PLN"}]}
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
+/* ==========================================================================
+   AWK Media Solutions — design system
+   Dark, warm-neutral base + olive accent. Contrast checked against WCAG AA.
+   ========================================================================== */
+
 :root {
-  --sand: #0B0C08;
-  --oat: #171911;
-  --espresso: #E6E4D5;
-  --espresso-dim: #A2A08A;
-  --clay: #3A3D26;
-  --clay-dark: #24270F;
-  --terracotta: #35A06E;
-  --terracotta-dark: #8FE3B8;
-  --ochre: #96923E;
-  --ochre-dark: #C7C179;
-  --sage: #7C8A63;
-  --sage-dark: #ADBB96;
-  --moss: #566B35;
-  --moss-dark: #93AC66;
-  --cream-text: #0A1F14;
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Epilogue', -apple-system, 'Segoe UI', sans-serif;
-  --radius-s: 14px;
-  --radius-m: 20px;
-  --radius-l: 30px;
+  /* Surfaces */
+  --bg: #0b0c09;
+  --bg-card: #14150f;
+  --bg-raised: #1a1c13;
+  --border: #2a2c1f;
+  --border-strong: #3c3f2b;
+
+  /* Text — ratios against --bg
+     text 15.9:1 · dim 8.1:1 · dimmer 4.9:1 (AA for body text) */
+  --text: #e8e6dc;
+  --text-dim: #a8a795;
+  --text-dimmer: #82806b;
+
+  /* Accent — bottle green
+     --olive is decorative only (4.4:1 — borders, rules, markers)
+     --olive-bright is the accessible accent for links and text (8.1:1) */
+  --olive: #3a8567;
+  --olive-bright: #3dbb85;
+  --olive-dark: #0e2b20;
+  --btn-text: #0a120d; /* 7.8:1 on --olive-bright */
+
+  /* Package label tints — tonally related, differentiated by warmth */
+  --pkg-starter-bg: #1c2410;
+  --pkg-starter-fg: #a8bd63;
+  --pkg-growth-bg: #202513;
+  --pkg-growth-fg: #c3c069;
+  --pkg-pro-bg: #2a2412;
+  --pkg-pro-fg: #d6ab5e;
+  --pkg-enterprise-bg: #2b1e14;
+  --pkg-enterprise-fg: #d29268;
+
+  /* Type */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Scale */
+  --step--1: clamp(0.82rem, 0.79rem + 0.12vw, 0.88rem);
+  --step-0: clamp(1rem, 0.96rem + 0.18vw, 1.08rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.36vw, 1.4rem);
+  --step-2: clamp(1.45rem, 1.3rem + 0.7vw, 1.85rem);
+  --step-3: clamp(1.8rem, 1.55rem + 1.2vw, 2.5rem);
+  --step-4: clamp(2.2rem, 1.75rem + 2.1vw, 3.4rem);
+
   --wrap: 1120px;
-  --gutter: clamp(1.15rem, 4vw, 2.25rem);
-  --step--1: clamp(0.85rem, 0.81rem + 0.15vw, 0.95rem);
-  --step-0: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
-  --step-1: clamp(1.2rem, 1.1rem + 0.4vw, 1.45rem);
-  --step-2: clamp(1.5rem, 1.3rem + 0.8vw, 1.95rem);
-  --step-3: clamp(1.9rem, 1.55rem + 1.5vw, 2.7rem);
-  --step-4: clamp(2.3rem, 1.7rem + 2.6vw, 3.6rem);
+  --gutter: clamp(1.15rem, 4vw, 2rem);
+  --radius: 10px;
 }
-*, *::before, *::after { box-sizing: border-box; }
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
+
 body {
   margin: 0;
-  background: var(--sand);
-  color: var(--espresso);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: var(--step-0);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  position: relative;
 }
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
 }
-h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 0.55em; color: var(--espresso); font-weight: 600; }
-h1 { font-size: var(--step-4); font-weight: 600; }
+
+h1 { font-size: var(--step-4); }
 h2 { font-size: var(--step-3); }
-h3 { font-size: var(--step-1); font-weight: 600; }
-p { margin: 0 0 1.05em; }
-a { color: var(--terracotta-dark); text-underline-offset: 3px; }
-a:hover { color: var(--espresso); }
-img { max-width: 100%; height: auto; display: block; border-radius: var(--radius-s); }
-::selection { background: var(--terracotta); color: var(--cream-text); }
-:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; border-radius: 4px; }
+h3 { font-size: var(--step-1); }
 
-.skip-link { position: absolute; left: -9999px; top: 0; background: var(--terracotta); color: var(--cream-text); padding: 0.8rem 1.2rem; z-index: 1000; border-radius: 0 0 var(--radius-s) 0; }
+p { margin: 0 0 1.1em; }
+p, li { text-wrap: pretty; }
+
+a { color: var(--olive-bright); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--text); }
+
+:focus-visible {
+  outline: 2px solid var(--olive-bright);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+
+::selection { background: var(--olive-bright); color: var(--btn-text); }
+
+/* --- Layout ------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.section--tight { padding-block: clamp(2.5rem, 5vw, 3.5rem); }
+.section + .section { padding-top: 0; }
+
+.stack > * + * { margin-top: 1.1rem; }
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.lede {
+  font-size: var(--step-1);
+  color: var(--text-dim);
+  max-width: 62ch;
+}
+
+.prose { max-width: 68ch; }
+.prose h2 { margin-top: 2.4em; }
+.prose h3 { margin-top: 1.8em; }
+.prose ul, .prose ol { padding-left: 1.2em; margin-bottom: 1.2em; }
+.prose li + li { margin-top: 0.4em; }
+.prose table { margin-bottom: 1.5em; }
+
+/* --- Eyebrow + section headings ----------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--olive-bright);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-bottom: 0.9rem;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--olive-bright);
+  flex: none;
+}
+
+/* --- Signature: process connector -----------------------------------------
+   A hairline "wire" with square nodes, evoking a connected pipeline.
+   Used as the section rule and under the hero. Decorative only.
+   ----------------------------------------------------------------------- */
+
+.wire {
+  position: relative;
+  height: 1px;
+  background: var(--border);
+  margin-block: clamp(2rem, 5vw, 3rem);
+  overflow: visible;
+}
+
+.wire::before,
+.wire::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  translate: 0 -50%;
+  background: var(--bg);
+  border: 1px solid var(--olive);
+}
+
+.wire::before { left: 0; }
+.wire::after { right: 0; }
+
+.wire--live::marker { content: none; }
+
+.wire--live .pulse {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 34px;
+  height: 1px;
+  translate: 0 -50%;
+  background: linear-gradient(90deg, transparent, var(--olive-bright), transparent);
+  animation: wire-travel 5.5s linear infinite;
+}
+
+@keyframes wire-travel {
+  from { left: -10%; }
+  to { left: 105%; }
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.78em 1.35em;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-0);
+  line-height: 1.2;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.btn--primary {
+  background: var(--olive-bright);
+  color: var(--btn-text);
+}
+
+.btn--primary:hover {
+  background: #a3b45f;
+  color: var(--btn-text);
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.btn--ghost:hover {
+  border-color: var(--olive);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* --- Cards -------------------------------------------------------------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+a.card { text-decoration: none; color: inherit; }
+
+.card:hover,
+a.card:hover {
+  border-color: var(--olive);
+  transform: translateY(-3px);
+  color: inherit;
+}
+
+.card h3 { margin-bottom: 0.5rem; }
+.card p { color: var(--text-dim); margin-bottom: 0; }
+.card__more {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--olive-bright);
+}
+
+/* --- Tags & badges ------------------------------------------------------ */
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; list-style: none; }
+
+.tag {
+  display: inline-block;
+  padding: 0.35em 0.85em;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: var(--step--1);
+  color: var(--text-dim);
+  background: var(--bg-card);
+}
+
+.roi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.8em;
+  border-radius: 6px;
+  background: var(--olive-dark);
+  border: 1px solid var(--olive);
+  color: var(--olive-bright);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+.pkg-tag {
+  display: inline-block;
+  padding: 0.25em 0.7em;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+}
+
+.pkg-tag--starter { background: var(--pkg-starter-bg); color: var(--pkg-starter-fg); }
+.pkg-tag--growth { background: var(--pkg-growth-bg); color: var(--pkg-growth-fg); }
+.pkg-tag--pro { background: var(--pkg-pro-bg); color: var(--pkg-pro-fg); }
+.pkg-tag--enterprise { background: var(--pkg-enterprise-bg); color: var(--pkg-enterprise-fg); }
+
+/* --- Stats -------------------------------------------------------------- */
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-size: var(--step-3);
+  color: var(--olive-bright);
+  line-height: 1.1;
+  display: block;
+}
+
+.stat__label { color: var(--text-dim); margin: 0.5rem 0 0; }
+
+/* --- Tables ------------------------------------------------------------- */
+
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step-0);
+}
+
+th, td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+th {
+  font-family: var(--font-display);
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+td.num { font-family: var(--font-mono); white-space: nowrap; }
+
+/* --- Utilities ---------------------------------------------------------- */
+
+.mono { font-family: var(--font-mono); }
+.dim { color: var(--text-dim); }
+.dimmer { color: var(--text-dimmer); }
+.center { text-align: center; }
+.mb-0 { margin-bottom: 0; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--olive-bright);
+  color: var(--btn-text);
+  padding: 0.7rem 1rem;
+  z-index: 200;
+}
+
 .skip-link:focus { left: 0; }
-.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
-.section { padding-block: clamp(3.5rem, 8vw, 6rem); position: relative; z-index: 1; }
-.section--oat { background: var(--oat); }
-.section--oat .card { background: var(--sand); }
-.card { background: var(--oat); }
-.lede { font-size: var(--step-1); color: var(--espresso-dim); max-width: 60ch; }
-.eyebrow { font-family: var(--font-body); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.06em; text-transform: uppercase; color: var(--terracotta-dark); display: inline-flex; align-items: center; gap: 0.55em; margin-bottom: 0.9rem; }
-.eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--terracotta); flex: none; }
-
-section[id] { scroll-margin-top: 84px; }
-
-/* header */
-.hdr { position: sticky; top: 0; z-index: 80; background: color-mix(in srgb, var(--sand) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--clay); }
-.hdr__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 72px; }
-.hdr__logo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--espresso); text-decoration: none; display: inline-flex; align-items: center; gap: 0.6rem; white-space: nowrap; }
-.hdr__mark { width: 30px; height: 30px; border-radius: 9px; background: var(--terracotta); color: var(--cream-text); display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 700; flex: none; }
-.hdr__logo-dim { color: var(--espresso-dim); font-weight: 400; font-size: 0.92em; }
-.hdr__nav { display: flex; align-items: center; gap: 1.75rem; }
-.hdr__list { display: flex; align-items: center; gap: 1.6rem; list-style: none; margin: 0; padding: 0; }
-.hdr__list a { color: var(--espresso-dim); text-decoration: none; font-size: var(--step--1); font-weight: 600; white-space: nowrap; }
-.hdr__list a:hover { color: var(--terracotta-dark); }
-.hdr__cta { padding: 0.65em 1.15em; font-size: var(--step--1); }
-.hdr__toggle { display: none; background: transparent; border: 1.5px solid var(--clay); border-radius: 10px; width: 42px; height: 42px; align-items: center; justify-content: center; cursor: pointer; }
-.hdr__bars, .hdr__bars::before, .hdr__bars::after { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--espresso); position: relative; }
-.hdr__bars::before, .hdr__bars::after { content: ''; position: absolute; left: 0; }
-.hdr__bars::before { top: -6px; } .hdr__bars::after { top: 6px; }
-@media (max-width: 880px) {
-  .hdr__toggle { display: inline-flex; }
-  .hdr__nav { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 1rem; background: var(--sand); border-bottom: 1px solid var(--clay); padding: 1.1rem var(--gutter) 1.6rem; display: none; }
-  .hdr__nav[data-open='true'] { display: flex; }
-  .hdr__list { flex-direction: column; align-items: stretch; gap: 0.3rem; }
-  .hdr__list a { display: block; padding: 0.6rem 0; font-size: var(--step-0); }
-  .hdr__cta { width: 100%; }
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
 }
-
-/* buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; padding: 0.85em 1.5em; border-radius: 999px; font-family: var(--font-body); font-weight: 700; font-size: var(--step-0); line-height: 1.2; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, color 0.3s ease; }
-.btn--primary { background: var(--terracotta); color: var(--cream-text); }
-.btn--primary:hover { background: var(--terracotta-dark); color: var(--cream-text); transform: translateY(-2px); }
-.btn--ghost { background: transparent; color: var(--espresso); border-color: var(--clay); }
-.btn--ghost:hover { border-color: var(--terracotta); color: var(--terracotta-dark); transform: translateY(-2px); }
-.btn-row { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
-
-/* hero */
-.hero { padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem); }
-.hero h1 { max-width: 18ch; }
-.hero h1 em { font-style: italic; color: var(--terracotta-dark); }
-.hero .lede { margin-bottom: 1.9rem; }
-
-.flow { list-style: none; margin: clamp(3rem, 7vw, 4.5rem) 0 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
-.flow__wire { display: none; }
-.flow__item { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; position: relative; padding-top: 0.5rem; }
-.flow__node { width: 40px; height: 40px; border-radius: 50%; background: var(--terracotta); color: var(--cream-text); font-family: var(--font-display); font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex: none; }
-.flow__step { font-weight: 700; font-size: var(--step-0); }
-.flow__note { font-size: var(--step--1); color: var(--espresso-dim); line-height: 1.5; }
-@media (min-width: 760px) {
-  .flow__wire { display: block; position: absolute; top: 20px; left: 0; width: 100%; height: 30px; z-index: 0; overflow: visible; }
-  .flow__wire path { fill: none; stroke: var(--clay); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1 9; }
-}
-@media (max-width: 759px) {
-  .flow { grid-template-columns: 1fr; gap: 1.6rem; padding-left: 1.1rem; border-left: 2.5px dashed var(--clay); }
-  .flow__node { width: 34px; height: 34px; font-size: 0.9rem; margin-left: -1.1rem; margin-bottom: -0.2rem; }
-}
-@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-.flow__item:first-child .flow__node { animation: breathe 4.5s ease-in-out infinite; }
-
-/* grid + cards */
-.grid { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
-.card { border: 1.5px solid var(--clay); border-radius: var(--radius-m); padding: 1.6rem; transition: transform 0.3s ease, border-color 0.3s ease; }
-.card:hover { transform: translateY(-4px); border-color: var(--terracotta); }
-.card__icon { width: 42px; height: 42px; border-radius: 12px; background: var(--sand); border: 1.5px solid var(--clay); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--terracotta-dark); }
-.section--oat .card__icon { background: var(--oat); }
-.card__icon svg { width: 22px; height: 22px; }
-.card h3 { margin-bottom: 0.5rem; font-size: var(--step-0); }
-.card p { color: var(--espresso-dim); margin-bottom: 0; font-size: var(--step--1); }
-
-/* tags */
-.tag-row { display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0; margin: 0; list-style: none; }
-.tag { display: inline-block; padding: 0.5em 1.05em; border: 1.5px solid var(--clay); border-radius: 999px; font-size: var(--step--1); font-weight: 600; color: var(--espresso-dim); background: var(--sand); }
-
-/* demo cards */
-.demo-card .roi-badge { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.35em 0.9em; border-radius: 999px; background: color-mix(in srgb, var(--sage) 24%, var(--sand)); color: var(--sage-dark); font-weight: 700; font-size: var(--step--1); margin-bottom: 0.85rem; }
-.demo-story { font-size: var(--step--1); color: var(--espresso-dim); line-height: 1.7; margin-bottom: 1rem; }
-.demo-story strong { color: var(--espresso); font-weight: 700; }
-.demo-frame-wrap { margin-top: 1rem; }
-.demo-frame-wrap iframe { width: 100%; height: 520px; border: 1.5px solid var(--clay); border-radius: var(--radius-m); background: var(--oat); }
-
-/* stats */
-.stat__value { font-family: var(--font-display); font-size: var(--step-3); color: var(--terracotta-dark); line-height: 1.1; display: block; font-weight: 700; }
-.stat__label { color: var(--espresso-dim); margin: 0.6rem 0 0; font-size: var(--step--1); }
-
-/* pricing */
-.pricing-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); margin-top: 2.2rem; }
-.pkg { border: 2px solid var(--clay); border-radius: var(--radius-l); padding: 1.8rem 1.6rem; display: flex; flex-direction: column; background: var(--sand); }
-.pkg__tag { display: inline-block; align-self: flex-start; padding: 0.3em 0.85em; border-radius: 999px; font-size: var(--step--1); font-weight: 700; margin-bottom: 1rem; }
-.pkg--starter { border-color: var(--sage); } .pkg--starter .pkg__tag { background: color-mix(in srgb, var(--sage) 26%, var(--sand)); color: var(--sage-dark); }
-.pkg--growth { border-color: var(--terracotta); } .pkg--growth .pkg__tag { background: color-mix(in srgb, var(--terracotta) 22%, var(--sand)); color: var(--terracotta-dark); }
-.pkg--pro { border-color: var(--ochre); } .pkg--pro .pkg__tag { background: color-mix(in srgb, var(--ochre) 26%, var(--sand)); color: var(--ochre-dark); }
-.pkg--enterprise { border-color: var(--moss); } .pkg--enterprise .pkg__tag { background: color-mix(in srgb, var(--moss) 22%, var(--sand)); color: var(--moss-dark); }
-.pkg__price { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; margin-bottom: 0.1rem; }
-.pkg__retainer { color: var(--espresso-dim); font-size: var(--step--1); margin-bottom: 1rem; }
-.pkg__scope { color: var(--espresso-dim); font-size: var(--step--1); line-height: 1.6; margin-bottom: 0; }
-.pricing-note { color: var(--espresso-dim); font-size: var(--step--1); margin-top: 1.4rem; }
-
-/* footer */
-.ftr { background: var(--oat); color: var(--espresso); padding-block: clamp(2.5rem, 6vw, 3.5rem); border-top: 1px solid var(--clay); }
-.ftr a { color: var(--espresso); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--espresso) 45%, transparent); }
-.ftr a:hover { color: var(--terracotta-dark); }
-.ftr__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; font-size: var(--step--1); }
-.ftr__note { color: var(--espresso-dim); margin: 0.4rem 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-  .btn:hover, .card:hover { transform: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .btn:hover, .card:hover, a.card:hover { transform: none; }
 }
+
+
+/* --- single-page additions --------------------------------------------- */
+.hero { padding-block: clamp(3rem,9vw,6rem) 0; }
+.hero h1 { max-width: 20ch; }
+.hero .lede { margin-bottom: 1.75rem; }
+.flow { display:grid; gap:1px; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));
+  background:var(--border); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden; list-style:none; margin:0; padding:0; }
+.flow__item { background:var(--bg-card); padding:1.1rem 1.15rem 1.25rem; display:flex;
+  flex-direction:column; gap:.25rem; }
+.flow__idx { font-family:var(--font-mono); font-size:var(--step--1); color:var(--olive); }
+.flow__step { font-family:var(--font-display); font-weight:600; }
+.flow__note { font-size:var(--step--1); color:var(--text-dim); line-height:1.45; }
+.svc { padding-top:2.5rem; margin-top:2.5rem; border-top:1px solid var(--border); scroll-margin-top:80px; }
+.svc .grid { margin-top:1.75rem; }
+.svc h4 { font-family:var(--font-display); font-size:var(--step-0); margin:0 0 .6rem; }
+.svc__hint { margin-top:1.5rem; font-size:var(--step--1); }
+.svc__back { font-size:var(--step--1); margin-bottom:0; }
+.caps { margin:0; padding-left:1.15rem; color:var(--text-dim); font-size:var(--step--1); }
+.caps li + li { margin-top:.45rem; }
+.cs-list { display:grid; gap:1.25rem; margin-top:2rem; }
+@media (min-width:900px){ .cs-list{ grid-template-columns:repeat(2,1fr); } }
+.cs-list img { margin-top:1.25rem; border:1px solid var(--border); border-radius:var(--radius); }
+.pkg-row { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));
+  list-style:none; margin:2rem 0 0; padding:0; }
+.post { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:1.25rem 1.5rem; scroll-margin-top:80px; }
+.post + .post { margin-top:1rem; }
+.post > summary { cursor:pointer; display:flex; flex-direction:column; gap:.35rem; list-style:none; }
+.post > summary::-webkit-details-marker { display:none; }
+.post__title { font-family:var(--font-display); font-weight:600; font-size:var(--step-1); }
+.post__desc { color:var(--text-dim); font-size:var(--step--1); }
+.post[open] > summary { border-bottom:1px solid var(--border); padding-bottom:1rem; margin-bottom:1rem; }
+.post__body :global(strong), .post__body strong { color:var(--text); }
+.post__body table { font-size:var(--step--1); }
+.post__body .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
+.post__body th, .post__body td { white-space:normal; min-width:7ch; }
+.kontakt { display:grid; gap:2.5rem; margin-top:2.5rem; }
+@media (min-width:940px){ .kontakt{ grid-template-columns:1.1fr .9fr; gap:3rem; } }
+.cal { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--bg-card); }
+.form { display:grid; gap:1rem; }
+.form label { display:grid; gap:.4rem; font-size:var(--step--1); color:var(--text-dim); }
+.form input:not([type="checkbox"]), .form textarea { font:inherit; font-size:var(--step-0); color:var(--text);
+  background:var(--bg-card); border:1px solid var(--border-strong); border-radius:8px;
+  padding:.7rem .85rem; width:100%; }
+.form input:focus-visible, .form textarea:focus-visible { border-color:var(--olive-bright); }
+.form textarea { resize:vertical; }
+.form input[type="checkbox"].visually-hidden { width:1px; height:1px; padding:0; }
+.form button { justify-self:start; }
+.direct { margin-top:2.5rem; padding-top:1.75rem; border-top:1px solid var(--border); }
+.direct a { color:var(--text); text-decoration:none; }
+.direct a:hover { color:var(--olive-bright); text-decoration:underline; }
+.hdr { position:sticky; top:0; z-index:60; background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+.hdr__inner { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:68px; }
+.hdr__logo { font-family:var(--font-display); font-weight:700; font-size:1.05rem; letter-spacing:-.02em;
+  color:var(--text); text-decoration:none; display:inline-flex; align-items:center; gap:.55rem; white-space:nowrap; }
+.hdr__mark { width:9px; height:9px; background:var(--olive-bright); flex:none; }
+.hdr__logo-dim { color:var(--text-dim); font-weight:500; }
+.hdr__nav { display:flex; align-items:center; gap:1.5rem; }
+.hdr__list { display:flex; align-items:center; gap:1.4rem; list-style:none; margin:0; padding:0; }
+.hdr__item > a { color:var(--text-dim); text-decoration:none; font-size:var(--step--1); white-space:nowrap; }
+.hdr__item > a:hover { color:var(--text); }
+.hdr__item--has-sub { position:relative; }
+.hdr__item--has-sub > a::after { content:''; display:inline-block; margin-left:.4em;
+  border:3.5px solid transparent; border-top-color:currentColor; translate:0 2px; }
+.hdr__sub { position:absolute; top:100%; left:-1rem; min-width:280px; background:var(--bg-card);
+  border:1px solid var(--border); border-radius:var(--radius); padding:.5rem; margin:0; list-style:none;
+  opacity:0; visibility:hidden; translate:0 6px; transition:opacity .16s ease,translate .16s ease,visibility .16s; }
+.hdr__item--has-sub:hover .hdr__sub, .hdr__item--has-sub:focus-within .hdr__sub {
+  opacity:1; visibility:visible; translate:0 0; }
+.hdr__sub a { display:block; padding:.55rem .7rem; border-radius:6px; color:var(--text-dim);
+  text-decoration:none; font-size:var(--step--1); }
+.hdr__sub a:hover { background:var(--bg-raised); color:var(--text); }
+.hdr__cta { padding:.6em 1em; font-size:var(--step--1); }
+.hdr__toggle { display:none; background:transparent; border:1px solid var(--border-strong);
+  border-radius:8px; width:42px; height:42px; align-items:center; justify-content:center; cursor:pointer; }
+.hdr__bars, .hdr__bars::before, .hdr__bars::after { display:block; width:18px; height:1.5px;
+  background:var(--text); position:relative; }
+.hdr__bars::before, .hdr__bars::after { content:''; position:absolute; left:0; }
+.hdr__bars::before { top:-6px; } .hdr__bars::after { top:6px; }
+@media (max-width:900px){
+  .hdr__toggle { display:inline-flex; }
+  .hdr__nav { position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:stretch;
+    gap:.75rem; background:var(--bg); border-bottom:1px solid var(--border);
+    padding:1rem var(--gutter) 1.5rem; display:none; }
+  .hdr__nav[data-open='true'] { display:flex; }
+  .hdr__list { flex-direction:column; align-items:stretch; gap:.25rem; }
+  .hdr__item > a { display:block; padding:.6rem 0; font-size:var(--step-0); }
+  .hdr__item--has-sub > a::after { display:none; }
+  .hdr__sub { position:static; opacity:1; visibility:visible; translate:0; min-width:0;
+    background:transparent; border:0; border-left:1px solid var(--border); border-radius:0;
+    padding:0 0 0 .9rem; margin-left:.3rem; }
+  .hdr__cta { width:100%; }
+}
+.ftr { border-top:1px solid var(--border); background:var(--bg-card);
+  padding-block:clamp(2.5rem,6vw,4rem) 2rem; margin-top:clamp(3rem,8vw,6rem); }
+.ftr__cols { display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); }
+.ftr__head { font-family:var(--font-mono); font-size:var(--step--1); letter-spacing:.08em;
+  text-transform:uppercase; color:var(--olive-bright); margin-bottom:.9rem; }
+.ftr__list { list-style:none; margin:0; padding:0; }
+.ftr__list li + li { margin-top:.5rem; }
+.ftr__list a { color:var(--text-dim); text-decoration:none; font-size:var(--step--1); }
+.ftr__list a:hover { color:var(--text); text-decoration:underline; }
+.ftr__note { margin:1rem 0 0; font-size:var(--step--1); color:var(--text-dimmer); }
+.ftr__base { margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid var(--border);
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem; font-size:var(--step--1); }
+.cta__inner { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:clamp(1.6rem,4vw,2.75rem); display:grid; gap:2rem; grid-template-columns:1fr; align-items:center; }
+@media (min-width:820px){ .cta__inner{ grid-template-columns:1.4fr auto; } }
+.cta__actions { display:flex; flex-direction:column; gap:1rem; align-items:flex-start; }
+.cta__direct { display:flex; flex-direction:column; gap:.25rem; font-size:var(--step--1); }
+.cta__direct a { color:var(--text-dim); text-decoration:none; }
+.cta__direct a:hover { color:var(--text); text-decoration:underline; }
+section[id], article[id] { scroll-margin-top:80px; }
+
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://awkmedia.com/#organization", "name": "AWK Media Solutions", "url": "https://awkmedia.com/", "telephone": "+48736840712", "email": "awk.mediasolutions@gmail.com", "areaServed": "PL", "description": "Budujemy systemy automatyzacji AI (n8n + modele językowe) dla małych i średnich firm usługowych w Polsce.", "sameAs": []}, {"@type": "WebSite", "@id": "https://awkmedia.com/#website", "url": "https://awkmedia.com/", "name": "AWK Media Solutions", "inLanguage": "pl-PL", "publisher": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "Service", "name": "AI Obsługa Klienta i Asystenci", "serviceType": "AI Obsługa Klienta i Asystenci", "description": "Automatyzacja obsługi klienta AI: agent odpowiada 24/7, kwalifikuje leada i umawia termin. AI asystent dla firmy usługowej — wdrożenie od 4 000 zł.", "areaServed": "PL", "provider": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "Service", "name": "Zarządzanie Leadami i Integracje", "serviceType": "Zarządzanie Leadami i Integracje", "description": "Automatyzacja zarządzania leadami i follow-up: jeden lejek, integracja z CRM, automatyczne przypomnienia. Koniec z zapytaniami gubionymi w skrzynce.", "areaServed": "PL", "provider": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "Service", "name": "Raporty i Dashboardy AI", "serviceType": "Raporty i Dashboardy AI", "description": "Automatyczne raporty dla firmy i dashboard AI dla biznesu: konwersja per kanał, status leadów i miesięczne podsumowanie bez ręcznego zbierania danych.", "areaServed": "PL", "provider": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "Service", "name": "Strony Internetowe", "serviceType": "Strony Internetowe", "description": "Strony internetowe dla firm usługowych: szybkie, statyczne, zbudowane pod konwersję i wpięte w automatyzację obsługi zapytań.", "areaServed": "PL", "provider": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "Service", "name": "Automatyzacje Szyte na Miarę", "serviceType": "Automatyzacje Szyte na Miarę", "description": "Automatyzacje AI szyte na miarę i wdrożenie n8n dla firmy: procesy, których nie obsłuży gotowe narzędzie. Wycena po bezpłatnej konsultacji.", "areaServed": "PL", "provider": {"@id": "https://awkmedia.com/#organization"}}, {"@type": "ItemList", "name": "Pakiety automatyzacji AI", "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Offer", "name": "Starter", "description": "Agent AI WhatsApp/Messenger 24/7 — kwalifikuje leada, powiadamia handlowca gdy lead jest gorący", "availability": "https://schema.org/InStock", "seller": {"@id": "https://awkmedia.com/#organization"}, "priceSpecification": {"@type": "PriceSpecification", "price": 4000, "priceCurrency": "PLN", "valueAddedTaxIncluded": false, "description": "Setup jednorazowy, płatny 100% z góry"}}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Offer", "name": "Growth", "description": "Wszystko ze Starter + automatyczny follow-up, integracja CRM, panel klienta z dashboardem, miesięczny raport", "availability": "https://schema.org/InStock", "seller": {"@id": "https://awkmedia.com/#organization"}, "priceSpecification": {"@type": "PriceSpecification", "price": 8000, "priceCurrency": "PLN", "valueAddedTaxIncluded": false, "description": "Setup jednorazowy, płatny 100% z góry"}}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Offer", "name": "Pro", "description": "Wszystko z Growth + Voice Agent (odbiera telefon zamiast recepcji), priorytetowe wsparcie", "availability": "https://schema.org/InStock", "seller": {"@id": "https://awkmedia.com/#organization"}, "priceSpecification": {"@type": "PriceSpecification", "price": 15000, "priceCurrency": "PLN", "valueAddedTaxIncluded": false, "description": "Setup jednorazowy, płatny 100% z góry"}}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Offer", "name": "Enterprise", "description": "Prawdziwy AI Agent (pamięć, wnioskowanie, własne narzędzia) — AI Recepcjonista 360 obsługujący cały cykl kontaktu oraz agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów", "availability": "https://schema.org/InStock", "seller": {"@id": "https://awkmedia.com/#organization"}}}]}]}</script>
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Przejdź do treści</a>
 
 <header class="hdr">
   <div class="wrap hdr__inner">
-    <a class="hdr__logo" href="#top"><span class="hdr__mark" aria-hidden="true">A</span>AWK <span class="hdr__logo-dim">Media Solutions</span></a>
+    <a class="hdr__logo" href="#top"><span class="hdr__mark" aria-hidden="true"></span>AWK <span class="hdr__logo-dim">Media Solutions</span></a>
     <button class="hdr__toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-toggle>
-      <span class="visually-hidden">Menu</span><span class="hdr__bars" aria-hidden="true"></span>
-    </button>
+      <span class="visually-hidden">Menu</span><span class="hdr__bars" aria-hidden="true"></span></button>
     <nav class="hdr__nav" id="primary-nav" aria-label="Nawigacja główna">
       <ul class="hdr__list">
-        <li><a href="#uslugi">Co robimy</a></li>
-        <li><a href="#demo">Demo na żywo</a></li>
-        <li><a href="#cennik">Cennik</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
+        <li class="hdr__item hdr__item--has-sub"><a href="#uslugi">Usługi</a><ul class="hdr__sub"><li><a href="#ai-obsluga-klienta">AI Obsługa Klienta i Asystenci</a></li>
+<li><a href="#zarzadzanie-leadami">Zarządzanie Leadami i Integracje</a></li>
+<li><a href="#raporty-i-dashboardy">Raporty i Dashboardy AI</a></li>
+<li><a href="#strony-internetowe">Strony Internetowe</a></li>
+<li><a href="#automatyzacje-na-miare">Automatyzacje Szyte na Miarę</a></li></ul></li>
+        <li class="hdr__item"><a href="#case-studies">Case Studies</a></li>
+        <li class="hdr__item"><a href="#cennik">Cennik</a></li>
+        <li class="hdr__item"><a href="#wiedza">Wiedza</a></li>
       </ul>
-      <a class="btn btn--primary hdr__cta" href="https://calendly.com/awk-mediasolutions/first-call" target="_blank" rel="noopener">Umów konsultację</a>
+      <a class="btn btn--primary hdr__cta" href="https://calendly.com/awk-mediasolutions/pierwszy-telefon" rel="noopener">Umów bezpłatną konsultację</a>
     </nav>
   </div>
 </header>
@@ -231,174 +571,149 @@ section[id] { scroll-margin-top: 84px; }
 
 <section class="hero">
   <div class="wrap">
-    <p class="eyebrow">Automatyzacje AI dla firm usługowych</p>
-    <h1>Automatyzujemy Twój biznes — <em>zamiast</em> Cię zatrudniać</h1>
-    <p class="lede">AWK Media Solutions buduje systemy AI szyte na miarę: obsługa klientów, zarządzanie leadami, przypomnienia — żeby Twoja firma działała sprawniej, bez zatrudniania kolejnej osoby.</p>
+    <p class="eyebrow">n8n + modele językowe · wdrożenia w Polsce</p>
+    <h1>Automatyzacje AI dla firm usługowych — zamiast zatrudniania kolejnej osoby</h1>
+    <p class="lede">Budujemy systemy, które odbierają zapytania o każdej porze, kwalifikują klienta
+      i pilnują follow-upu. Nie mockupy — działający system, który możesz zobaczyć na żywo,
+      zanim cokolwiek podpiszesz.</p>
     <div class="btn-row">
-      <a class="btn btn--primary" href="https://calendly.com/awk-mediasolutions/first-call" target="_blank" rel="noopener">Umów bezpłatną konsultację</a>
-      <a class="btn btn--ghost" href="#demo">Zobacz działające demo</a>
+      <a class="btn btn--primary" href="https://calendly.com/awk-mediasolutions/pierwszy-telefon" rel="noopener">Umów bezpłatną konsultację</a>
+      <a class="btn btn--ghost" href="#case-studies">Zobacz działające systemy</a>
     </div>
-
-    <ol class="flow" aria-label="Jak działa system po wdrożeniu">
-      <svg class="flow__wire" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M2,15 Q 12,2 22,15 T 42,15 T 62,15 T 82,15 T 98,15" />
-      </svg>
-      <li class="flow__item"><span class="flow__node">01</span><span class="flow__step">Zapytanie</span><span class="flow__note">WhatsApp, Messenger, formularz, telefon</span></li>
-      <li class="flow__item"><span class="flow__node">02</span><span class="flow__step">Kwalifikacja</span><span class="flow__note">agent pyta o zakres, termin i budżet</span></li>
-      <li class="flow__item"><span class="flow__node">03</span><span class="flow__step">Zapis</span><span class="flow__note">lead ląduje w CRM ze źródłem i statusem</span></li>
-      <li class="flow__item"><span class="flow__node">04</span><span class="flow__step">Follow-up</span><span class="flow__note">przypomnienia bez decyzji człowieka</span></li>
-      <li class="flow__item"><span class="flow__node">05</span><span class="flow__step">Powiadomienie</span><span class="flow__note">człowiek wchodzi, gdy lead jest gorący</span></li>
-    </ol>
+    <div class="wire wire--live" aria-hidden="true"><span class="pulse"></span></div>
+    <ol class="flow" aria-label="Jak działa system po wdrożeniu"><li class="flow__item"><span class="flow__idx">01</span>
+    <span class="flow__step">Zapytanie</span><span class="flow__note">WhatsApp, Messenger, formularz, telefon</span></li>
+<li class="flow__item"><span class="flow__idx">02</span>
+    <span class="flow__step">Kwalifikacja</span><span class="flow__note">agent pyta o zakres, termin i budżet</span></li>
+<li class="flow__item"><span class="flow__idx">03</span>
+    <span class="flow__step">Zapis</span><span class="flow__note">lead ląduje w CRM ze źródłem i statusem</span></li>
+<li class="flow__item"><span class="flow__idx">04</span>
+    <span class="flow__step">Follow-up</span><span class="flow__note">przypomnienia bez decyzji człowieka</span></li>
+<li class="flow__item"><span class="flow__idx">05</span>
+    <span class="flow__step">Powiadomienie</span><span class="flow__note">człowiek wchodzi, gdy lead jest gorący</span></li></ol>
   </div>
 </section>
 
 <section class="section" id="uslugi">
   <div class="wrap">
-    <p class="eyebrow">Co robimy</p>
-    <h2>Nie sprzedajemy oprogramowania</h2>
-    <p class="lede">Budujemy działające systemy szyte na miarę Twojego biznesu.</p>
-    <div class="grid" style="margin-top:2rem">
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></div>
-        <h3>Automatyzacja obsługi klientów</h3>
-        <p>Zapytania z formularza, maila czy strony — automatycznie klasyfikowane, przypisywane i obsługiwane bez Twojego udziału.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-6 8v6l-4 2v-8z"/></svg></div>
-        <h3>Systemy zarządzania leadami</h3>
-        <p>Od pierwszego kontaktu przez follow-upy aż do umówionego spotkania — bez ręcznego pilnowania.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="12" r="3.2"/><circle cx="17" cy="7" r="3.2"/><circle cx="17" cy="17" r="3.2"/><path d="M9.8 10.8 14.3 8.2M9.8 13.2 14.3 15.8"/></svg></div>
-        <h3>Inteligentne integracje między narzędziami</h3>
-        <p>Calendly, Gmail, Google Sheets, CRM, SMS — wszystko rozmawiające ze sobą automatycznie.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3.5"/></svg></div>
-        <h3>AI Assistant dla Twojej firmy</h3>
-        <p>Wirtualny asystent odpowiadający na pytania klientów 24/7 — na stronie www, przez chat lub email.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></div>
-        <h3>Automatyczne raporty i dashboardy</h3>
-        <p>Zawsze aktualny widok na wyniki firmy — bez ręcznego zbierania danych.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2.5"/><path d="M4 9.5h16"/></svg></div>
-        <h3>Strony internetowe</h3>
-        <p>Nowoczesne strony www dla firm usługowych — wizytówki, landing pages, strony ofertowe. Gotowe do połączenia z systemami automatyzacji od razu po wdrożeniu.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h4M5 12h8M5 16h5"/><circle cx="17" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1.3" fill="currentColor" stroke="none"/></svg></div>
-        <h3>Automatyzacje szyte na miarę</h3>
-        <p>Gdy standardowe rozwiązania nie wystarczą — budujemy w pełni dedykowany system zaprojektowany pod unikalne procesy Twojej firmy.</p>
-      </div>
-      <div class="card">
-        <div class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c3 3 5 5.5 5 8.5A5 5 0 0 1 7 12.5C7 9.5 9 7 12 4z"/><path d="M9 20h6"/></svg></div>
-        <h3>Automatyzacja follow-upów i przypomnień</h3>
-        <p>SMS i maile do klientów wysyłane automatycznie we właściwym momencie.</p>
-      </div>
-    </div>
+    <p class="eyebrow">Co budujemy</p>
+    <h2>Pięć obszarów, w których automatyzacja zwraca się najszybciej</h2>
+    <p class="lede">Każdy rozwiązuje inny etap tego samego problemu: zapytań jest więcej, niż da się
+      obsłużyć ręcznie, a najwięcej pieniędzy wycieka między pierwszym kontaktem a decyzją klienta.</p>
+    <div class="grid" style="margin-top:2rem"><a class="card" href="#ai-obsluga-klienta">
+      <h3>AI Obsługa Klienta i Asystenci</h3><p>Agent AI odpowiada na zapytania w kilka sekund, o każdej porze, na WhatsAppie i Messengerze. Kwalifikuje klienta, umawia termin i przekazuje sprawę człowiekowi, gdy trzeba.</p>
+      <span class="card__more">Czytaj dalej &rarr;</span></a>
+<a class="card" href="#zarzadzanie-leadami">
+      <h3>Zarządzanie Leadami i Integracje</h3><p>Jeden lejek zamiast czterech skrzynek. Każde zapytanie trafia do CRM ze źródłem i statusem, a follow-up rusza sam — bez decyzji człowieka.</p>
+      <span class="card__more">Czytaj dalej &rarr;</span></a>
+<a class="card" href="#raporty-i-dashboardy">
+      <h3>Raporty i Dashboardy AI</h3><p>Panel, w którym widzisz ile zapytań weszło, ile się zamknęło i z jakiego kanału. Raport miesięczny generuje się sam i ląduje w Twojej skrzynce.</p>
+      <span class="card__more">Czytaj dalej &rarr;</span></a>
+<a class="card" href="#strony-internetowe">
+      <h3>Strony Internetowe</h3><p>Szybka, statyczna strona zbudowana pod jeden cel: zamienić wejście w zapytanie. Z formularzem i kalendarzem wpiętym prosto w Twoją automatyzację.</p>
+      <span class="card__more">Czytaj dalej &rarr;</span></a>
+<a class="card" href="#automatyzacje-na-miare">
+      <h3>Automatyzacje Szyte na Miarę</h3><p>Proces, którego nie obsłuży żadne gotowe narzędzie — zbudowany na n8n, opisany i przekazany razem z dokumentacją. Tu też zaczyna się oferta Enterprise.</p>
+      <span class="card__more">Czytaj dalej &rarr;</span></a></div>
+    
+    <article class="svc" id="ai-obsluga-klienta">
+      <h3>AI Obsługa Klienta i Asystenci</h3>
+      <p class="lede">Zapytanie przychodzi o 21:00 albo w trakcie zabiegu. Klient, który pisze, jest w trybie decyzyjnym w tym momencie — i w tej samej chwili pisze do dwóch innych firm. Odpowiedź rano trafia do kogoś, kto już rozmawia z konkurencją.</p>
+<p class="lede">Do tego 60–80% wiadomości to te same pytania: godziny, ceny, adres, wolny termin. Odpisuje na nie osoba, której czas jest wart znacznie więcej.</p>
+<p class="lede">Agent AI zamyka obie dziury naraz: odpowiada natychmiast, prowadzi rozmowę do momentu kwalifikacji, a człowieka wpuszcza dopiero wtedy, gdy jest potrzebny — z gotowym kontekstem, nie od „dzień dobry, w czym mogę pomóc”.</p>
+      <div class="grid"><div class="card"><h4>Automatyzacja obsługi klientów</h4><ul class="caps"><li>Odpowiedzi na WhatsAppie i Messengerze w kilka sekund, 24/7</li><li>Odpowiedzi oparte wyłącznie na Twoim cenniku i zasadach — agent nie improwizuje</li><li>Kwalifikacja wpleciona w rozmowę zamiast formularza: zakres, termin, budżet</li><li>Sprawdzenie wolnych terminów i umówienie wizyty</li><li>Zaprojektowane przekazanie rozmowy człowiekowi: słowa kluczowe, wartość zapytania, sygnały frustracji</li></ul></div>
+<div class="card"><h4>AI Assistant dla firmy</h4><ul class="caps"><li>Asystent wewnętrzny odpowiadający zespołowi na pytania o procedury, cennik i ustalenia</li><li>Streszczenia rozmów i zgłoszeń przekazywane osobie, która przejmuje sprawę</li><li>Ton głosu ustawiany pod branżę i testowany na Twoich prawdziwych, wcześniejszych rozmowach</li></ul></div>
+<div class="card"><h4>Automatyzacja follow-upów i przypomnień</h4><ul class="caps"><li>Przypomnienie o wizycie dzień wcześniej — mniej nieodwołanych nieobecności</li><li>Sekwencja kontaktu po wysłanej wycenie, uruchamiana statusem, nie pamięcią człowieka</li><li>Powiadomienie handlowca dopiero wtedy, gdy klient odpowie</li></ul></div></div>
+      <p class="dim svc__hint">Agent tekstowy z kwalifikacją i powiadomieniem zaczyna się w pakiecie Starter. Voice Agent odbierający telefon zamiast recepcji wchodzi w pakiecie Pro.</p>
+      <p class="svc__back"><a href="#cennik">Zobacz cennik</a> · <a href="#kontakt">Umów konsultację</a></p>
+    </article>
+
+    <article class="svc" id="zarzadzanie-leadami">
+      <h3>Zarządzanie Leadami i Integracje</h3>
+      <p class="lede">Zapytania wpadają czterema kanałami do trzech osób, z których każda zakłada, że odpisała ta druga. Nie ma jednej listy otwartych spraw, nie ma statusu i nie ma odpowiedzi na pytanie „ile mamy otwartych zapytań z tego tygodnia”.</p>
+<p class="lede">Najdroższa strata nie jest jednak na wejściu, tylko po pierwszym kontakcie. Klient dostał wycenę, powiedział „przemyślę” — i nikt nie wrócił. Nie odmówił. Po prostu wypadł z pola widzenia.</p>
+<p class="lede">Follow-up zawsze przegrywa z bieżącą pracą, bo bieżąca praca krzyczy. Jedyne trwałe rozwiązanie to wyjąć go z ludzkiej głowy i oprzeć o status leada.</p>
+      <div class="grid"><div class="card"><h4>Systemy zarządzania leadami</h4><ul class="caps"><li>Jeden lejek: każde zapytanie ze wszystkich kanałów w jednym miejscu, z historią rozmowy</li><li>Automatyczny zapis źródła, statusu i wartości zapytania</li><li>Sekwencje follow-upu wyzwalane statusem — 3 dni, 7 dni, ostatni kontakt</li><li>Natychmiastowe powiadomienie handlowca przy gorącym leadzie</li><li>Odsiew zapytań poza zakresem lub zasięgiem, zanim ktokolwiek pojedzie na oględziny</li></ul></div>
+<div class="card"><h4>Inteligentne integracje między narzędziami</h4><ul class="caps"><li>Spięcie formularza ze strony, WhatsAppa, Messengera i telefonu w jeden przepływ</li><li>Dwustronna integracja z CRM i kalendarzem — bez ręcznego przepisywania danych</li><li>Automatyczne wyciąganie danych z dokumentów i wiadomości do właściwych pól</li><li>Obsługa narzędzi bez publicznego API — tam, gdzie gotowe konektory się kończą</li></ul></div></div>
+      <p class="dim svc__hint">Automatyczny follow-up i integracja z CRM zaczynają się w pakiecie Growth. Sam agent kwalifikujący z powiadomieniem — już w Starterze.</p>
+      <p class="svc__back"><a href="#cennik">Zobacz cennik</a> · <a href="#kontakt">Umów konsultację</a></p>
+    </article>
+
+    <article class="svc" id="raporty-i-dashboardy">
+      <h3>Raporty i Dashboardy AI</h3>
+      <p class="lede">Bez śledzenia, skąd przyszedł lead i czym się skończył, każda decyzja o marketingu to zgadywanie. Dokładasz do kanału, który nic nie daje, i tniesz ten, który cicho robi robotę.</p>
+<p class="lede">Zbieranie tych danych ręcznie kończy się tak samo w każdej firmie: arkusz uzupełniany przez dwa miesiące, potem porzucony.</p>
+<p class="lede">Raport ma się generować sam i trafiać tam, gdzie i tak patrzysz — inaczej nie będzie istniał.</p>
+      <div class="grid"><div class="card"><h4>Automatyczne raporty i dashboardy</h4><ul class="caps"><li>Panel z bieżącym stanem: ile zapytań weszło, ile jest otwartych, ile zamkniętych</li><li>Konwersja per kanał — widać, które źródło faktycznie przynosi klientów</li><li>Czas pierwszej odpowiedzi i czas domknięcia sprawy</li><li>Miesięczny raport generowany automatycznie i wysyłany mailem</li><li>Podsumowania rozmów pisane przez model językowy zamiast surowych transkrypcji</li><li>Dostęp dla klienta lub zespołu bez dawania wglądu w całe zaplecze</li></ul></div></div>
+      <p class="dim svc__hint">Panel klienta z dashboardem i miesięczny raport wchodzą w pakiecie Growth.</p>
+      <p class="svc__back"><a href="#cennik">Zobacz cennik</a> · <a href="#kontakt">Umów konsultację</a></p>
+    </article>
+
+    <article class="svc" id="strony-internetowe">
+      <h3>Strony Internetowe</h3>
+      <p class="lede">Strona firmy usługowej ma jedno zadanie: zamienić wejście w zapytanie. Większość stron tego nie robi, bo powstała jako katalog usług, a nie jako ścieżka do kontaktu.</p>
+<p class="lede">Druga typowa wada to szybkość. Ciężki szablon ładujący się cztery sekundy na telefonie traci połowę ruchu, zanim ktokolwiek przeczyta nagłówek.</p>
+<p class="lede">Budujemy strony statyczne — generowane przy publikacji, bez bazy danych i panelu, które można zepsuć aktualizacją. Szybkie z definicji i wpięte prosto w automatyzację obsługi zapytań.</p>
+      <div class="grid"><div class="card"><h4>Strony internetowe</h4><ul class="caps"><li>Strona statyczna zbudowana pod jedną akcję: rezerwację rozmowy lub zapytanie</li><li>Struktura i treść pod frazy, których faktycznie szukają Twoi klienci</li><li>Formularz i kalendarz wpięte w ten sam lejek, co pozostałe kanały</li><li>Widget czatu z agentem AI, jeśli obsługa jest już zautomatyzowana</li><li>Techniczne SEO: dane strukturalne, mapa strony, poprawne nagłówki i opisy</li><li>Hosting statyczny — bez opłat za serwer aplikacyjny i bez powierzchni do zhakowania</li></ul></div></div>
+      <p class="dim svc__hint">Stronę wyceniamy osobno od pakietów automatyzacji — zakres ustalamy na konsultacji.</p>
+      <p class="svc__back"><a href="#cennik">Zobacz cennik</a> · <a href="#kontakt">Umów konsultację</a></p>
+    </article>
+
+    <article class="svc" id="automatyzacje-na-miare">
+      <h3>Automatyzacje Szyte na Miarę</h3>
+      <p class="lede">Część procesów nie mieści się w żadnym gotowym narzędziu. Branżowy system bez publicznego API, wycena licząca się z pięciu zmiennych naraz, dokumenty przychodzące w trzech formatach — tu kończą się konektory typu „przeciągnij i upuść”.</p>
+<p class="lede">Budujemy takie przepływy na n8n, hostowanym tam, gdzie dane mają zostać. Cały proces widać na jednym ekranie, jest opisany i przekazywany razem z dokumentacją — nie zostajesz z czarną skrzynką jednego dostawcy.</p>
+<p class="lede">Tu też zaczyna się oferta Enterprise: agent z pamięcią, wnioskowaniem i własnymi narzędziami, a nie pojedynczy przepływ „jeśli X, to Y”.</p>
+      <div class="grid"><div class="card"><h4>Automatyzacje szyte na miarę</h4><ul class="caps"><li>Analiza procesu i spisanie zasad, które dziś siedzą w głowie właściciela</li><li>Workflow n8n budowany pod konkretny przepływ, nie pod gotowy szablon</li><li>Integracje z systemami bez publicznego API</li><li>Przetwarzanie dokumentów: wyciąganie danych z faktur, zamówień i formularzy</li><li>Self-hosting — dane klientów zostają u Ciebie</li><li>Dokumentacja i monitoring błędów w ramach retainera</li></ul></div>
+<div class="card"><h4>Enterprise</h4><ul class="caps"><li>AI Recepcjonista 360 obsługujący cały cykl kontaktu z klientem</li><li>Agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów</li><li>Pamięć kontekstu między rozmowami i własny zestaw narzędzi agenta</li><li>Zakres i wycena ustalane indywidualnie po bezpłatnej konsultacji</li></ul></div></div>
+      <p class="dim svc__hint">Automatyzacje na miarę wyceniamy indywidualnie. Pełen zakres agenta z pamięcią i własnymi narzędziami to pakiet Enterprise.</p>
+      <p class="svc__back"><a href="#cennik">Zobacz cennik</a> · <a href="#kontakt">Umów konsultację</a></p>
+    </article>
   </div>
 </section>
 
-<section class="section section--oat" id="dla-kogo">
+<section class="section" id="dla-kogo">
   <div class="wrap">
     <p class="eyebrow">Dla kogo</p>
     <h2>Firmy usługowe od 2 do 30 osób</h2>
-    <p class="lede">Każda firma usługowa, która obsługuje powtarzalne zapytania i procesy — i nie ma czasu, żeby wrócić do klienta na czas.</p>
-    <ul class="tag-row" style="margin-top:1.5rem">
-      <li class="tag">Gabinety medyczne, stomatologiczne, fizjoterapeutyczne</li>
-      <li class="tag">Firmy remontowe i budowlane</li>
-      <li class="tag">Kancelarie prawne i biura rachunkowe</li>
-      <li class="tag">Agencje marketingowe i kreatywne</li>
-      <li class="tag">Firmy szkoleniowe i coachingowe</li>
-    </ul>
+    <p class="lede">Wspólny mianownik: dużo powtarzalnych zapytań, jedna osoba na wszystkim i brak
+      czasu, żeby wrócić do klienta na czas.</p>
+    <ul class="tag-row" style="margin-top:1.5rem"><li class="tag">Gabinety medyczne, stomatologiczne i fizjoterapeutyczne</li>
+<li class="tag">Firmy remontowo-budowlane</li>
+<li class="tag">Kancelarie prawne i biura rachunkowe</li>
+<li class="tag">Agencje marketingowe i kreatywne</li>
+<li class="tag">Firmy szkoleniowe i coachingowe</li></ul>
   </div>
 </section>
 
-<section class="section" id="demo">
+<section class="section" id="case-studies">
   <div class="wrap">
-    <p class="eyebrow">Zobacz to na żywo</p>
+    <p class="eyebrow">Zobacz na żywo</p>
     <h2>Systemy, które już pracują</h2>
-    <p class="lede">Prawdziwe systemy, które budujemy — kliknij, żeby zobaczyć działające demo w akcji. Większość projektów zwraca się w 3 tygodnie do 3 miesięcy.</p>
-    <div class="grid" style="margin-top:2rem">
-      <div class="card demo-card">
-        <div class="roi-badge">Zwrot z inwestycji: 2,1 miesiąca</div>
-        <h3>AI Knowledge Base</h3>
-        <div class="demo-story">
-          <strong>Problem:</strong> zespół traci czas szukając informacji w rozproszonych dokumentach firmy.<br>
-          <strong>Rozwiązanie:</strong> AI indeksuje wszystkie dokumenty i odpowiada natychmiast, z podaniem źródła.<br>
-          <strong>Efekt:</strong> ~5h/tydzień odzyskane, koszt wdrożenia (6 000 PLN) zwraca się w 2,1 miesiąca.
-        </div>
-        <button class="btn btn--ghost" type="button" data-demo-btn data-demo-id="kb" data-src="demos/portfolio_1_chatbot.html">Zobacz demo</button>
-        <div class="demo-frame-wrap" data-demo-slot="kb" hidden></div>
-      </div>
-      <div class="card demo-card">
-        <div class="roi-badge">Zwrot z inwestycji: 3 tygodnie</div>
-        <h3>Automatyczny pipeline sprzedażowy</h3>
-        <div class="demo-story">
-          <strong>Problem:</strong> zapytania trafiają do handlowca zbyt późno albo giną w skrzynce.<br>
-          <strong>Rozwiązanie:</strong> Claude AI klasyfikuje leada (HOT/WARM/COLD), wysyła auto-odpowiedź, zapisuje do arkusza i alarmuje handlowca na Telegramie przy gorących leadach.<br>
-          <strong>Efekt:</strong> +11 940 PLN/mies. z lepszej konwersji, koszt wdrożenia (8 000 PLN) zwraca się w 3 tygodnie.
-        </div>
-        <button class="btn btn--ghost" type="button" data-demo-btn data-demo-id="n8n" data-src="demos/portfolio_2_n8n.html">Zobacz demo</button>
-        <div class="demo-frame-wrap" data-demo-slot="n8n" hidden></div>
-      </div>
-      <div class="card demo-card">
-        <div class="roi-badge">Zwrot z inwestycji: 2,7 miesiąca</div>
-        <h3>AI Sales Assistant</h3>
-        <div class="demo-story">
-          <strong>Problem:</strong> zespół traci godziny odpowiadając wciąż na te same pytania klientów.<br>
-          <strong>Rozwiązanie:</strong> AI Assistant odpowiada natychmiast na podstawie firmowej wiedzy, 24 godziny na dobę.<br>
-          <strong>Efekt:</strong> +3 500 PLN/mies. z szybszej obsługi, koszt wdrożenia (9 500 PLN) zwraca się w 2,7 miesiąca.
-        </div>
-        <button class="btn btn--ghost" type="button" data-demo-btn data-demo-id="agent" data-src="demos/portfolio_3_agent.html">Zobacz demo</button>
-        <div class="demo-frame-wrap" data-demo-slot="agent" hidden></div>
-      </div>
-      <div class="card demo-card">
-        <div class="roi-badge">Przykład: zwrot 2,1 miesiąca</div>
-        <h3>Kalkulator ROI</h3>
-        <div class="demo-story">
-          <strong>Problem:</strong> trudno przekonać się do inwestycji bez konkretnych liczb dla własnej firmy.<br>
-          <strong>Rozwiązanie:</strong> interaktywny kalkulator liczący realną stratę i zysk na podstawie danych klienta.<br>
-          <strong>Efekt:</strong> dla przeciętnego gabinetu (160 wizyt/mies.) koszt wdrożenia zwraca się w 2,1 miesiąca.
-        </div>
-        <button class="btn btn--ghost" type="button" data-demo-btn data-demo-id="roi" data-src="demos/roi_kalkulator.html">Zobacz demo</button>
-        <div class="demo-frame-wrap" data-demo-slot="roi" hidden></div>
-      </div>
-      <div class="card demo-card">
-        <div class="roi-badge">Część pakietu Growth</div>
-        <h3>Panel klienta — Leady</h3>
-        <div class="demo-story">
-          <strong>Problem:</strong> właściciel nie wie, ile ma otwartych leadów bez logowania się do arkusza.<br>
-          <strong>Rozwiązanie:</strong> panel pobiera dane z tego samego arkusza CRM co reszta systemu i pokazuje statystyki na żywo.<br>
-          <strong>Efekt:</strong> stan biznesu na jedno spojrzenie, zero ręcznego liczenia.
-        </div>
-        <button class="btn btn--ghost" type="button" data-demo-btn data-demo-id="panel" data-src="demos/dashboard.html">Zobacz demo</button>
-        <div class="demo-frame-wrap" data-demo-slot="panel" hidden></div>
-      </div>
-    </div>
+    <p class="lede">Każde wdrożenie opisujemy w tym samym układzie: problem, rozwiązanie, efekt.</p>
+    <div class="cs-list"><article class="card">
+      <p class="roi-badge">Zwrot z inwestycji: 3 tygodnie</p><h3>Automatyczny pipeline sprzedażowy</h3>
+      <p><strong>Problem.</strong> Zapytania wpadały czterema kanałami do kilku osób. Nie było jednej listy otwartych spraw ani statusu, więc leady ginęły dokładnie na tym etapie, na którym były najcieplejsze — po wysłaniu wyceny, gdy nikt nie wracał z przypomnieniem.</p>
+      <p><strong>Rozwiązanie.</strong> Jeden lejek zbierający zapytania ze wszystkich kanałów, automatyczna kwalifikacja i zapis do CRM ze źródłem oraz statusem. Do tego sekwencja follow-upu uruchamiana statusem leada i natychmiastowe powiadomienie handlowca, gdy kontakt jest gorący.</p>
+      <p><strong>Efekt.</strong> Żadne zapytanie nie znika z widoku, przypomnienia wychodzą bez decyzji człowieka, a handlowiec wchodzi do rozmowy z gotowym podsumowaniem zamiast zaczynać od zera.</p>
+    </article></div>
   </div>
 </section>
 
-<section class="section section--oat" id="dlaczego-warto">
+<section class="section" id="efekty">
   <div class="wrap">
     <p class="eyebrow">Dlaczego warto</p>
     <h2>Co się zmienia po wdrożeniu</h2>
     <div class="grid" style="margin-top:2rem">
-      <div class="card">
-        <span class="stat__value">2–5h</span>
-        <p class="stat__label">Odzyskujesz czas — przeciętny klient oszczędza tyle tygodniowo na ręcznej obsłudze procesów, które spokojnie może wykonać system.</p>
-      </div>
-      <div class="card">
-        <span class="stat__value">10×</span>
-        <p class="stat__label">Skalujesz bez zatrudniania — Twój system obsługuje więcej zapytań niż wcześniej, bez nowego etatu, bez nadgodzin.</p>
-      </div>
-      <div class="card">
-        <span class="stat__value">Minuty</span>
-        <p class="stat__label">Klienci są szybciej obsługiwani — odpowiedź w minuty zamiast godzin, to więcej podpisanych umów i mniej utraconych szans.</p>
-      </div>
+      <div class="card"><span class="stat__value">24/7</span>
+        <p class="stat__label">Zapytania obsłużone także wieczorem i w weekend — czyli wtedy, gdy klient
+          faktycznie podejmuje decyzję.</p></div>
+      <div class="card"><span class="stat__value">0 etatów</span>
+        <p class="stat__label">Większy ruch bez rekrutacji, wdrażania i ryzyka, że wiedza wyjdzie za
+          drzwi razem z pracownikiem.</p></div>
+      <div class="card"><span class="stat__value">2,1–3 mies.</span>
+        <p class="stat__label">Typowy zwrot z inwestycji w naszych wdrożeniach. Najszybszy przypadek —
+          automatyczny pipeline sprzedażowy — zwrócił się w 3 tygodnie.</p></div>
     </div>
   </div>
 </section>
@@ -406,131 +721,511 @@ section[id] { scroll-margin-top: 84px; }
 <section class="section" id="cennik">
   <div class="wrap">
     <p class="eyebrow">Cennik</p>
-    <h2>Cennik orientacyjny</h2>
-    <p class="lede">Setup jednorazowy + stały miesięczny retainer (utrzymanie, monitoring, rozwój) — retainer jest częścią każdego pakietu od pierwszego dnia, nie opcją dokupywaną później.</p>
-    <div class="pricing-grid">
-      <div class="pkg pkg--starter" id="pakiet-starter">
-        <span class="pkg__tag">Starter</span>
-        <div class="pkg__price">4 000 zł</div>
-        <div class="pkg__retainer">+ 800 zł/mies. retainer</div>
-        <p class="pkg__scope">Agent AI WhatsApp/Messenger 24/7 — kwalifikuje leada, powiadamia handlowca gdy lead jest gorący</p>
-      </div>
-      <div class="pkg pkg--growth" id="pakiet-growth">
-        <span class="pkg__tag">Growth</span>
-        <div class="pkg__price">8 000 zł</div>
-        <div class="pkg__retainer">+ 1 500 zł/mies. retainer</div>
-        <p class="pkg__scope">Wszystko ze Starter + automatyczny follow-up, integracja CRM, panel klienta z dashboardem, miesięczny raport</p>
-      </div>
-      <div class="pkg pkg--pro" id="pakiet-pro">
-        <span class="pkg__tag">Pro</span>
-        <div class="pkg__price">15 000 zł</div>
-        <div class="pkg__retainer">+ 3 000 zł*/mies. retainer</div>
-        <p class="pkg__scope">Wszystko z Growth + Voice Agent (odbiera telefon zamiast recepcji), priorytetowe wsparcie</p>
-      </div>
-      <div class="pkg pkg--enterprise" id="pakiet-enterprise">
-        <span class="pkg__tag">Enterprise</span>
-        <div class="pkg__price">Wycena indywidualna</div>
-        <div class="pkg__retainer">Wycena indywidualna</div>
-        <p class="pkg__scope">Prawdziwy AI Agent (pamięć, wnioskowanie, własne narzędzia) zamiast reguł if/else — AI Recepcjonista 360 obsługujący cały cykl kontaktu, oraz agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów</p>
-      </div>
+    <h2>Ile kosztuje automatyzacja AI dla firmy</h2>
+    <p class="lede">Cena ma dwie części, bo automatyzacja to nie jednorazowy zakup pliku. Setup to
+      analiza procesu, budowa automatyzacji, integracje i wdrożenie. Retainer to hosting, monitoring, koszty
+      modeli i rozwój systemu — od pierwszego dnia, nie jako opcja dokupywana później.</p>
+    <div class="table-scroll" style="margin-top:2.5rem">
+      <table>
+        <caption class="visually-hidden">Pakiety, ceny setupu, retainer miesięczny i zakres</caption>
+        <thead><tr><th scope="col">Pakiet</th><th scope="col">Setup</th>
+          <th scope="col">Retainer/mies.</th><th scope="col">Zakres</th></tr></thead>
+        <tbody><tr id="pakiet-starter">
+        <th scope="row"><span class="pkg-tag pkg-tag--starter">Starter</span></th>
+        <td class="num">4 000 zł</td><td class="num">800 zł</td>
+        <td>Agent AI WhatsApp/Messenger 24/7 — kwalifikuje leada, powiadamia handlowca gdy lead jest gorący</td></tr>
+<tr id="pakiet-growth">
+        <th scope="row"><span class="pkg-tag pkg-tag--growth">Growth</span></th>
+        <td class="num">8 000 zł</td><td class="num">1 500 zł</td>
+        <td>Wszystko ze Starter + automatyczny follow-up, integracja CRM, panel klienta z dashboardem, miesięczny raport</td></tr>
+<tr id="pakiet-pro">
+        <th scope="row"><span class="pkg-tag pkg-tag--pro">Pro</span></th>
+        <td class="num">15 000 zł</td><td class="num">3 000 zł*</td>
+        <td>Wszystko z Growth + Voice Agent (odbiera telefon zamiast recepcji), priorytetowe wsparcie</td></tr>
+<tr id="pakiet-enterprise">
+        <th scope="row"><span class="pkg-tag pkg-tag--enterprise">Enterprise</span></th>
+        <td class="num">wycena indywidualna</td><td class="num">wycena indywidualna</td>
+        <td>Prawdziwy AI Agent (pamięć, wnioskowanie, własne narzędzia) — AI Recepcjonista 360 obsługujący cały cykl kontaktu oraz agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów</td></tr></tbody>
+      </table>
     </div>
-    <p class="pricing-note">*Pro zawiera limit rozmów głosowych w pakiecie, nadwyżka rozliczana osobno. Płatność: 100% setupu z góry, retainer miesięcznie z góry. Wycena indywidualna po bezpłatnej konsultacji.</p>
+    <p class="dim" style="margin-top:1.25rem;font-size:var(--step--1)">*Pro zawiera limit rozmów głosowych w pakiecie, nadwyżka rozliczana osobno. Płatność: 100% setupu z góry, retainer miesięcznie z góry. Wycena indywidualna po bezpłatnej konsultacji.</p>
   </div>
 </section>
 
-<section class="section section--oat" id="w-akcji">
+<section class="section" id="wiedza">
   <div class="wrap">
-    <p class="eyebrow">Pod maską</p>
-    <h2>Automatyzacje z cennika w akcji</h2>
-    <p class="lede">To nie są mockupy — to realnie działające workflow n8n, zbudowane i przetestowane.</p>
-    <div class="grid" style="margin-top:2rem">
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--sage) 26%, var(--sand)); color:var(--sage-dark)">Starter</span>
-        <h3>Agent AI WhatsApp/Messenger</h3>
-        <img src="demos/screenshots/starter_whatsapp_agent.png" alt="Workflow n8n — klasyfikacja leada AI" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> zapytania z WhatsApp/Messenger czekają godzinami na odpowiedź.<br>
-        <strong>Rozwiązanie:</strong> AI klasyfikuje wiadomość (HOT/WARM/COLD) i od razu wie, co z nią zrobić.<br>
-        <strong>Efekt:</strong> błyskawiczna reakcja na gorące leady, 24/7.</p>
+    <p class="eyebrow">Wiedza</p>
+    <h2>Automatyzacja AI bez żargonu</h2>
+    <p class="lede">Teksty, które piszemy, żeby nie powtarzać tego samego na każdej rozmowie: ile to
+      kosztuje, kiedy się zwraca, co da się zautomatyzować, a czego lepiej nie ruszać. Kliknij, żeby rozwinąć.</p>
+    <div style="margin-top:2rem"><details class="post" id="post-automatyzacja-vs-zatrudnienie-kolejnej-osoby">
+      <summary><span class="post__title">Automatyzacja vs zatrudnienie kolejnej osoby — kiedy się opłaca co</span>
+      <span class="post__desc">Porównanie kosztu i ryzyka: automatyzacja AI czy nowy pracownik. Kryteria decyzji, pełny rachunek kosztów i sytuacje, w których automatyzacja nie wystarczy.</span></summary>
+      <div class="prose post__body"><p>Firma rośnie, obsługa przestaje wyrabiać. Naturalny odruch: zatrudnić kogoś do odbierania telefonu i odpisywania na wiadomości. Zanim to zrobisz — porównaj oba warianty uczciwie, z pełnym rachunkiem po obu stronach.</p>
+<h2>Pełny koszt pracownika</h2>
+<p>Wynagrodzenie to nie koszt. Koszt to:</p>
+<ul>
+<li>pensja plus składki po stronie pracodawcy,</li>
+<li>rekrutacja: ogłoszenia, rozmowy, Twój czas,</li>
+<li>wdrożenie: 1–3 miesiące, w trakcie których osoba pracuje wolniej i zabiera czas komuś doświadczonemu,</li>
+<li>stanowisko pracy, sprzęt, licencje,</li>
+<li>urlopy, zwolnienia, rotacja — a wraz z odejściem cała wiedza wychodzi za drzwi.</li>
+</ul>
+<p>Do tego dochodzi zakres godzinowy: pracownik obsługuje 8 godzin w dni robocze. Zapytania przychodzą 24/7.</p>
+<h2>Pełny koszt automatyzacji</h2>
+<p>Też ma dwie części — <a href="#post-ile-kosztuje-automatyzacja-ai-w-malej-firmie">setup jednorazowy i retainer miesięczny</a>. Setup od 4 000 zł, retainer od 800 zł/mies. w pakiecie Starter, do 15 000 zł i 3 000 zł/mies. w Pro z Voice Agentem (<a href="#cennik">pełny cennik</a>).</p>
+<p>Po stronie kosztów ukrytych: <strong>czas na przygotowanie</strong>. System działa dobrze tylko wtedy, gdy dostanie uporządkowany cennik, zasady kwalifikacji i listę usług. Jeśli tego nie ma, ktoś w firmie musi to spisać. Zwykle właściciel, zwykle raz w życiu — ale trzeba to policzyć.</p>
+<h2>Cztery kryteria decyzji</h2>
+<p><strong>Kryterium 1: czy praca jest powtarzalna?</strong>
+Powtarzalna → automatyzacja. Wymagająca oceny sytuacji, negocjacji, wyczucia → człowiek. Test: czy dałoby się to zapisać jako instrukcję dla kogoś na pierwszy dzień pracy? Jeśli tak, da się to zautomatyzować.</p>
+<p><strong>Kryterium 2: kiedy przychodzi ruch?</strong>
+Skoncentrowany w godzinach pracy → człowiek nadąży. Rozlany na wieczory, weekendy i okresy szczytu → automatyzacja wygrywa bez konkurencji, bo nie da się zatrudnić kogoś na 20 minut w niedzielę.</p>
+<p><strong>Kryterium 3: czy problemem jest wolumen czy złożoność?</strong>
+Dużo prostych spraw → automatyzacja. Mało spraw, ale każda skomplikowana → człowiek. Najczęstszy błąd to zatrudnianie do wolumenu, który jest prosty.</p>
+<p><strong>Kryterium 4: jak szybko potrzebujesz efektu?</strong>
+Zatrudnienie to rekrutacja plus wdrożenie — realnie 2–3 miesiące do pełnej wydajności. Wdrożenie automatyzacji jest krótsze, ale wymaga Twojego zaangażowania na starcie. Oba warianty mają koszt czasowy, tylko rozłożony inaczej.</p>
+<h2>Trzeci wariant, który wygrywa najczęściej</h2>
+<p>W praktyce najlepszy wynik daje kolejność: <strong>najpierw automatyzacja, potem zatrudnienie — ale na inne stanowisko.</strong></p>
+<p>Powód jest prosty. Jeśli zautomatyzujesz warstwę powtarzalną, okazuje się, że nie potrzebujesz osoby do odpisywania na wiadomości. Potrzebujesz kogoś, kto domyka sprzedaż albo wykonuje usługę — czyli stanowiska, które faktycznie skaluje przychód.</p>
+<p>Zatrudnienie przed automatyzacją zwykle kończy się utrwaleniem chaosu: nowa osoba uczy się ręcznego procesu, a potem zmiana boli podwójnie.</p>
+<h2>Kiedy automatyzacja nie wystarczy</h2>
+<p>Uczciwie: są sytuacje, w których potrzebujesz człowieka i żaden system tego nie zastąpi.</p>
+<ul>
+<li>Rozmowy o wysokiej stawce, gdzie liczy się relacja i czytanie sytuacji.</li>
+<li>Praca fizyczna i wykonawcza — automatyzacja obsłuży zapytania, ale remontu nie zrobi.</li>
+<li>Sprawy wrażliwe: zdrowie w toku, reklamacje z emocjami, kryzys.</li>
+<li>Firma, w której procesy zmieniają się co miesiąc i nie ma czego utrwalać.</li>
+</ul>
+<h2>Zrób rachunek na swoich liczbach</h2>
+<p>Podstaw swoje dane do modelu z tekstu <a href="#post-roi-automatyzacji-ai-jak-policzyc">ROI automatyzacji AI — jak policzyć zwrot z inwestycji przed wdrożeniem</a> i porównaj wynik z pełnym rocznym kosztem etatu. W naszych wdrożeniach zwrot mieści się w przedziale 2,1–3 miesięcy — przykłady z opisem problemu i efektu znajdziesz w <a href="#case-studies">case studies</a>.</p>
+<p>Jeśli chcesz przejść przez to porównanie z kimś z zewnątrz: <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">umów bezpłatną 30-minutową konsultację</a>. Mówimy wprost również wtedy, gdy w Twoim przypadku lepszym wyborem jest etat.</p></div>
+    </details>
+<details class="post" id="post-chatbot-ai-dla-gabinetu-kancelarii-firmy-remontowej">
+      <summary><span class="post__title">Chatbot AI dla gabinetu, kancelarii i firmy remontowej — jak to wygląda w praktyce</span>
+      <span class="post__desc">Trzy branże, trzy różne scenariusze rozmowy. Pokazujemy krok po kroku, co robi agent AI w gabinecie, kancelarii i firmie remontowej.</span></summary>
+      <div class="prose post__body"><p>„Chatbot AI dla firmy" nic nie znaczy, dopóki nie wiadomo, o czym rozmawia. Ten sam silnik obsługuje trzy zupełnie różne scenariusze — bo pytania klienta gabinetu, kancelarii i firmy remontowej nie mają ze sobą nic wspólnego.</p>
+<p>Poniżej trzy przepływy rozłożone na kroki. Działające wdrożenia z opisem problemu i efektu znajdziesz w <a href="#case-studies">case studies</a>.</p>
+<h2>Gabinet: stomatologiczny, fizjoterapeutyczny, medycyny estetycznej</h2>
+<p><strong>Problem.</strong> Pacjent pisze na Messengerze o 21:00. Recepcja odpisuje rano, pacjent zdążył umówić się gdzie indziej. W ciągu dnia telefon dzwoni w trakcie zabiegu.</p>
+<p><strong>Co robi agent:</strong></p>
+<ol>
+<li>Odpowiada natychmiast i pyta, jakiego zabiegu dotyczy zapytanie.</li>
+<li>Podaje cenę z Twojego cennika — dokładnie tę, nie własną interpretację.</li>
+<li>Sprawdza wolne terminy i proponuje trzy konkretne.</li>
+<li>Zbiera imię i telefon, zapisuje wstępną rezerwację.</li>
+<li>Wysyła przypomnienie na dzień przed wizytą, co redukuje nieodwołane nieobecności.</li>
+<li>Pytanie o wskazania medyczne, powikłania, konkretny stan zdrowia → <strong>stop, przekazanie do człowieka</strong>. Agent nie udziela porad medycznych, nigdy.</li>
+</ol>
+<p><strong>Krytyczny szczegół:</strong> wąska granica między informacją a poradą musi być zaprojektowana przed wdrożeniem, nie po pierwszej wpadce.</p>
+<h2>Kancelaria prawna i biuro rachunkowe</h2>
+<p><strong>Problem.</strong> Połowa zapytań to sprawy, których nie prowadzisz. Druga połowa wymaga wstępnego zebrania faktów, zanim w ogóle warto oddzwonić. Wszystko to zabiera czas prawnika lub księgowej.</p>
+<p><strong>Co robi agent:</strong></p>
+<ol>
+<li>Pyta o rodzaj sprawy i przypisuje ją do obszaru praktyki.</li>
+<li>Sprawa spoza zakresu → uprzejma odmowa od razu. Zero czasu straconego po obu stronach.</li>
+<li>Sprawa w zakresie → zbiera fakty według listy, którą ustalasz: strony, daty, etap postępowania, terminy.</li>
+<li>Informuje o zasadach współpracy i stawce za konsultację.</li>
+<li>Umawia rozmowę i przekazuje prawnikowi gotowe podsumowanie sprawy.</li>
+<li>Sprawa pilna — termin sądowy w ciągu kilku dni, kontrola, zajęcie konta → <strong>natychmiastowe powiadomienie</strong>, bez czekania w kolejce.</li>
+</ol>
+<p><strong>Krytyczny szczegół:</strong> agent nie interpretuje przepisów i nie ocenia szans w sprawie. Zbiera fakty, kwalifikuje, umawia. Dane klientów zostają u Ciebie — jeden z powodów, dla których budujemy na <a href="#post-n8n-dla-malej-firmy">self-hostowanym n8n</a>.</p>
+<h2>Firma remontowo-budowlana</h2>
+<p><strong>Problem.</strong> Klienci dzwonią przez cały dzień, kiedy zespół jest na budowie. Połowa zapytań to prace, których nie wykonujesz, albo lokalizacje poza zasięgiem. Wyceny wychodzą i nikt do nich nie wraca.</p>
+<p><strong>Co robi agent:</strong></p>
+<ol>
+<li>Pyta o zakres prac, metraż, lokalizację i planowany termin.</li>
+<li>Lokalizacja poza zasięgiem albo zakres poza specjalizacją → odsiew od razu.</li>
+<li>Zapytanie sensowne → podaje orientacyjne widełki, jeśli takie masz, i uprzedza, że dokładna wycena wymaga oględzin.</li>
+<li>Umawia oględziny w wolnym terminie ekipy.</li>
+<li>Zdjęcia od klienta trafiają do zgłoszenia razem z opisem.</li>
+<li>Po wysłaniu wyceny uruchamia <a href="#post-dlaczego-leady-gina-w-skrzynce">automatyczny follow-up</a> — bo to tutaj wycieka najwięcej pieniędzy.</li>
+</ol>
+<p><strong>Krytyczny szczegół:</strong> odsiew jest ważniejszy niż sprzedaż. Każde zapytanie odrzucone na wejściu to zaoszczędzony dojazd.</p>
+<h2>Co jest wspólne we wszystkich trzech</h2>
+<p>Mimo różnic szkielet jest identyczny: <strong>natychmiastowa odpowiedź → kwalifikacja → zapis do systemu → decyzja: przekazać człowiekowi czy prowadzić dalej → follow-up.</strong> Różni się tylko treść pytań i granica, za którą agent nie wchodzi.</p>
+<p>Dlatego wdrożenie nie zaczyna się od technologii, tylko od spisania Twoich zasad kwalifikacji. Jeśli je masz, setup jest szybki. Jeśli siedzą w głowie właściciela — pierwszym etapem jest ich wyciągnięcie.</p>
+<h2>Zakres i cena</h2>
+<p>Agent tekstowy na WhatsAppie i Messengerze z kwalifikacją i powiadomieniem to pakiet <strong>Starter</strong>. Follow-up, CRM i dashboard — <strong>Growth</strong>. Odbieranie telefonu przez <a href="#post-ai-recepcjonista-kiedy-ma-sens">Voice Agenta</a> — <strong>Pro</strong>. Szczegóły w <a href="#cennik">cenniku</a> i na stronie <a href="#ai-obsluga-klienta">AI obsługa klienta i asystenci</a>.</p>
+<h2>Zobacz działający system</h2>
+<p>Nie prezentujemy mockupów. Na <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">bezpłatnej 30-minutowej konsultacji</a> pokazujemy prawdziwy system, z którym możesz porozmawiać.</p></div>
+    </details>
+<details class="post" id="post-roi-automatyzacji-ai-jak-policzyc">
+      <summary><span class="post__title">ROI automatyzacji AI — jak policzyć zwrot z inwestycji przed wdrożeniem</span>
+      <span class="post__desc">Prosty model liczenia ROI automatyzacji AI: odzyskany czas plus odzyskane leady kontra setup i retainer. Policz zwrot zanim wydasz złotówkę.</span></summary>
+      <div class="prose post__body"><p>„Czy to się zwróci" to jedyne pytanie, które ma znaczenie. Odpowiedź da się oszacować przed wdrożeniem, na kartce, w kwadrans. Poniżej metoda, której sami używamy przy wycenach.</p>
+<h2>Zasada: liczymy dwa strumienie, nie jeden</h2>
+<p>Automatyzacja zarabia na dwa sposoby i większość kalkulacji uwzględnia tylko pierwszy:</p>
+<ul>
+<li><strong>Strumień A — odzyskany czas.</strong> Godziny, których zespół nie spędza już na powtarzalnej robocie.</li>
+<li><strong>Strumień B — odzyskane przychody.</strong> Zlecenia, które wcześniej wyciekały: nieodebrany telefon, zapytanie bez odpowiedzi, wycena bez follow-upu.</li>
+</ul>
+<p>W małych firmach usługowych strumień B jest zwykle <strong>wielokrotnie większy</strong> od A. Dlatego liczenie samych „zaoszczędzonych godzin" prowadzi do wniosku, że się nie opłaca — a to zwykle nieprawda.</p>
+<h2>Krok 1: policz strumień A</h2>
+<p>Trzy liczby:</p>
+<ol>
+<li>Ile godzin tygodniowo zespół spędza na powtarzalnej obsłudze zapytań? (odpisywanie na te same pytania, przepisywanie danych między narzędziami, przypominanie się klientom)</li>
+<li>Ile kosztuje godzina tej osoby? Weź pełny koszt pracodawcy, nie stawkę netto. Jeśli robi to właściciel — weź stawkę, po jakiej sprzedajesz swoją godzinę klientowi.</li>
+<li>Pomnóż i przelicz na miesiąc (× 4,33).</li>
+</ol>
+<p><strong>Wzór:</strong> <code>A = godziny_tygodniowo × koszt_godziny × 4,33</code></p>
+<h2>Krok 2: policz strumień B</h2>
+<p>Cztery liczby:</p>
+<ol>
+<li>Ile zapytań miesięcznie zostaje bez odpowiedzi lub z odpowiedzią po wielu godzinach? (nieodebrane telefony z bilingu + wiadomości po godzinach + wyceny bez follow-upu)</li>
+<li>Jaki procent z nich zamieniłbyś w klienta, gdybyś odpowiedział natychmiast? Bądź konserwatywny.</li>
+<li>Ile wynosi Twoja średnia wartość zlecenia?</li>
+<li>Pomnóż wszystko przez siebie.</li>
+</ol>
+<p><strong>Wzór:</strong> <code>B = utracone_kontakty × konwersja × średnia_wartość_zlecenia</code></p>
+<p>Jeśli sprzedajesz usługi cykliczne, weź wartość klienta w całym okresie współpracy, nie z pojedynczego zlecenia. Zmienia to wynik radykalnie.</p>
+<h2>Krok 3: zestaw z kosztem</h2>
+<p>Koszt też ma dwie części — <a href="#post-ile-kosztuje-automatyzacja-ai-w-malej-firmie">setup jednorazowy i retainer miesięczny</a>. Zwrot liczysz tak:</p>
+<p><strong><code>Miesiące do zwrotu = setup ÷ (A + B − retainer)</code></strong></p>
+<p>Przykładowo, przy pakiecie Starter (4 000 zł setup, 800 zł/mies.) i łącznej miesięcznej korzyści 3 000 zł: <code>4000 ÷ (3000 − 800) = 1,8 miesiąca</code>. Podstaw swoje liczby — nie nasze.</p>
+<h2>Krok 4: sprawdź założenia, nie wynik</h2>
+<p>Wynik jest tak dobry jak najsłabsze założenie. Trzy pytania kontrolne:</p>
+<ul>
+<li><strong>Czy konwersja nie jest wzięta z sufitu?</strong> Jeśli nie wiesz, przyjmij połowę tego, co Ci się wydaje.</li>
+<li><strong>Czy średnia wartość zlecenia to mediana, czy średnia zawyżona przez jeden duży kontrakt?</strong> Bierz medianę.</li>
+<li><strong>Czy odzyskany czas faktycznie zamieni się w pieniądze?</strong> Jeśli zespół po prostu odetchnie zamiast obsłużyć więcej klientów, strumień A jest realny, ale nie gotówkowy. To nadal ma wartość — tylko nie w tej tabelce.</li>
+</ul>
+<h2>Jakie liczby wychodzą w praktyce</h2>
+<p>W naszych wdrożeniach zwrot mieści się w przedziale <strong>2,1–3 miesięcy</strong>. Najszybszy przypadek to automatyczny pipeline sprzedażowy ze zwrotem w <strong>3 tygodnie</strong> — tam strumień B był dominujący, bo firma traciła leady na etapie, na którym były już najcieplejsze.</p>
+<p>Każdy przypadek z opisem problemu, rozwiązania i wyniku znajdziesz w <a href="#case-studies">case studies</a>.</p>
+<h2>Kiedy wynik mówi „nie teraz"</h2>
+<p>Zdarza się i wtedy mówimy to wprost. Automatyzacja nie zwróci się, gdy:</p>
+<ul>
+<li>masz bardzo mały ruch przychodzący (kilka zapytań tygodniowo),</li>
+<li>proces zmienia się co miesiąc i nie ma czego utrwalać,</li>
+<li>problemem nie jest obsługa zapytań, tylko to, że zapytań w ogóle nie ma. Wtedy zaczynasz od <a href="#strony-internetowe">strony internetowej</a> i widoczności, nie od automatyzacji.</li>
+</ul>
+<h2>Policzmy to razem</h2>
+<p>Przynieś swoje cztery liczby na <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">bezpłatną 30-minutową konsultację</a> — wyjdziesz z konkretnym oszacowaniem, także jeśli będzie brzmiało „zaczekaj z tym kwartał". Kontakt bezpośredni: <a href="tel:+48736840712">+48 736 840 712</a>, <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a>.</p></div>
+    </details>
+<details class="post" id="post-dlaczego-leady-gina-w-skrzynce">
+      <summary><span class="post__title">Dlaczego leady giną w skrzynce i jak temu zapobiec automatyzacją follow-upu</span>
+      <span class="post__desc">Automatyzacja follow-up: pokazujemy cztery miejsca, w których giną zapytania w małej firmie, i jak zamknąć każdą z tych dziur jednym systemem.</span></summary>
+      <div class="prose post__body"><p>Firma nie traci leadów dlatego, że ktoś jest leniwy. Traci je dlatego, że nikt nie jest właścicielem procesu — a zapytania wpadają czterema kanałami do trzech osób, z których każda zakłada, że odpisała ta druga.</p>
+<p>Poniżej cztery miejsca, w których to się realnie dzieje, i co z każdym zrobić.</p>
+<h2>Dziura 1: zapytanie wpada, gdy nikt nie patrzy</h2>
+<p>Formularz ze strony o 22:40. Messenger w sobotę. WhatsApp w trakcie zabiegu. Klient, który wysyła zapytanie, jest w trybie decyzyjnym <strong>teraz</strong> — i w tym samym momencie pisze do dwóch innych firm.</p>
+<p>Do rana temperatura spada. Twoja odpowiedź trafia do kogoś, kto już rozmawia z konkurencją.</p>
+<p><strong>Zamknięcie dziury:</strong> agent AI odpowiadający natychmiast, o każdej porze, na każdym kanale. Nie musi zamknąć sprzedaży — musi zatrzymać uwagę i zebrać dane. Opisujemy to szerzej w <a href="#post-jak-zautomatyzowac-obsluge-klienta">Jak zautomatyzować obsługę klienta bez utraty jakości kontaktu</a>.</p>
+<h2>Dziura 2: zapytania siedzą w czterech miejscach naraz</h2>
+<p>Skrzynka mailowa, Messenger, WhatsApp, telefon. Nie ma jednej listy, na której widać wszystko. Nie ma statusu. Nie ma odpowiedzi na pytanie „ile mamy otwartych zapytań z tego tygodnia".</p>
+<p>Efekt: to, czego nie widać, nie istnieje. Zapytanie sprzed pięciu dni nie zostało świadomie porzucone — po prostu zniknęło z widoku.</p>
+<p><strong>Zamknięcie dziury:</strong> jeden lejek. Każde zapytanie, niezależnie od kanału, ląduje w tym samym miejscu ze statusem, źródłem i historią rozmowy. To rdzeń <a href="#zarzadzanie-leadami">zarządzania leadami i integracji</a>.</p>
+<h2>Dziura 3: pierwszy kontakt był, drugiego nie ma</h2>
+<p>To najdroższa dziura ze wszystkich. Klient dostał wycenę, powiedział „przemyślę", i na tym się skończyło. Nie odmówił. Po prostu nikt nie wrócił.</p>
+<p>Follow-up przegrywa zawsze z bieżącą pracą, bo bieżąca praca krzyczy, a follow-up nie. Nie da się tego naprawić dyscypliną — trzeba to wyjąć z ludzkiej głowy.</p>
+<p><strong>Zamknięcie dziury:</strong> automatyczna sekwencja przypomnień powiązana ze statusem leada. Wycena wysłana i brak odpowiedzi po 3 dniach → przypomnienie. Po 7 → druga wiadomość z innym kątem. Po 21 → ostatni kontakt i zmiana statusu. Handlowiec dostaje powiadomienie tylko wtedy, gdy ktoś odpowie.</p>
+<h2>Dziura 4: nikt nie wie, które źródło działa</h2>
+<p>Bez śledzenia, skąd przyszedł lead i czym się skończył, każda decyzja o marketingu to zgadywanie. Dokładasz do kanału, który nic nie daje, i tniesz ten, który cicho robi robotę.</p>
+<p><strong>Zamknięcie dziury:</strong> źródło zapisywane automatycznie przy każdym zapytaniu i raport pokazujący konwersję per kanał. To zakres <a href="#raporty-i-dashboardy">raportów i dashboardów AI</a>.</p>
+<h2>Jak to wygląda po złożeniu w całość</h2>
+<p>Jeden przepływ, cztery dziury zamknięte:</p>
+<ol>
+<li>Zapytanie wpada dowolnym kanałem → agent odpowiada w kilka sekund.</li>
+<li>Agent kwalifikuje i zapisuje leada do CRM ze źródłem i statusem.</li>
+<li>Lead gorący → natychmiastowe powiadomienie handlowca z podsumowaniem rozmowy.</li>
+<li>Lead letni → sekwencja follow-upu rusza sama, bez decyzji człowieka.</li>
+<li>Każdego miesiąca raport: ile weszło, ile zamknięte, z jakiego kanału.</li>
+</ol>
+<p>W <a href="#cennik">cenniku</a> automatyczny follow-up i integracja CRM zaczynają się od pakietu <strong>Growth</strong>. Sam agent kwalifikujący z powiadomieniem — już od <strong>Startera</strong>.</p>
+<h2>Efekt</h2>
+<p>Prawdziwe wdrożenia z opisem problemu, rozwiązania i wyniku znajdziesz w <a href="#case-studies">case studies</a> — razem z odznakami ROI. Automatyczny pipeline sprzedażowy zwrócił się w 3 tygodnie; typowy zwrot w naszych projektach mieści się w przedziale 2,1–3 miesięcy.</p>
+<h2>Zrób to najpierw ręcznie</h2>
+<p>Zanim cokolwiek wdrożysz, wypisz wszystkie zapytania z ostatnich 30 dni i oznacz, na którym etapie się zatrzymały. Jeśli większość utknęła po pierwszym kontakcie — wiesz już, od czego zacząć.</p>
+<p>Możemy przejść przez tę listę razem. <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">Umów bezpłatną 30-minutową konsultację</a>.</p></div>
+    </details>
+<details class="post" id="post-ai-recepcjonista-kiedy-ma-sens">
+      <summary><span class="post__title">AI Recepcjonista: kiedy ma sens zamiast człowieka na infolinii</span>
+      <span class="post__desc">Voice Agent odbiera telefon zamiast recepcji. Sprawdzamy, w jakich firmach AI recepcjonista faktycznie się opłaca, a gdzie lepiej zostać przy człowieku.</span></summary>
+      <div class="prose post__body"><p>Telefon w firmie usługowej jest problemem podwójnym. Nieodebrany oznacza stracone zlecenie — klient dzwoni do trzech firm i wybiera tę, która odebrała. Odebrany oznacza przerwaną pracę: zabieg, spotkanie, rozmowę z klientem, który już jest na miejscu.</p>
+<p>AI Recepcjonista rozwiązuje oba naraz. Ale nie w każdej firmie.</p>
+<h2>Co robi Voice Agent</h2>
+<p>To system, który odbiera połączenie i prowadzi rozmowę głosem. W praktycznym zakresie:</p>
+<ul>
+<li>wita dzwoniącego i pyta, w jakiej sprawie dzwoni,</li>
+<li>odpowiada na pytania o godziny, ceny, zakres usług, dojazd,</li>
+<li>sprawdza dostępne terminy i umawia wizytę,</li>
+<li>zbiera dane kontaktowe i opis sprawy,</li>
+<li>gdy temat jest poza zakresem albo klient nalega — przekazuje połączenie lub natychmiast powiadamia człowieka,</li>
+<li>po rozmowie zapisuje transkrypcję i podsumowanie tam, gdzie tego szukasz.</li>
+</ul>
+<p>U nas Voice Agent wchodzi w pakiecie <strong>Pro</strong> (15 000 zł setup, 3 000 zł/mies. — patrz <a href="#cennik">cennik</a>). Pakiet zawiera limit rozmów głosowych, nadwyżka rozliczana jest osobno, bo minuty rozmowy kosztują.</p>
+<h2>Kiedy to ma sens</h2>
+<p><strong>Kiedy telefon jest głównym kanałem.</strong> Gabinety stomatologiczne, fizjoterapia, firmy remontowe, kancelarie — klient dzwoni, nie pisze. Jeśli u Ciebie 70% zapytań idzie mailem lub Messengerem, zacznij od <a href="#ai-obsluga-klienta">automatyzacji obsługi tekstowej</a>, która jest kilkukrotnie tańsza.</p>
+<p><strong>Kiedy tracisz połączenia poza godzinami.</strong> Człowiek dzwoni wieczorem, po pracy, w sobotę. Nikt nie odbiera, klient dzwoni dalej. Voice Agent nie ma godzin pracy.</p>
+<p><strong>Kiedy odbieranie telefonu przerywa pracę, za którą Ci płacą.</strong> Lekarz odchodzący od fotela, wykonawca schodzący z rusztowania — to nie jest zamiana taniej pracy na drogą, tylko zwykła strata.</p>
+<p><strong>Kiedy rozmowy są przewidywalne.</strong> Umówienie wizyty, pytanie o cenę, przełożenie terminu — to skończony zbiór scenariuszy, który da się dobrze obsłużyć.</p>
+<h2>Kiedy lepiej zostać przy człowieku</h2>
+<p><strong>Gdy każda rozmowa to negocjacja.</strong> Sprzedaż złożonych usług B2B, gdzie cena zależy od kontekstu i trzeba czytać między wierszami — tego nie oddawaj.</p>
+<p><strong>Gdy dzwonią ludzie w kryzysie.</strong> Sytuacje awaryjne, sprawy zdrowotne w toku, reklamacje z emocjami. Tu automat pogłębia frustrację. Można zbudować szybką ścieżkę „to pilne" przekierowującą od razu do człowieka, ale to musi być projekt świadomy, nie dodatek.</p>
+<p><strong>Gdy masz mało połączeń.</strong> Przy 3–5 telefonach dziennie retainer w pakiecie Pro nie ma jak się zwrócić. Wtedy sensowniejszy jest <a href="#cennik">Starter z agentem tekstowym</a> i przekierowanie nieodebranych na kanał pisany.</p>
+<p><strong>Gdy nie masz uporządkowanego kalendarza i cennika.</strong> Agent nie umówi wizyty w kalendarzu, który istnieje tylko w zeszycie na recepcji. To trzeba poukładać przed wdrożeniem, nie w trakcie.</p>
+<h2>Jak liczyć, czy się opłaca</h2>
+<p>Podstawa jest prosta: <strong>ile zleceń miesięcznie tracisz przez nieodebrany telefon i ile jest warte jedno zlecenie.</strong> Zsumuj nieodebrane połączenia z bilingu za ostatni miesiąc, przemnóż przez realistyczny współczynnik konwersji i średnią wartość zlecenia. Zestaw z kosztem pakietu.</p>
+<p>Pełną metodę liczenia z uwzględnieniem setupu i retainera rozpisujemy w tekście <a href="#post-roi-automatyzacji-ai-jak-policzyc">ROI automatyzacji AI — jak policzyć zwrot z inwestycji przed wdrożeniem</a>. Osobno warto porównać ten koszt z zatrudnieniem — robimy to w <a href="#post-automatyzacja-vs-zatrudnienie-kolejnej-osoby">Automatyzacja vs zatrudnienie kolejnej osoby</a>.</p>
+<h2>Wersja maksymalna</h2>
+<p>W pakiecie Enterprise Voice Agent przestaje być samym odbieraniem telefonu i staje się elementem AI Recepcjonisty 360 — agenta z pamięcią i własnymi narzędziami, obsługującego cały cykl kontaktu z klientem, od pierwszego telefonu po analizę zakończonego zlecenia pod kątem sprzedaży dodatkowej i opinii. Wycena tego zakresu zawsze jest indywidualna.</p>
+<h2>Sprawdź na swoim przypadku</h2>
+<p>Podczas <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">bezpłatnej 30-minutowej konsultacji</a> przechodzimy przez Twój ruch telefoniczny i mówimy wprost, czy Voice Agent Ci się opłaci — również jeśli odpowiedź brzmi „jeszcze nie". Możesz też zadzwonić: <a href="tel:+48736840712">+48 736 840 712</a>.</p></div>
+    </details>
+<details class="post" id="post-n8n-dla-malej-firmy">
+      <summary><span class="post__title">n8n dla małej firmy — co to jest i czy się opłaca</span>
+      <span class="post__desc">n8n to narzędzie, na którym budujemy automatyzacje AI. Wyjaśniamy czym jest, czym różni się od Zapiera i kiedy wdrożenie n8n dla firmy ma sens.</span></summary>
+      <div class="prose post__body"><p>Jeśli rozmawiałeś z kimkolwiek o automatyzacji, hasło „n8n" prawdopodobnie padło. Zwykle bez wyjaśnienia, co to właściwie jest i dlaczego akurat to. Nadrabiamy.</p>
+<h2>Co to jest n8n</h2>
+<p>n8n to narzędzie do budowania <strong>przepływów</strong> — czyli sekwencji kroków, które wykonują się automatycznie po jakimś zdarzeniu. Zamiast pisać program od zera, układasz przepływ z bloków połączonych liniami: „gdy przyjdzie wiadomość na WhatsAppie → sprawdź, czy to nowy klient → zapytaj model AI o klasyfikację → dopisz do CRM → wyślij powiadomienie na telefon".</p>
+<p>Każdy blok to jedna operacja. Cały przepływ widać na jednym ekranie — dlatego pod każdym wdrożeniem opisujemy w <a href="#case-studies">case studies</a> realny problem i efekt, a nie same obietnice. To jedyny sposób, żeby zweryfikować, że system istnieje.</p>
+<h2>Czym różni się od Zapiera i Make</h2>
+<p>Wszystkie trzy robią podobną rzecz. Różnice, które mają znaczenie dla małej firmy:</p>
+<p><strong>Model rozliczeń.</strong> Zapier i Make liczą za operację — każde uruchomienie każdego kroku. Przy automatyzacji obsługi klienta, gdzie jedna rozmowa to kilkanaście operacji, rachunek rośnie razem z ruchem. n8n można hostować u siebie i płacić za serwer, nie za liczbę wykonań. Przy większym wolumenie różnica jest odczuwalna.</p>
+<p><strong>Kontrola nad danymi.</strong> Self-hosted n8n oznacza, że rozmowy Twoich klientów nie przechodzą przez dodatkową platformę pośredniczącą. Dla kancelarii, gabinetu czy biura rachunkowego to nie kaprys, tylko wymóg — dane osobowe klientów zostają tam, gdzie mają zostać.</p>
+<p><strong>Elastyczność.</strong> Jeśli któregoś kroku nie ma w gotowych blokach, w n8n można wstawić własny kod. W narzędziach no-code kończy się to zwykle zdaniem „tego się nie da".</p>
+<p><strong>Krzywa wejścia.</strong> Tu n8n przegrywa. Zapier jest prostszy dla laika. n8n wymaga rozumienia, jak przepływają dane — dlatego przy wdrożeniu naszą robotą jest zbudować i utrzymać, a Twoją tylko korzystać.</p>
+<h2>Kiedy n8n się opłaca, a kiedy nie</h2>
+<p><strong>Ma sens, gdy:</strong></p>
+<ul>
+<li>masz powtarzalny proces, który przechodzi przez 2+ narzędzia (formularz → CRM → kalendarz → mail),</li>
+<li>ruch przychodzący jest na tyle duży, że rozliczenie za operację zaczyna boleć,</li>
+<li>pracujesz na danych wrażliwych i chcesz je trzymać u siebie,</li>
+<li>planujesz rozwijać automatyzacje, a nie zbudować jedną i zapomnieć.</li>
+</ul>
+<p><strong>Nie ma sensu, gdy:</strong></p>
+<ul>
+<li>potrzebujesz jednego prostego połączenia typu „formularz → arkusz" i nic więcej — wtedy taniej i szybciej gotowym narzędziem,</li>
+<li>nikt w firmie nie będzie tego utrzymywał, a nie chcesz zlecać utrzymania na zewnątrz. Workflow bez opieki psuje się przy pierwszej zmianie API po stronie któregoś z narzędzi.</li>
+</ul>
+<p>Ten drugi punkt jest ważny i dlatego w naszym modelu retainer miesięczny startuje od pierwszego dnia — patrz <a href="#cennik">cennik</a>. Automatyzacja bez utrzymania to bomba z opóźnionym zapłonem.</p>
+<h2>Gdzie w tym wszystkim jest AI</h2>
+<p>n8n samo w sobie nie jest AI. Jest szkieletem, w który wpina się modele językowe tam, gdzie potrzebna jest decyzja niedająca się zapisać jako „jeśli X, to Y" — zrozumienie treści wiadomości, ocena czy lead jest gorący, wyciągnięcie danych z faktury, streszczenie rozmowy dla handlowca.</p>
+<p>Reszta przepływu to zwykła, przewidywalna logika. I bardzo dobrze: im mniej rzeczy zależy od modelu, tym stabilniej działa cały system.</p>
+<h2>Co to znaczy dla Ciebie w praktyce</h2>
+<p>Nie musisz uczyć się n8n. Musisz wiedzieć, że pod Twoją automatyzacją stoi narzędzie, którego przepływ da się obejrzeć, opisać i przekazać — a nie zamknięta czarna skrzynka jednego dostawcy.</p>
+<p>Jak wygląda taki przepływ dla konkretnych procesów, opisujemy w <a href="#automatyzacje-na-miare">automatyzacjach szytych na miarę</a> i <a href="#zarzadzanie-leadami">zarządzaniu leadami</a>.</p>
+<p>Chcesz zobaczyć działający system na swoim przykładzie? <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">Umów bezpłatną 30-minutową konsultację</a> — pokazujemy na żywo.</p></div>
+    </details>
+<details class="post" id="post-jak-zautomatyzowac-obsluge-klienta">
+      <summary><span class="post__title">Jak zautomatyzować obsługę klienta bez utraty jakości kontaktu</span>
+      <span class="post__desc">Automatyzacja obsługi klienta AI nie musi brzmieć jak bot. Pokazujemy, co automatyzować, czego nie ruszać i jak zaprojektować przekazanie rozmowy człowiekowi.</span></summary>
+      <div class="prose post__body"><p>Największa obawa przed automatyzacją obsługi klienta brzmi: „klient pozna, że to bot, i pójdzie do konkurencji". Uzasadniona — bo większość wdrożeń robi dokładnie to. Problem nie leży jednak w samej technologii, tylko w decyzji, co oddajemy maszynie.</p>
+<h2>Problem: obsługa nie jest jednorodna</h2>
+<p>W firmie usługowej ruch przychodzący dzieli się z grubsza na trzy warstwy:</p>
+<ol>
+<li><strong>Powtarzalne pytania</strong> — godziny otwarcia, ceny, adres, czy jest wolny termin, co zabrać na wizytę. To 60–80% wiadomości i 0% wartości dodanej z rozmowy z człowiekiem.</li>
+<li><strong>Kwalifikacja</strong> — czego klient potrzebuje, jaki ma budżet, kiedy chce zacząć, czy w ogóle jest w Twojej grupie docelowej.</li>
+<li><strong>Sprzedaż i sytuacje wrażliwe</strong> — negocjacje, reklamacje, trudny klient, nietypowa sprawa.</li>
+</ol>
+<p>Klasyczny błąd to wpuszczenie bota we wszystkie trzy warstwy naraz. Wtedy faktycznie brzmi jak bot, bo próbuje udawać kompetencję, której nie ma.</p>
+<h2>Rozwiązanie: automatyzuj warstwę 1 i 2, oddaj warstwę 3</h2>
+<p>Nasze systemy w ramach <a href="#ai-obsluga-klienta">AI obsługi klienta i asystentów</a> projektujemy wokół prostej zasady: <strong>agent AI ma doprowadzić rozmowę do momentu, w którym człowiek wchodzi z gotowym kontekstem.</strong></p>
+<p>W praktyce oznacza to:</p>
+<ul>
+<li>Agent odpowiada natychmiast, o każdej porze, na pytania z warstwy 1 — na podstawie Twojego cennika i zasad, nie zmyślonych informacji.</li>
+<li>Zadaje 3–5 pytań kwalifikujących, wplecionych w rozmowę, a nie wyrzuconych jak formularz.</li>
+<li>Gdy wykryje, że lead jest gorący albo temat wychodzi poza zakres — powiadamia handlowca i przekazuje pełną historię rozmowy.</li>
+<li>Człowiek wchodzi do rozmowy, wiedząc już kim jest klient i czego chce. Nie zaczyna od „dzień dobry, w czym mogę pomóc".</li>
+</ul>
+<h2>Cztery zasady, które trzymają jakość</h2>
+<p><strong>Zasada 1: agent mówi, czym jest.</strong> Nie udajemy człowieka. Krótkie „jestem asystentem AI, odpowiem od ręki, a w razie potrzeby przekażę Cię do zespołu" obniża oczekiwania i paradoksalnie podnosi zadowolenie. Klient wybacza botowi to, czego nie wybaczy udawanemu człowiekowi.</p>
+<p><strong>Zasada 2: agent nie zgaduje.</strong> Model dostaje zamknięty zakres wiedzy — Twoje usługi, ceny, zasady. Kiedy pytanie wychodzi poza ten zakres, nie improwizuje, tylko przekazuje sprawę dalej. To jedyna skuteczna ochrona przed obiecaniem klientowi czegoś, czego nie sprzedajesz.</p>
+<p><strong>Zasada 3: przekazanie do człowieka jest zaprojektowane, nie awaryjne.</strong> Definiujemy konkretne wyzwalacze: słowa kluczowe, wartość zapytania, sygnały frustracji, powtórzone pytanie bez satysfakcjonującej odpowiedzi. Każdy z nich kończy się powiadomieniem na telefon handlowca.</p>
+<p><strong>Zasada 4: ton głosu to część wdrożenia.</strong> Kancelaria i firma remontowa nie mogą brzmieć tak samo — trzy różne scenariusze rozmowy rozkładamy na kroki w tekście <a href="#post-chatbot-ai-dla-gabinetu-kancelarii-firmy-remontowej">Chatbot AI dla gabinetu, kancelarii i firmy remontowej</a>. Sposób pisania agenta ustalamy na starcie i testujemy na prawdziwych, wcześniejszych rozmowach z Twojej skrzynki.</p>
+<h2>Efekt</h2>
+<p>Trzy rzeczy zmieniają się natychmiast po wdrożeniu:</p>
+<ul>
+<li><strong>Czas pierwszej odpowiedzi spada do sekund</strong> — również w nocy, w weekend i w trakcie zabiegu czy rozmowy z innym klientem.</li>
+<li><strong>Zespół przestaje odpisywać na to samo dziesiąty raz dziennie</strong> i zajmuje się rozmowami, które faktycznie kończą się sprzedażą.</li>
+<li><strong>Żadne zapytanie nie znika</strong> — bo każde ląduje w jednym miejscu z historią, a nie w czterech skrzynkach naraz. Ten wątek rozwijamy w tekście <a href="#post-dlaczego-leady-gina-w-skrzynce">Dlaczego leady giną w skrzynce i jak temu zapobiec automatyzacją follow-upu</a>.</li>
+</ul>
+<h2>Od czego zacząć</h2>
+<p>Nie od bota. Od jednego tygodnia obserwacji: zapisz każde przychodzące zapytanie i oznacz, do której warstwy należy. Jeśli warstwa 1 to ponad połowa ruchu — masz gotowy business case.</p>
+<p>Możemy przejść przez to razem podczas <a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">bezpłatnej 30-minutowej konsultacji</a>. Pokazujemy działające systemy na żywo, nie mockupy — zobacz <a href="#case-studies">case studies</a>.</p></div>
+    </details>
+<details class="post" id="post-ile-kosztuje-automatyzacja-ai-w-malej-firmie">
+      <summary><span class="post__title">Ile kosztuje wdrożenie automatyzacji AI w małej firmie usługowej?</span>
+      <span class="post__desc">Ile kosztuje automatyzacja AI dla firmy: setup od 4 000 zł, retainer od 800 zł/mies. Rozkładamy cenę na części i pokazujemy, od czego zależy widełki.</span></summary>
+      <div class="prose post__body"><p>Najczęstsze pytanie na pierwszej rozmowie brzmi: „ile to kosztuje". Odpowiedź „to zależy" jest prawdziwa, ale bezużyteczna. Poniżej rozkładamy cenę na czynniki pierwsze, żeby dało się ją oszacować jeszcze przed konsultacją.</p>
+<h2>Dwa składniki, nie jeden</h2>
+<p>Automatyzacja AI to nie jednorazowy zakup pliku. To system, który działa codziennie, rozmawia z Twoimi klientami i musi być utrzymywany. Dlatego cena składa się z dwóch części:</p>
+<ul>
+<li><strong>Setup jednorazowy</strong> — analiza procesu, budowa automatyzacji, integracje z Twoimi narzędziami, testy, wdrożenie produkcyjne.</li>
+<li><strong>Retainer miesięczny</strong> — hosting i utrzymanie, monitoring błędów, koszty modeli językowych i API, poprawki oraz rozwój systemu wraz ze zmianami w firmie.</li>
+</ul>
+<p>Retainer nie jest opcją dokupywaną później. Startuje od pierwszego dnia, bo od pierwszego dnia system pracuje na Twoich prawdziwych klientach.</p>
+<h2>Widełki w praktyce</h2>
+<p>W <a href="#cennik">cenniku</a> mamy cztery pakiety:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Pakiet</th>
+<th>Setup</th>
+<th>Retainer/mies.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Starter</td>
+<td>4 000 zł</td>
+<td>800 zł</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td>8 000 zł</td>
+<td>1 500 zł</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>15 000 zł</td>
+<td>3 000 zł</td>
+</tr>
+<tr>
+<td>Enterprise</td>
+<td>wycena indywidualna</td>
+<td>wycena indywidualna</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Starter</strong> to agent AI na WhatsAppie lub Messengerze działający 24/7 — kwalifikuje leada i daje znać handlowcowi, gdy kontakt jest gorący. To najczęstszy punkt wejścia dla firm 2–10 osób, które gubią zapytania po godzinach.</p>
+<p><strong>Growth</strong> dokłada automatyczny follow-up, integrację z CRM, panel klienta z dashboardem i miesięczny raport. Wybierają go firmy, w których problemem nie jest już samo odebranie zapytania, tylko to, co dzieje się przez kolejne dwa tygodnie.</p>
+<p><strong>Pro</strong> dorzuca Voice Agenta, czyli system odbierający telefon zamiast recepcji, plus priorytetowe wsparcie. Ma sens tam, gdzie telefon nadal jest głównym kanałem — gabinety, firmy remontowe, biura obsługujące starszą grupę klientów.</p>
+<p><strong>Enterprise</strong> to prawdziwy agent AI z pamięcią, wnioskowaniem i własnymi narzędziami: AI Recepcjonista 360 obsługujący cały cykl kontaktu oraz agent analizujący zakończone zlecenia pod kątem sprzedaży dodatkowej i opinii klientów. Tu wycena zawsze jest indywidualna, bo zakres jest indywidualny.</p>
+<h2>Od czego zależy, gdzie wylądujesz w widełkach</h2>
+<p>Cztery rzeczy przesuwają wycenę najmocniej:</p>
+<ol>
+<li><strong>Liczba kanałów.</strong> Jeden kanał (np. sam Messenger) jest tańszy niż spięcie WhatsAppa, formularza ze strony i telefonu w jeden wspólny lejek.</li>
+<li><strong>Stan Twoich danych.</strong> Jeśli masz uporządkowany cennik, listę usług i zasady kwalifikacji klienta — budowa idzie szybko. Jeśli wszystko siedzi w głowie właściciela, część setupu to wyciągnięcie tego na papier.</li>
+<li><strong>Integracje.</strong> Podpięcie pod popularny CRM to standard. Podpięcie pod branżowy system rezerwacji bez publicznego API to osobna praca.</li>
+<li><strong>Głos.</strong> Voice Agent jest droższy w utrzymaniu niż tekst — rozmowy głosowe kosztują za minutę, dlatego w pakiecie Pro obowiązuje limit rozmów w pakiecie, a nadwyżka rozliczana jest osobno.</li>
+</ol>
+<h2>Czego w tej cenie nie ma</h2>
+<p>Nie doliczamy prowizji od leada ani opłat za liczbę użytkowników. Nie ma też ukrytego kosztu licencji na „naszą platformę" — systemy budujemy na <a href="#post-n8n-dla-malej-firmy">n8n</a>, a każdy przepływ jest opisany i przekazywany razem z dokumentacją.</p>
+<p>Płatność wygląda tak: 100% setupu z góry, retainer miesięcznie z góry. Wycena indywidualna dopiero po bezpłatnej konsultacji — nie wyceniamy w ciemno na podstawie samego maila.</p>
+<h2>Czy to się zwraca</h2>
+<p>To osobne pytanie i osobny artykuł — rozpisujemy je w tekście <a href="#post-roi-automatyzacji-ai-jak-policzyc">ROI automatyzacji AI — jak policzyć zwrot z inwestycji przed wdrożeniem</a>. W skrócie: w naszych wdrożeniach zwrot mieści się w przedziale <strong>2,1–3 miesięcy</strong>, a w przypadku automatycznego pipeline'u sprzedażowego wyniósł 3 tygodnie. Konkretne liczby wraz z opisem problemu i rozwiązania znajdziesz w <a href="#case-studies">case studies</a>.</p>
+<h2>Co dalej</h2>
+<p>Najtańszy sposób na oszacowanie kosztu w Twoim przypadku to 30 minut rozmowy. Przechodzimy przez Twój proces, mówimy który pakiet ma sens i ile realnie zajmie wdrożenie — bez zobowiązań.</p>
+<p><a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon">Umów bezpłatną konsultację</a> albo napisz na <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a>. Odpowiadamy w 24h roboczych.</p></div>
+    </details></div>
+  </div>
+</section>
+
+<section class="section" id="kontakt">
+  <div class="wrap">
+    <p class="eyebrow">Kontakt</p>
+    <h2>Porozmawiajmy o Twoim procesie</h2>
+    <p class="lede">Najszybsza droga to 30 minut w kalendarzu. Przechodzimy przez to, jak dziś
+      obsługujesz zapytania, i mówimy wprost, co da się zautomatyzować — a czego nie warto.
+      Odpowiadamy w 24h roboczych.</p>
+
+    <div class="kontakt">
+      <div>
+        <h3>Zarezerwuj termin</h3>
+        <div class="cal">
+          <div class="calendly-inline-widget"
+               data-url="https://calendly.com/awk-mediasolutions/pierwszy-telefon?hide_gdpr_banner=1&amp;background_color=14150f&amp;text_color=e8e6dc&amp;primary_color=3dbb85"
+               style="min-width:100%;height:700px"></div>
+          <noscript><p><a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon" rel="noopener">Otwórz kalendarz rezerwacji</a></p></noscript>
+        </div>
       </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--terracotta) 22%, var(--sand)); color:var(--terracotta-dark)">Growth</span>
-        <h3>Automatyczny follow-up + priorytetyzacja</h3>
-        <img src="demos/screenshots/growth_followup.png" alt="Workflow n8n — automatyczny follow-up z rozgałęzieniem wg priorytetu branży" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> leady bez odpowiedzi giną w skrzynce, a każdy lead traktowany jest tak samo — mimo że część jest wyraźnie pilniejsza.<br>
-        <strong>Rozwiązanie:</strong> system sam wyławia leady bez follow-upu, rozgałęzia treść maila wg priorytetu branży, wysyła wiadomość, loguje akcję w CRM i alarmuje handlowca na Telegramie.<br>
-        <strong>Efekt:</strong> żaden lead nie ginie, a gorące branże dostają inny ton komunikacji niż standardowe zapytania — bez ręcznej segmentacji.</p>
+      <div>
+        <h3>Albo napisz</h3>
+        <p class="dim">Jeśli wolisz najpierw opisać sprawę — odpisujemy mailem w 24h roboczych.</p>
+        <form class="form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="WSTAW_KLUCZ_WEB3FORMS">
+          <input type="hidden" name="subject" value="Nowe zapytanie ze strony AWK Media Solutions">
+          <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off">
+          <label>Imię<input type="text" name="name" required autocomplete="name"></label>
+          <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
+          <label>Firma<input type="text" name="company" autocomplete="organization"></label>
+          <label>Czego potrzebujesz?<textarea name="message" rows="5" required
+            placeholder="Np. gubimy zapytania z Messengera po godzinach."></textarea></label>
+          <button class="btn btn--primary" type="submit">Wyślij zapytanie</button>
+          <p class="dimmer" style="font-size:var(--step--1);margin:0">Formularz nie działa? Napisz bezpośrednio:
+            <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a></p>
+        </form>
+        <div class="direct">
+          <h3>Kontakt bezpośredni</h3>
+          <p class="mb-0"><a href="tel:+48736840712">+48 736 840 712</a></p>
+          <p class="mb-0"><a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a></p>
+          <p class="dimmer" style="margin-top:.5rem">Antek Walaszczyk · Odpowiadamy w 24h roboczych</p>
+        </div>
       </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--terracotta) 22%, var(--sand)); color:var(--terracotta-dark)">Growth</span>
-        <h3>Integracja CRM z walidacją i scoringiem</h3>
-        <img src="demos/screenshots/growth_crm.png" alt="Workflow n8n — integracja CRM z walidacją danych, scoringiem priorytetu i alertem na Telegramie" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> formularze bywają niekompletne, a każdy nowy lead trafia do tej samej kolejki bez informacji, który wymaga natychmiastowej reakcji.<br>
-        <strong>Rozwiązanie:</strong> workflow waliduje kompletność zgłoszenia, liczy priorytet leada wg branży, zapisuje do arkusza CRM i — tylko dla „gorących" leadów — wysyła natychmiastowy alert na Telegram do handlowca.<br>
-        <strong>Efekt:</strong> handlowiec dostaje sygnał tylko wtedy, gdy naprawdę warto dzwonić od razu, a niepełne zgłoszenia nie giną bez śladu.</p>
-      </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--terracotta) 22%, var(--sand)); color:var(--terracotta-dark)">Growth</span>
-        <h3>Panel klienta + Raport miesięczny</h3>
-        <img src="demos/screenshots/growth_dashboard_report.png" alt="Workflow n8n — połączony panel klienta i generator raportu miesięcznego z jednego pobrania danych CRM" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> dashboard na bieżąco i raport miesięczny to zwykle dwa osobne, ręcznie sklejane procesy.<br>
-        <strong>Rozwiązanie:</strong> jedno pobranie danych z CRM zasila oba wyjścia — tryb „dashboard" zwraca żywy JSON ze statystykami, tryb „raport" generuje pełny HTML i wysyła go mailem z potwierdzeniem na Telegramie.<br>
-        <strong>Efekt:</strong> właściciel firmy widzi stan biznesu na żądanie i dostaje gotowe podsumowanie miesiąca — z jednego, spójnego źródła danych.</p>
-      </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--ochre) 26%, var(--sand)); color:var(--ochre-dark)">Pro</span>
-        <h3>Voice Agent</h3>
-        <img src="demos/screenshots/pro_voice_agent.png" alt="Workflow n8n — Voice Agent, architektura koncepcyjna z zastrzeżeniami" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> nieodebrane telefony to utraceni klienci.<br>
-        <strong>Rozwiązanie:</strong> AI generuje odpowiedź na żywo (prawdziwe wywołanie modelu) na podstawie transkrypcji rozmowy; podłączenie do realnej linii telefonicznej (STT/TTS, numer telefonu) to kolejny krok wdrożenia, pokazany tu jako architektura, nie w pełni zautomatyzowany.<br>
-        <strong>Efekt:</strong> gotowa logika odpowiedzi AI od pierwszego dnia, telefonię dopinamy przy wdrożeniu.</p>
-      </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--moss) 22%, var(--sand)); color:var(--moss-dark)">Enterprise</span>
-        <h3>AI Recepcjonista 360</h3>
-        <img src="demos/screenshots/enterprise_recepcjonista_360.png" alt="Workflow n8n — AI Recepcjonista 360, prawdziwy AI Agent z pamięcią i narzędziami" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> proste boty z regułami if/else nie radzą sobie z realną rozmową — nie pamiętają kontekstu i nie umieją zdecydować co dalej.<br>
-        <strong>Rozwiązanie:</strong> prawdziwy AI Agent (nie wywołanie modelu z jednym promptem) z pamięcią rozmowy i własnym narzędziem sprawdzającym historię klienta — sam klasyfikuje wiadomość i rozgałęzia się na rezerwację terminu, wycenę, reklamację lub inne, każda ścieżka z realną wysyłką maila/Sheets/Telegrama.<br>
-        <strong>Efekt:</strong> jeden system obsługuje cały pierwszy kontakt z klientem, 24/7, z pełnym logiem w CRM.</p>
-      </div>
-      <div class="card">
-        <span class="pkg__tag" style="background:color-mix(in srgb, var(--moss) 22%, var(--sand)); color:var(--moss-dark)">Enterprise</span>
-        <h3>Cykl Życia Klienta: Opinia i Upsell</h3>
-        <img src="demos/screenshots/enterprise_cykl_zycia_klienta.png" alt="Workflow n8n — Cykl Życia Klienta, agent analizujący potencjał sprzedaży dodatkowej i opinie" loading="lazy">
-        <p style="margin-top:0.9rem"><strong>Problem:</strong> po zakończonym zleceniu nikt nie ma czasu przeanalizować notatek technika pod kątem dosprzedaży, ani systematycznie zbierać opinii.<br>
-        <strong>Rozwiązanie:</strong> AI Agent czyta notatki i historię klienta, sam ocenia potencjał upsellu i przygotowuje treść oferty oraz prośby o opinię; przy negatywnej opinii agent przygotowuje szkic przeprosin — ale jako <strong>draft w Gmailu do akceptacji</strong>, nigdy nie wysyła automatycznie odpowiedzi na skargę.<br>
-        <strong>Efekt:</strong> żadna szansa sprzedażowa ani zła opinia nie umyka, a decyzja o wrażliwej odpowiedzi zawsze zostaje przy człowieku.</p>
-      </div>
-    </div>
-    <div class="card" style="margin-top:1.1rem">
-      <h3>Jak to wygląda „pod maską"</h3>
-      <img src="demos/screenshots/enterprise_opisy.png" alt="Opisy architektury obu workflowów Enterprise wprost z n8n" loading="lazy">
-      <p style="margin-top:0.9rem; margin-bottom:0">Dokumentacja wbudowana bezpośrednio w workflow (sticky notes w n8n) — dokładnie to, co zobaczy każdy, kto otworzy go do edycji.</p>
     </div>
   </div>
 </section>
 
-<section class="section" id="kontakt" style="text-align:center">
-  <div class="wrap">
-    <p class="eyebrow" style="justify-content:center">Następny krok</p>
-    <h2>Bezpłatna konsultacja — 30 minut</h2>
-    <p class="lede" style="margin-inline:auto">Podczas rozmowy analizujemy Twoje procesy i wskazujemy co można zautomatyzować jako pierwsze.</p>
-    <div class="btn-row" style="justify-content:center">
-      <a class="btn btn--primary" href="https://calendly.com/awk-mediasolutions/first-call" target="_blank" rel="noopener">Umów bezpłatną konsultację</a>
+<section class="section">
+  <div class="wrap cta__inner">
+    <div>
+      <p class="eyebrow">Następny krok</p>
+      <h2>Bezpłatna konsultacja — 30 minut</h2>
+      <p class="lede mb-0">Przechodzimy przez Twój proces, mówimy który pakiet ma sens i ile realnie
+        zajmie wdrożenie. Bez zobowiązań — również wtedy, gdy odpowiedź brzmi „jeszcze nie teraz”.</p>
     </div>
-    <p style="margin-top:1.6rem; color:var(--espresso-dim); font-size:var(--step--1)">
-      <a href="tel:+48736840712">+48 736 840 712</a> · <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a>
-    </p>
+    <div class="cta__actions">
+      <a class="btn btn--primary" href="https://calendly.com/awk-mediasolutions/pierwszy-telefon" rel="noopener">Umów bezpłatną konsultację</a>
+      <div class="cta__direct">
+        <a href="tel:+48736840712">+48 736 840 712</a>
+        <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a>
+        <p class="dimmer mb-0">Odpowiadamy w 24h roboczych</p>
+      </div>
+    </div>
   </div>
 </section>
 
 </main>
 
 <footer class="ftr">
-  <div class="wrap ftr__inner">
-    <p style="margin:0"><strong>AWK Media Solutions</strong> · Antek Walaszczyk · <a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a></p>
-    <p class="ftr__note" style="margin:0">Odpowiadamy w ciągu 24 godzin roboczych.</p>
+  <div class="wrap">
+    <div class="ftr__cols">
+      <div><h2 class="ftr__head">Oferta</h2><ul class="ftr__list"><li><a href="#ai-obsluga-klienta">AI Obsługa Klienta i Asystenci</a></li>
+<li><a href="#zarzadzanie-leadami">Zarządzanie Leadami i Integracje</a></li>
+<li><a href="#raporty-i-dashboardy">Raporty i Dashboardy AI</a></li>
+<li><a href="#strony-internetowe">Strony Internetowe</a></li>
+<li><a href="#automatyzacje-na-miare">Automatyzacje Szyte na Miarę</a></li></ul></div>
+      <div><h2 class="ftr__head">Zasoby</h2><ul class="ftr__list">
+        <li><a href="#case-studies">Case Studies</a></li>
+        <li><a href="#wiedza">Wiedza</a></li>
+        <li><a href="#cennik">Cennik</a></li></ul></div>
+      <div><h2 class="ftr__head">Kontakt</h2><ul class="ftr__list">
+        <li><a href="tel:+48736840712">+48 736 840 712</a></li>
+        <li><a href="mailto:awk.mediasolutions@gmail.com">awk.mediasolutions@gmail.com</a></li>
+        <li><a href="https://calendly.com/awk-mediasolutions/pierwszy-telefon" rel="noopener">Umów bezpłatną konsultację</a></li>
+        <li><a href="#kontakt">Formularz kontaktowy</a></li></ul>
+        <p class="ftr__note">Odpowiadamy w 24h roboczych</p></div>
+    </div>
+    <div class="ftr__base">
+      <p class="mb-0"><strong>AWK Media Solutions</strong> · Antek Walaszczyk</p>
+      <p class="mb-0 dimmer">© 2026 — automatyzacje AI dla firm usługowych w Polsce</p>
+    </div>
   </div>
 </footer>
+
+<script async src="https://assets.calendly.com/assets/external/widget.js"></script>
+
+<!-- Widget agenta AI (Retell) — floating bubble, rozmowa głosowa z agentem AWK Media.
+     Agent (agent_cc197519d8390e3d72368b0ff4): głos = natywny polski (ElevenLabs, community voice "Asia"),
+     prompt oparty o realną ofertę i cennik z tej strony. reCAPTCHA v3 zarejestrowana na awkmedia.com,
+     chroni przed generowaniem kosztu darmowymi rozmowami. -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LfKsnstAAAAAKon0sk756tEp9L3xFxCot1jc3I8"></script>
+<script
+  id="retell-widget"
+  src="https://dashboard.retellai.com/retell-widget-v2.js"
+  type="module"
+  data-voice-public-key="public_key_63e992e3f4b6fd231eb06"
+  data-voice-agent-id="agent_cc197519d8390e3d72368b0ff4"
+  data-title="Porozmawiaj z agentem AWK"
+  data-color="#3dbb85"
+  data-theme-color="#14150f"
+  data-bot-name="Agent AWK Media"
+  data-popup-message="Masz pytanie? Porozmawiaj z naszym agentem AI"
+  data-show-ai-popup="true"
+  data-show-ai-popup-time="8"
+  data-recaptcha-key="6LfKsnstAAAAAKon0sk756tEp9L3xFxCot1jc3I8"
+></script>
 
 <script>
 (function () {
@@ -544,32 +1239,26 @@ section[id] { scroll-margin-top: 84px; }
     });
     nav.addEventListener('click', function (ev) {
       var a = ev.target.closest('a');
-      if (a && window.matchMedia('(max-width:880px)').matches) {
+      if (a && window.matchMedia('(max-width:900px)').matches) {
         nav.setAttribute('data-open', 'false');
         toggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
 
-  document.querySelectorAll('[data-demo-btn]').forEach(function (btn) {
-    var slot = document.querySelector('[data-demo-slot="' + btn.dataset.demoId + '"]');
-    if (!slot) return;
-    btn.addEventListener('click', function () {
-      if (slot.hasChildNodes()) {
-        var open = !slot.hidden;
-        slot.hidden = open;
-        btn.textContent = open ? 'Zobacz demo' : 'Ukryj demo';
-        return;
-      }
-      var frame = document.createElement('iframe');
-      frame.src = btn.dataset.src;
-      frame.loading = 'lazy';
-      frame.title = 'Demo działającego systemu';
-      slot.appendChild(frame);
-      slot.hidden = false;
-      btn.textContent = 'Ukryj demo';
-    });
-  });
+  // Deep links from the old multi-page structure keep working.
+  var legacy = {
+    '/uslugi': 'uslugi', '/cennik': 'cennik', '/case-studies': 'case-studies',
+    '/blog': 'wiedza', '/kontakt': 'kontakt'
+  };
+  var path = location.pathname.replace(/\/$/, '');
+  for (var key in legacy) {
+    if (path.endsWith(key)) {
+      var el = document.getElementById(legacy[key]);
+      if (el) el.scrollIntoView();
+      break;
+    }
+  }
 })();
 </script>
 </body>
