@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Top Dent — ekran recepcji (prototyp)</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --panel: #F7F7F8;
+    --ink: #111111;
+    --muted: #5C5F66;
+    --rule: #D9DADD;
+    --accent: #FF4F00;
+    --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.45; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px 48px; }
+  .num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .muted { color: var(--muted); }
+  .tag { display: inline-block; font-size: 12px; line-height: 1; padding: 4px 6px; border: 1px solid var(--rule); color: var(--muted); vertical-align: middle; white-space: nowrap; }
+  .tag-sample { border-style: dashed; }
+  .tag-live { border-color: var(--ink); color: var(--ink); }
+  .chip { display: inline-block; font-size: 13px; line-height: 1.2; padding: 4px 7px; border: 1px solid var(--rule); margin: 0 6px 6px 0; white-space: nowrap; }
+  .chip-urgent { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 700; }
+
+  /* Header */
+  header { border-bottom: 1px solid var(--ink); padding: 20px 0 18px; }
+  .clinic { font-size: 14px; color: var(--muted); margin: 0 0 14px; }
+  .title-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0; }
+  h1 { font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .day { font-size: 18px; margin: 18px 0 0; }
+  .clock { font-size: clamp(76px, 22vw, 176px); font-weight: 700; line-height: 0.88; letter-spacing: -0.05em; margin: 4px 0 0; }
+  .lead { max-width: 38em; margin: 14px 0 0; color: var(--muted); }
+
+  /* Layout */
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "aside" "main"; }
+  aside { grid-area: aside; min-width: 0; }
+  main { grid-area: main; min-width: 0; }
+  @media (min-width: 960px) {
+    .grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: "main aside"; align-items: start; }
+    main { border-right: 1px solid var(--rule); padding-right: 32px; }
+    aside { padding-left: 32px; }
+  }
+
+  /* Call block */
+  .call { border-bottom: 1px solid var(--rule); padding: 22px 0 24px; }
+  .call h2 { font-size: 20px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .call p { margin: 0 0 14px; }
+  .btn { appearance: none; border: 0; border-radius: 0; font: inherit; cursor: pointer; }
+  .btn-call { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 60px; padding: 14px 18px; background: var(--accent); color: var(--ink); font-size: 19px; font-weight: 700; }
+  .btn-call:hover { background: #E84800; }
+  .btn-call:disabled { background: var(--panel); color: var(--muted); cursor: default; }
+  .btn-call svg { width: 22px; height: 22px; flex: none; }
+  .btn-end { display: none; width: 100%; min-height: 48px; margin-top: 10px; background: var(--ink); color: #FFFFFF; font-size: 16px; font-weight: 700; }
+  .status { margin: 12px 0 0; min-height: 1.45em; font-weight: 700; }
+  .status.err { font-weight: 400; color: var(--ink); border-left: 3px solid var(--accent); padding-left: 10px; }
+  .ideas { margin: 16px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .ideas li { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+  .note { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
+
+  /* Money tile */
+  .money { padding: 22px 0 24px; border-bottom: 1px solid var(--rule); }
+  .money h2 { font-size: 16px; margin: 0; font-weight: 700; }
+  .amount { font-size: clamp(48px, 13vw, 72px); font-weight: 700; line-height: 1; letter-spacing: -0.04em; margin: 8px 0 14px; }
+  .breakdown { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .breakdown td { padding: 7px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+  .breakdown td:last-child { text-align: right; padding-left: 12px; white-space: nowrap; }
+
+  /* Sections */
+  section { padding: 26px 0 8px; }
+  .sec-head { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+  .folio { font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
+  .sec-head h2 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+  .sec-sub { grid-column: 2; font-size: 14px; color: var(--muted); margin: 4px 0 0; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .row { display: grid; grid-template-columns: 74px 1fr; column-gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .row.fresh { box-shadow: inset 4px 0 0 var(--accent); padding-left: 12px; }
+  .when { font-weight: 700; }
+  .when .d { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
+  .when .t { display: block; font-size: 28px; line-height: 1; letter-spacing: -0.04em; }
+  .who { font-weight: 700; margin: 0 0 2px; }
+  .who .tag { margin-left: 6px; font-weight: 400; }
+  .what { margin: 0 0 8px; }
+  .detail { margin: 0; font-size: 14px; color: var(--muted); }
+  .price { white-space: nowrap; }
+  .empty { padding: 14px 0; color: var(--muted); border-bottom: 1px solid var(--rule); }
+
+  footer { margin-top: 32px; border-top: 1px solid var(--ink); padding-top: 16px; font-size: 14px; color: var(--muted); }
+  footer p { max-width: 46em; margin: 0 0 10px; }
+  footer strong { color: var(--ink); }
+  @media (min-width: 600px) {
+    .row { grid-template-columns: 96px 1fr; }
+    .when .t { font-size: 34px; }
+  }
+</style>
+</head>
+<body data-sdk="loading">
+<div class="wrap">
+  <header>
+    <p class="clinic">TOP-DENT Stomatologia · ul. Śnieżyńskiego 10, Lublin</p>
+    <div class="title-row"><h1>Ekran recepcji</h1><span class="tag">prototyp</span></div>
+    <p class="day">Poniedziałek, 23 listopada</p>
+    <p class="clock num">9:00</p>
+    <p class="lead">Tak recepcja zaczyna tydzień: telefony z weekendu, pacjenci, którym przypada przegląd albo higienizacja, i wolne terminy do zapełnienia. Wszystko na jednym ekranie.</p>
+  </header>
+
+  <div class="grid">
+    <aside>
+        <div class="call" id="call">
+          <h2>Proszę zadzwonić jak pacjent</h2>
+          <p>Odbierze Ania, wirtualna recepcjonistka Top Dent. Zna godziny, lekarzy i cennik gabinetu, a na prośbę wyśle SMS z linkiem do zapisu w ZnanyLekarz. Przeglądarka zapyta o dostęp do mikrofonu.</p>
+          <button class="btn btn-call" id="btn-call" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+            <span id="btn-label">Zadzwoń do recepcji</span>
+          </button>
+          <button class="btn btn-end" id="btn-end" type="button">Zakończ rozmowę</button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+          <ul class="ideas" aria-label="Przykładowe pytania">
+            <li>„Boli mnie ząb od wczoraj, co mogę zrobić?”</li>
+            <li>„Ile kosztuje higienizacja?”</li>
+            <li>„Chciałabym zapisać syna na przegląd.”</li>
+          </ul>
+          <p class="note">Rozmowa łączy się przez przeglądarkę, więc jest bezpłatna. W docelowej wersji recepcjonistka odbiera na numerze gabinetu, gdy recepcja nie może odebrać albo po godzinach.</p>
+        </div>
+
+      <div class="money">
+        <h2>Odzyskane w listopadzie</h2>
+        <p class="amount num">3&nbsp;990&nbsp;zł</p>
+        <table class="breakdown num">
+          <tr><td>7 higienizacji z przypomnień × 350 zł</td><td>2&nbsp;450 zł</td></tr>
+          <tr><td>6 przeglądów z przypomnień × 100 zł</td><td>600 zł</td></tr>
+          <tr><td>2 konsultacje z telefonów po godzinach × średnio 250 zł</td><td>500 zł</td></tr>
+          <tr><td>1 higienizacja z listy rezerwowej × 440 zł</td><td>440 zł</td></tr>
+        </table>
+        <p class="note">Przykładowe wyliczenie na cenniku Top Dent. W prawdziwym systemie każda pozycja ma pacjenta i datę wizyty.</p>
+      </div>
+    </aside>
+
+    <main>
+      <section aria-labelledby="h-calls">
+        <div class="sec-head">
+          <span class="folio num">01</span>
+          <h2 id="h-calls">Telefony z weekendu</h2>
+          <p class="sec-sub" id="calls-sub"></p>
+        </div>
+        <ul class="rows" id="calls"></ul>
+      </section>
+
+      <section aria-labelledby="h-recall">
+        <div class="sec-head">
+          <span class="folio num">02</span>
+          <h2 id="h-recall">Do przeglądu lub higienizacji w tym tygodniu</h2>
+          <p class="sec-sub" id="recall-sub"></p>
+        </div>
+        <ul class="rows" id="recall"></ul>
+      </section>
+
+      <section aria-labelledby="h-slots">
+        <div class="sec-head">
+          <span class="folio num">03</span>
+          <h2 id="h-slots">Wolne terminy do zapełnienia</h2>
+          <p class="sec-sub" id="slots-sub"></p>
+        </div>
+        <ul class="rows" id="slots"></ul>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p><strong>Co działa naprawdę:</strong> rozmowa z recepcjonistką, SMS z linkiem do zapisu i rozmowy oznaczone „z prototypu” na górze sekcji 01, z zamaskowanymi numerami. Pozycje oznaczone „przykład” są przykładowe: w docelowym systemie biorą się z zapisów gabinetu, a kalendarz i ZnanyLekarz zostają bez zmian.</p>
+    <p>Prototyp przygotował Antoni Walaszczyk, AWK Media Solutions · +48 736 840 712</p>
+  </footer>
+</div>
+
+<script type="module">
+const CONFIG = {
+  agentId: 'agent_96b888b2091f2f8bcf34c60793',
+  tokenUrl: 'https://n8n.awkmedia.com/webhook/topdent-token',
+  feedUrl: 'https://n8n.awkmedia.com/webhook/topdent-rozmowy?k=CgHN0CJ0EBa3VoXb',
+  sdkUrl: 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@3.0.4/+esm',
+};
+
+const DAYS = ['ndz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'];
+const SAMPLE_CALLS = [
+  { data: '2026-11-22 20:15', imie: 'Krzysztof L.', powod: 'Odwołuje wizytę we wtorek o 11:00', pilne: false, sms: '', oddzwonic: false,
+    podsumowanie: 'Odwołał higienizację we wtorek 24.11 o 11:00. Termin trafił do wolnych terminów i do listy rezerwowej.' },
+  { data: '2026-11-22 18:40', imie: 'Ewa S.', powod: 'Przegląd dla syna (8 lat)', pilne: false, sms: '', oddzwonic: true,
+    podsumowanie: 'Pytała, czy gabinet przyjmuje dzieci i ile kosztuje przegląd (100 zł). Prosi o telefon w sprawie terminu po 15:00.' },
+  { data: '2026-11-21 21:04', imie: 'Tomasz K.', powod: 'Silny ból zęba od piątku, lekka opuchlizna', pilne: true, sms: 'wysłany 21:07', oddzwonic: true,
+    podsumowanie: 'Ból od piątku, bez gorączki. Dostał SMS z linkiem do zapisu. Prosi o pierwszy wolny termin w poniedziałek.' },
+  { data: '2026-11-21 10:12', imie: 'Magdalena W.', powod: 'Zapis na higienizację', pilne: false, sms: 'wysłany 10:15', oddzwonic: false,
+    podsumowanie: 'Pytała o cenę higienizacji (350 albo 440 zł). Dostała link do zapisu w ZnanyLekarz.' },
+];
+const RECALL = [
+  { kiedy: ['pon', '23.11'], imie: 'Anna P.', ostatnio: 'ostatnia higienizacja 19.05', zabieg: 'Higienizacja', cena: 350,
+    status: 'Przypomnienie wysłane w piątek. Zapisana na czwartek 26.11, 10:00 (ZnanyLekarz).', zapisany: true },
+  { kiedy: ['wt', '24.11'], imie: 'Piotr M.', ostatnio: 'ostatni przegląd 21.05', zabieg: 'Przegląd', cena: 100,
+    status: 'Przypomnienie wysłane w piątek, bez odpowiedzi. Drugie przypomnienie w środę.' },
+  { kiedy: ['śr', '25.11'], imie: 'Katarzyna D.', ostatnio: 'ostatnia higienizacja 25.05', zabieg: 'Higienizacja', cena: 440,
+    status: 'Przypomnienie wychodzi dziś o 9:30.' },
+  { kiedy: ['czw', '26.11'], imie: 'Jan Z.', ostatnio: 'ostatni przegląd 26.05', zabieg: 'Przegląd', cena: 100,
+    status: 'Zapisany na piątek 27.11, 16:30 (ZnanyLekarz).', zapisany: true },
+  { kiedy: ['pt', '27.11'], imie: 'Barbara K.', ostatnio: 'ostatnia higienizacja 27.05', zabieg: 'Higienizacja', cena: 350,
+    status: 'Przypomnienie wychodzi w środę.' },
+];
+const SLOTS = [
+  { kiedy: ['pon', '12:00'], co: 'Konsultacja · lek. dent. Justyna Cygańczuk', status: 'Proponowany Tomaszowi K. (pilny telefon z soboty).' },
+  { kiedy: ['wt', '11:00'], co: 'Higienizacja · Dorota Woźniak', status: 'Zwolniony po odwołaniu. SMS poszedł do 3 osób z listy rezerwowej.' },
+  { kiedy: ['śr', '13:30'], co: 'Przegląd · lek. dent. Jolanta Fijałkowska', status: 'Propozycja dla 2 pacjentów z listy przeglądów.' },
+  { kiedy: ['pt', '9:00'], co: 'Higienizacja · Justyna Kolczarek', status: 'Na liście rezerwowej czeka 1 osoba.' },
+];
+
+const $ = (id) => document.getElementById(id);
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') node.className = v; else node.setAttribute(k, v);
+  }
+  for (const child of children.flat()) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+const zl = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} zł`;
+const plural = (n, one, few, many) => {
+  if (n === 1) return one;
+  const d = n % 10, t = n % 100;
+  return d >= 2 && d <= 4 && (t < 12 || t > 14) ? few : many;
+};
+
+function storageGet(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
+function storageAdd(key, value) {
+  try { const list = storageGet(key); if (!list.includes(value)) list.push(value); localStorage.setItem(key, JSON.stringify(list.slice(-20))); } catch (e) { /* tryb prywatny */ }
+}
+
+let liveCalls = [];
+const seenAtLoad = new Set();
+let firstFeed = true;
+
+function whenCell(day, time) {
+  return el('div', { class: 'when num' }, el('span', { class: 'd' }, day), el('span', { class: 't' }, time));
+}
+
+function callRow(c, kind) {
+  const [date, time] = String(c.data).split(' ');
+  const [y, m, d] = date.split('-').map(Number);
+  const day = `${DAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${String(d).padStart(2, '0')}.${String(m).padStart(2, '0')}`;
+  const mine = kind === 'live' && storageGet('topdent_calls').includes(c.id);
+  const tag = kind === 'live'
+    ? el('span', { class: 'tag tag-live' }, mine ? 'Pani rozmowa' : 'z prototypu')
+    : el('span', { class: 'tag tag-sample' }, 'przykład');
+  const chips = [];
+  if (c.pilne) chips.push(el('span', { class: 'chip chip-urgent' }, 'Pilne'));
+  if (c.sms) chips.push(el('span', { class: 'chip' }, `SMS z linkiem ${c.sms}`));
+  if (c.oddzwonic) chips.push(el('span', { class: 'chip' }, 'Oddzwonić'));
+  const fresh = kind === 'live' && !seenAtLoad.has(c.id) && !firstFeed;
+  return el('li', { class: fresh ? 'row fresh' : 'row' },
+    whenCell(day, time),
+    el('div', {},
+      el('p', { class: 'who' }, c.imie || 'Bez imienia', kind === 'live' && c.telefon ? el('span', { class: 'muted' }, ` · ${c.telefon}`) : null, tag),
+      el('p', { class: 'what' }, c.powod || 'Rozmowa bez podanego powodu'),
+      chips.length ? el('div', {}, chips) : null,
+      c.podsumowanie ? el('p', { class: 'detail' }, c.podsumowanie) : null));
+}
+
+function renderCalls() {
+  const list = $('calls');
+  list.replaceChildren(...liveCalls.map((c) => callRow(c, 'live')), ...SAMPLE_CALLS.map((c) => callRow(c, 'sample')));
+  const all = [...liveCalls, ...SAMPLE_CALLS];
+  const urgent = all.filter((c) => c.pilne).length;
+  const sms = all.filter((c) => c.sms).length;
+  $('calls-sub').textContent = `${all.length} ${plural(all.length, 'telefon', 'telefony', 'telefonów')} · ${urgent} ${plural(urgent, 'pilny', 'pilne', 'pilnych')} · ${sms} ${plural(sms, 'SMS', 'SMS-y', 'SMS-ów')} z linkiem do zapisu`;
+}
+
+function renderRecall() {
+  $('recall').replaceChildren(...RECALL.map((p) => el('li', { class: 'row' },
+    whenCell(p.kiedy[0], p.kiedy[1]),
+    el('div', {},
+      el('p', { class: 'who' }, p.imie, el('span', { class: 'tag tag-sample' }, 'przykład')),
+      el('p', { class: 'what' }, `${p.zabieg} · `, el('span', { class: 'price num' }, zl(p.cena)), el('span', { class: 'muted' }, ` · ${p.ostatnio}`)),
+      el('p', { class: 'detail' }, p.status)))));
+  const total = RECALL.reduce((s, p) => s + p.cena, 0);
+  const booked = RECALL.filter((p) => p.zapisany).length;
+  $('recall-sub').textContent = `${RECALL.length} pacjentów · zapisani: ${booked} · wizyty warte ${zl(total)}`;
+}
+
+function renderSlots() {
+  $('slots').replaceChildren(...SLOTS.map((s) => el('li', { class: 'row' },
+    whenCell(s.kiedy[0], s.kiedy[1]),
+    el('div', {},
+      el('p', { class: 'who' }, s.co, el('span', { class: 'tag tag-sample' }, 'przykład')),
+      el('p', { class: 'detail' }, s.status)))));
+  $('slots-sub').textContent = `${SLOTS.length} wolne terminy w tym tygodniu · lista rezerwowa: 4 osoby`;
+}
+
+async function refreshCalls() {
+  try {
+    const r = await fetch(CONFIG.feedUrl, { cache: 'no-store' });
+    if (!r.ok) return;
+    const data = await r.json();
+    liveCalls = Array.isArray(data.rozmowy) ? data.rozmowy : [];
+    if (firstFeed) liveCalls.forEach((c) => seenAtLoad.add(c.id));
+    renderCalls();
+    firstFeed = false;
+  } catch (e) { /* bez połączenia zostają przykłady */ }
+}
+
+let fastUntil = 0;
+function scheduleRefresh() {
+  setTimeout(async () => { await refreshCalls(); scheduleRefresh(); }, Date.now() < fastUntil ? 10000 : 60000);
+}
+
+// ── Rozmowa ──────────────────────────────────────────────────────────────────
+const btnCall = $('btn-call');
+const btnEnd = $('btn-end');
+const statusEl = $('status');
+let session = null;
+let timer = null;
+let startedAt = 0;
+let errored = false;
+
+function setStatus(text, isError) {
+  statusEl.textContent = text;
+  statusEl.className = isError ? 'status err' : 'status';
+}
+
+function setState(state, err) {
+  clearInterval(timer);
+  if (state === 'connecting') {
+    errored = false;
+    btnCall.disabled = true;
+    $('btn-label').textContent = 'Łączę…';
+    btnEnd.style.display = 'none';
+    setStatus('Łączę z recepcją Top Dent…');
+  } else if (state === 'live') {
+    btnCall.disabled = true;
+    $('btn-label').textContent = 'Rozmowa trwa';
+    btnEnd.style.display = 'block';
+    startedAt = Date.now();
+    const tick = () => {
+      const s = Math.floor((Date.now() - startedAt) / 1000);
+      setStatus(`Rozmowa trwa · ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`);
+    };
+    tick();
+    timer = setInterval(tick, 1000);
+  } else if (state === 'ended') {
+    btnCall.disabled = false;
+    $('btn-label').textContent = 'Zadzwoń jeszcze raz';
+    btnEnd.style.display = 'none';
+    if (!errored) setStatus('Rozmowa zakończona. Podsumowanie pojawi się na liście telefonów w ciągu około minuty.');
+    fastUntil = Date.now() + 3 * 60 * 1000;
+    setTimeout(refreshCalls, 15000);
+  } else if (state === 'error') {
+    errored = true;
+    btnCall.disabled = false;
+    $('btn-label').textContent = 'Spróbuj jeszcze raz';
+    btnEnd.style.display = 'none';
+    const msg = String((err && (err.name || '')) + ' ' + (err && (err.message || err))).toLowerCase();
+    if (msg.includes('notallowed') || msg.includes('permission') || msg.includes('microphone') || msg.includes('mikrofon')) {
+      setStatus('Przeglądarka nie dała dostępu do mikrofonu. Proszę kliknąć ikonę kłódki obok adresu strony, zezwolić na mikrofon i spróbować jeszcze raz.', true);
+    } else {
+      setStatus('Nie udało się połączyć. Proszę spróbować za chwilę albo zadzwonić: +48 736 840 712.', true);
+    }
+  }
+}
+
+function proxyFetch(url, init) {
+  // Token rozmowy wydaje n8n (klucz Retella zostaje na serwerze). Zwykły POST bez nagłówków = bez preflightu CORS.
+  if (String(url).endsWith('/v3/create-web-call')) {
+    return fetch(CONFIG.tokenUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: (init && init.body) || '{}' });
+  }
+  return fetch(url, init);
+}
+
+const sdkReady = import(CONFIG.sdkUrl).then((sdk) => {
+  if (typeof sdk.RetellClient !== 'function') throw new Error('RetellClient missing');
+  document.body.dataset.sdk = 'ok';
+  return new sdk.RetellClient({ key: 'n8n-proxy', fetch: proxyFetch });
+}).catch((e) => {
+  document.body.dataset.sdk = 'error';
+  throw e;
+});
+
+btnCall.addEventListener('click', async () => {
+  if (session && session.status !== 'ended') return;
+  setState('connecting');
+  try {
+    const client = await sdkReady;
+    session = client.createWebCall({
+      agent_id: CONFIG.agentId,
+      hooks: {
+        onStatus: (s) => { if (s === 'live') setState('live'); },
+        onEnd: () => setState('ended'),
+        onError: (e) => setState('error', e),
+      },
+    });
+    await session.ready;
+    if (session.callId) storageAdd('topdent_calls', session.callId);
+  } catch (e) {
+    if (!errored) setState('error', e);
+  }
+});
+btnEnd.addEventListener('click', () => { if (session) session.end(); });
+
+renderCalls();
+renderRecall();
+renderSlots();
+document.body.dataset.rendered = String(document.querySelectorAll('.row').length);
+refreshCalls();
+scheduleRefresh();
+</script>
+</body>
+</html>
