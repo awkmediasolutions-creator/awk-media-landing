@@ -16,7 +16,7 @@
     --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.45; }
   .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px 48px; }
   .num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
@@ -24,10 +24,12 @@
   .tag { display: inline-block; font-size: 12px; line-height: 1; padding: 4px 6px; border: 1px solid var(--rule); color: var(--muted); vertical-align: middle; white-space: nowrap; }
   .tag-sample { border-style: dashed; }
   .tag-live { border-color: var(--ink); color: var(--ink); }
-  .chip { display: inline-block; font-size: 13px; line-height: 1.2; padding: 4px 7px; border: 1px solid var(--rule); margin: 0 6px 6px 0; white-space: nowrap; }
+  .chip { display: inline-block; font-size: 13px; line-height: 1.2; padding: 4px 7px; border: 1px solid var(--rule); margin: 0 6px 6px 0; }
   .chip-urgent { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 700; }
+  .btn { appearance: none; border: 0; border-radius: 0; font: inherit; cursor: pointer; }
+  input, button { font: inherit; }
 
-  /* Header */
+  /* Nagłówek */
   header { border-bottom: 1px solid var(--ink); padding: 20px 0 18px; }
   .clinic { font-size: 14px; color: var(--muted); margin: 0 0 14px; }
   .title-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0; }
@@ -36,7 +38,7 @@
   .clock { font-size: clamp(76px, 22vw, 176px); font-weight: 700; line-height: 0.88; letter-spacing: -0.05em; margin: 4px 0 0; }
   .lead { max-width: 38em; margin: 14px 0 0; color: var(--muted); }
 
-  /* Layout */
+  /* Układ */
   .grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "aside" "main"; }
   aside { grid-area: aside; min-width: 0; }
   main { grid-area: main; min-width: 0; }
@@ -46,38 +48,40 @@
     aside { padding-left: 32px; }
   }
 
-  /* Call block */
+  /* Rozmowa */
   .call { border-bottom: 1px solid var(--rule); padding: 22px 0 24px; }
   .call h2 { font-size: 20px; margin: 0 0 8px; letter-spacing: -0.01em; }
   .call p { margin: 0 0 14px; }
-  .btn { appearance: none; border: 0; border-radius: 0; font: inherit; cursor: pointer; }
   .btn-call { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 60px; padding: 14px 18px; background: var(--accent); color: var(--ink); font-size: 19px; font-weight: 700; }
   .btn-call:hover { background: #E84800; }
   .btn-call:disabled { background: var(--panel); color: var(--muted); cursor: default; }
   .btn-call svg { width: 22px; height: 22px; flex: none; }
   .btn-end { display: none; width: 100%; min-height: 48px; margin-top: 10px; background: var(--ink); color: #FFFFFF; font-size: 16px; font-weight: 700; }
   .status { margin: 12px 0 0; min-height: 1.45em; font-weight: 700; }
-  .status.err { font-weight: 400; color: var(--ink); border-left: 3px solid var(--accent); padding-left: 10px; }
+  .status.err { font-weight: 400; border-left: 3px solid var(--accent); padding-left: 10px; }
+  .ready { display: none; margin: 12px 0 0; padding: 10px 12px; border: 1px solid var(--ink); }
+  .ready a { color: var(--ink); font-weight: 700; }
   .ideas { margin: 16px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
   .ideas li { padding: 8px 0; border-bottom: 1px solid var(--rule); }
   .note { font-size: 14px; color: var(--muted); margin: 14px 0 0; }
 
-  /* Money tile */
-  .money { padding: 22px 0 24px; border-bottom: 1px solid var(--rule); }
-  .money h2 { font-size: 16px; margin: 0; font-weight: 700; }
+  /* Kafle */
+  .tile { padding: 22px 0 24px; border-bottom: 1px solid var(--rule); }
+  .tile h2 { font-size: 16px; margin: 0; font-weight: 700; }
   .amount { font-size: clamp(48px, 13vw, 72px); font-weight: 700; line-height: 1; letter-spacing: -0.04em; margin: 8px 0 14px; }
+  .amount small { font-size: 0.4em; letter-spacing: 0; font-weight: 400; color: var(--muted); }
   .breakdown { width: 100%; border-collapse: collapse; font-size: 14px; }
   .breakdown td { padding: 7px 0; border-top: 1px solid var(--rule); vertical-align: top; }
   .breakdown td:last-child { text-align: right; padding-left: 12px; white-space: nowrap; }
 
-  /* Sections */
+  /* Sekcje */
   section { padding: 26px 0 8px; }
   .sec-head { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
   .folio { font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
   .sec-head h2 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
   .sec-sub { grid-column: 2; font-size: 14px; color: var(--muted); margin: 4px 0 0; }
   .rows { list-style: none; margin: 0; padding: 0; }
-  .row { display: grid; grid-template-columns: 74px 1fr; column-gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .row { display: grid; grid-template-columns: 74px 1fr; column-gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 16px; }
   .row.fresh { box-shadow: inset 4px 0 0 var(--accent); padding-left: 12px; }
   .when { font-weight: 700; }
   .when .d { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
@@ -87,7 +91,40 @@
   .what { margin: 0 0 8px; }
   .detail { margin: 0; font-size: 14px; color: var(--muted); }
   .price { white-space: nowrap; }
-  .empty { padding: 14px 0; color: var(--muted); border-bottom: 1px solid var(--rule); }
+
+  /* 04 Co dostaje pacjent */
+  .msgs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .msg { margin: 0; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .msg figcaption { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+  .msg blockquote { margin: 0; font-size: 15px; border-left: 3px solid var(--ink); padding-left: 12px; }
+  .demo { margin: 18px 0 0; padding: 18px; background: var(--panel); }
+  .demo h3 { font-size: 17px; margin: 0 0 6px; }
+  .demo p { margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+  .demo label { display: block; font-size: 14px; font-weight: 700; margin: 0 0 12px; }
+  .demo input { display: block; width: 100%; margin-top: 6px; min-height: 48px; padding: 10px 12px; border: 1px solid var(--muted); border-radius: 0; background: #FFFFFF; color: var(--ink); font-size: 17px; }
+  .demo input:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+  .btn-send { width: 100%; min-height: 52px; background: var(--ink); color: #FFFFFF; font-weight: 700; font-size: 16px; }
+  .btn-send:disabled { background: var(--muted); cursor: default; }
+  @media (min-width: 700px) {
+    .msgs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .msg { border-bottom: 0; }
+    .demo-fields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+  }
+
+  /* 05 Kalkulator */
+  .calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 32px; padding-top: 6px; }
+  @media (min-width: 700px) { .calc { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+  fieldset { border: 0; border-bottom: 1px solid var(--rule); margin: 0; padding: 12px 0 14px; min-width: 0; }
+  legend { font-weight: 700; padding: 0; margin: 0 0 8px; float: left; width: 100%; }
+  .field { clear: both; margin: 0 0 10px; }
+  .field label { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+  .field output { font-weight: 700; white-space: nowrap; }
+  .field input[type=range] { width: 100%; margin: 8px 0 0; accent-color: var(--accent); }
+  .src { clear: both; margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  .calc-out { padding-top: 12px; }
+  @media (min-width: 700px) { .calc-out { position: sticky; top: 16px; align-self: start; } }
+  .sources { list-style: none; padding: 14px 0 0; margin: 14px 0 0; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+  .sources li { margin: 0 0 6px; }
 
   footer { margin-top: 32px; border-top: 1px solid var(--ink); padding-top: 16px; font-size: 14px; color: var(--muted); }
   footer p { max-width: 46em; margin: 0 0 10px; }
@@ -110,25 +147,26 @@
 
   <div class="grid">
     <aside>
-        <div class="call" id="call">
-          <h2>Proszę zadzwonić jak pacjent</h2>
-          <p>Odbierze Ania, wirtualna recepcjonistka Top Dent. Zna godziny, lekarzy i cennik gabinetu, a na prośbę wyśle SMS z linkiem do zapisu w ZnanyLekarz. Przeglądarka zapyta o dostęp do mikrofonu.</p>
-          <button class="btn btn-call" id="btn-call" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-            <span id="btn-label">Zadzwoń do recepcji</span>
-          </button>
-          <button class="btn btn-end" id="btn-end" type="button">Zakończ rozmowę</button>
-          <p class="status" id="status" role="status" aria-live="polite"></p>
-          <ul class="ideas" aria-label="Przykładowe pytania">
-            <li>„Boli mnie ząb od wczoraj, co mogę zrobić?”</li>
-            <li>„Ile kosztuje higienizacja?”</li>
-            <li>„Chciałabym zapisać syna na przegląd.”</li>
-          </ul>
-          <p class="note">Rozmowa łączy się przez przeglądarkę, więc jest bezpłatna. W docelowej wersji recepcjonistka odbiera na numerze gabinetu, gdy recepcja nie może odebrać albo po godzinach.</p>
-        </div>
+      <div class="call" id="call">
+        <h2>Proszę zadzwonić jak pacjent</h2>
+        <p>Odbierze Ania, wirtualna recepcjonistka Top Dent. Zna godziny, lekarzy i cennik gabinetu, a na prośbę wyśle SMS z linkiem do zapisu w ZnanyLekarz. Przeglądarka zapyta o dostęp do mikrofonu.</p>
+        <button class="btn btn-call" id="btn-call" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+          <span id="btn-label">Zadzwoń do recepcji</span>
+        </button>
+        <button class="btn btn-end" id="btn-end" type="button">Zakończ rozmowę</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+        <p class="ready" id="ready">Pani rozmowa jest już na liście telefonów. <a href="#calls" id="ready-link">Pokaż</a></p>
+        <ul class="ideas" aria-label="Przykładowe pytania">
+          <li>„Boli mnie ząb od wczoraj, co mogę zrobić?”</li>
+          <li>„Ile kosztuje higienizacja?”</li>
+          <li>„Chciałabym zapisać syna na przegląd.”</li>
+        </ul>
+        <p class="note">Rozmowa łączy się przez przeglądarkę, więc jest bezpłatna. W docelowej wersji recepcjonistka odbiera na numerze gabinetu, gdy recepcja nie może odebrać albo po godzinach.</p>
+      </div>
 
-      <div class="money">
-        <h2>Odzyskane w listopadzie</h2>
+      <div class="tile">
+        <h2>Odzyskany przychód w listopadzie</h2>
         <p class="amount num">3&nbsp;990&nbsp;zł</p>
         <table class="breakdown num">
           <tr><td>7 higienizacji z przypomnień × 350 zł</td><td>2&nbsp;450 zł</td></tr>
@@ -136,7 +174,18 @@
           <tr><td>2 konsultacje z telefonów po godzinach × średnio 250 zł</td><td>500 zł</td></tr>
           <tr><td>1 higienizacja z listy rezerwowej × 440 zł</td><td>440 zł</td></tr>
         </table>
-        <p class="note">Przykładowe wyliczenie na cenniku Top Dent. W prawdziwym systemie każda pozycja ma pacjenta i datę wizyty.</p>
+        <p class="note">Przykład na cenniku Top Dent. W prawdziwym systemie każda pozycja ma pacjenta i datę wizyty. Wyliczenie na własnych liczbach gabinetu jest niżej, w sekcji 05.</p>
+      </div>
+
+      <div class="tile">
+        <h2>Opinie w Google</h2>
+        <p class="amount num">4,3 <small>123 opinie</small></p>
+        <table class="breakdown num">
+          <tr><td>Po 3 miesiącach</td><td id="rv3"></td></tr>
+          <tr><td>Po 6 miesiącach</td><td id="rv6"></td></tr>
+          <tr><td>Po 12 miesiącach</td><td id="rv12"></td></tr>
+        </table>
+        <p class="note">Średnia i liczba opinii z profilu Top Dent w Google (17.11.2026). Prognoza przy założeniu 8 nowych opinii miesięcznie, każda na 5 gwiazdek. Prośba o opinię idzie SMS-em po każdej wizycie. W ankiecie BrightLocal 68% osób zostawiło opinię, gdy ktoś o nią poprosił [3], a opinie to ok. 16% wagi w rankingu Map Google [4].</p>
       </div>
     </aside>
 
@@ -167,11 +216,92 @@
         </div>
         <ul class="rows" id="slots"></ul>
       </section>
+
+      <section aria-labelledby="h-sms">
+        <div class="sec-head">
+          <span class="folio num">04</span>
+          <h2 id="h-sms">Co dostaje pacjent</h2>
+          <p class="sec-sub">Trzy SMS-y, które system wysyła sam, bez obdzwaniania przez recepcję.</p>
+        </div>
+        <div class="msgs">
+          <figure class="msg">
+            <figcaption>Pół roku po przeglądzie lub higienizacji</figcaption>
+            <blockquote>Top Dent: Pani Anno, minęło pół roku od ostatniej wizyty. Zapis na przegląd: znanylekarz.pl/placowki/top-dent-stomatologia-2</blockquote>
+          </figure>
+          <figure class="msg">
+            <figcaption>Dzień przed wizytą</figcaption>
+            <blockquote>Top Dent: przypominamy o wizycie jutro (wtorek) o 11:00 u higienistki Doroty Woźniak. Jeśli nie może Pani przyjść, prosimy o telefon. Termin przekażemy osobie z listy rezerwowej.</blockquote>
+          </figure>
+          <figure class="msg">
+            <figcaption>Po wizycie</figcaption>
+            <blockquote>Top Dent: dziękujemy za wizytę! Będziemy wdzięczni za opinię w Google, to zajmuje pół minuty: [link do opinii o Top Dent]</blockquote>
+          </figure>
+        </div>
+        <form class="demo" id="demo-form" novalidate>
+          <h3>Proszę wysłać sobie pierwszy z nich</h3>
+          <p>Przypomnienie przyjdzie na podany numer w kilkanaście sekund, tak jak do pacjenta. W prototypie nadawcą jest numer bramki SMS, a tekst idzie bez polskich znaków, żeby zmieścił się w jednej wiadomości.</p>
+          <div class="demo-fields">
+            <label>Imię (opcjonalnie)<input name="imie" autocomplete="given-name" maxlength="30"></label>
+            <label>Numer komórki<input name="numer" inputmode="tel" autocomplete="tel" placeholder="600 100 200" required></label>
+          </div>
+          <button class="btn btn-send" id="btn-send" type="submit">Wyślij przykładowe przypomnienie</button>
+          <p class="status" id="demo-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section aria-labelledby="h-calc">
+        <div class="sec-head">
+          <span class="folio num">05</span>
+          <h2 id="h-calc">Ile to daje miesięcznie</h2>
+          <p class="sec-sub">Na cenniku Top Dent i na danych z badań. Liczby gabinetu można przesunąć suwakami.</p>
+        </div>
+        <div class="calc">
+          <div class="calc-in">
+            <fieldset>
+              <legend>Pacjenci, którzy nie wracają</legend>
+              <div class="field"><label for="c-due">Pacjenci, którym w miesiącu mija termin przeglądu lub higienizacji <output id="o-due" for="c-due"></output></label>
+                <input type="range" id="c-due" min="20" max="300" step="5" value="80"></div>
+              <div class="field"><label for="c-back">Ilu z nich wraca bez przypomnienia <output id="o-back" for="c-back"></output></label>
+                <input type="range" id="c-back" min="30" max="90" step="5" value="60"></div>
+              <p class="src">Przypomnienie SMS zwiększa odsetek odbytych wizyt o 14% (RR 1,14; 95% CI 1,03–1,26; metaanaliza Cochrane, 8 badań randomizowanych, 6 615 osób) [1]. Ten efekt przenoszę tu na powroty na przegląd.</p>
+            </fieldset>
+            <fieldset>
+              <legend>Telefony, których nikt nie odbiera</legend>
+              <div class="field"><label for="c-calls">Nieodebrane telefony w tygodniu (wieczorem, w weekend, przy zajętej recepcji) <output id="o-calls" for="c-calls"></output></label>
+                <input type="range" id="c-calls" min="0" max="40" step="1" value="6"></div>
+              <div class="field"><label for="c-conv">Ilu z dzwoniących zapisałoby się na wizytę <output id="o-conv" for="c-conv"></output></label>
+                <input type="range" id="c-conv" min="10" max="80" step="5" value="30"></div>
+              <p class="src">Firmy, które odpowiadają na zapytanie w ciągu godziny, mają ok. 7 razy większą szansę na rozmowę z klientem niż te, które odpowiadają godzinę później (analiza 1,25 mln zapytań) [2]. Odsetek zapisów to założenie.</p>
+            </fieldset>
+            <fieldset>
+              <legend>Odwołane wizyty</legend>
+              <div class="field"><label for="c-cancel">Odwołane albo nieodbyte wizyty w miesiącu <output id="o-cancel" for="c-cancel"></output></label>
+                <input type="range" id="c-cancel" min="0" max="40" step="1" value="10"></div>
+              <div class="field"><label for="c-fill">Ile terminów zapełnia lista rezerwowa <output id="o-fill" for="c-fill"></output></label>
+                <input type="range" id="c-fill" min="10" max="90" step="5" value="40"></div>
+              <p class="src">Odsetek zapełnionych terminów to założenie.</p>
+            </fieldset>
+          </div>
+          <div class="calc-out">
+            <p class="muted" style="margin:0">Dodatkowy przychód miesięcznie</p>
+            <p class="amount num" id="c-total"></p>
+            <table class="breakdown num" id="c-lines"></table>
+            <p class="note" id="c-year"></p>
+            <p class="note">To przychód, nie zysk. Stawki z cennika Top Dent: przegląd 100 zł, higienizacja 350 zł, konsultacja 200–300 zł. Do wyliczeń przyjmuję średnio 225 zł za wizytę kontrolną (pół na pół przegląd i higienizacja) i 250 zł za wizytę z telefonu albo z listy rezerwowej. Bez leczenia, protetyki i implantów, które przychodzą razem z tymi pacjentami.</p>
+          </div>
+        </div>
+        <ol class="sources">
+          <li>[1] I. Gurol-Urganci i in., „Mobile phone messaging reminders for attendance at healthcare appointments”, Cochrane Database of Systematic Reviews 2013, CD007458: frekwencja 67,8% bez przypomnień wobec 78,6% z SMS-em, RR 1,14 (95% CI 1,03–1,26).</li>
+          <li>[2] J. Oldroyd, K. McElheran, D. Elkington, „The Short Life of Online Sales Leads”, Harvard Business Review, marzec 2011.</li>
+          <li>[3] BrightLocal, Local Consumer Review Survey 2017: 68% konsumentów zostawiło opinię, gdy ich o nią poproszono.</li>
+          <li>[4] Whitespark, Local Search Ranking Factors 2023: sygnały z opinii to ok. 16% wagi w rankingu lokalnym (ankieta ekspertów).</li>
+        </ol>
+      </section>
     </main>
   </div>
 
   <footer>
-    <p><strong>Co działa naprawdę:</strong> rozmowa z recepcjonistką, SMS z linkiem do zapisu i rozmowy oznaczone „z prototypu” na górze sekcji 01, z zamaskowanymi numerami. Pozycje oznaczone „przykład” są przykładowe: w docelowym systemie biorą się z zapisów gabinetu, a kalendarz i ZnanyLekarz zostają bez zmian.</p>
+    <p><strong>Co działa naprawdę:</strong> rozmowa z recepcjonistką, SMS z linkiem do zapisu, przykładowe przypomnienie z sekcji 04 i rozmowy oznaczone „z prototypu” na górze sekcji 01, z zamaskowanymi numerami. Pozycje oznaczone „przykład” są przykładowe: w docelowym systemie biorą się z zapisów gabinetu, a kalendarz i ZnanyLekarz zostają bez zmian.</p>
     <p>Prototyp przygotował Antoni Walaszczyk, AWK Media Solutions · +48 736 840 712</p>
   </footer>
 </div>
@@ -181,12 +311,13 @@ const CONFIG = {
   agentId: 'agent_96b888b2091f2f8bcf34c60793',
   tokenUrl: 'https://n8n.awkmedia.com/webhook/topdent-token',
   feedUrl: 'https://n8n.awkmedia.com/webhook/topdent-rozmowy?k=CgHN0CJ0EBa3VoXb',
+  demoUrl: 'https://n8n.awkmedia.com/webhook/topdent-przypomnienie',
   sdkUrl: 'https://cdn.jsdelivr.net/npm/retell-client-js-sdk@3.0.4/+esm',
 };
 
 const DAYS = ['ndz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'];
 const SAMPLE_CALLS = [
-  { data: '2026-11-22 20:15', imie: 'Krzysztof L.', powod: 'Odwołuje wizytę we wtorek o 11:00', pilne: false, sms: '', oddzwonic: false,
+  { data: '2026-11-22 20:15', imie: 'Krzysztof L.', powod: 'Odwołuje wizytę we wtorek o 11:00', pilne: false, sms: '', oddzwonic: false, zabieg: 'odwołanie',
     podsumowanie: 'Odwołał higienizację we wtorek 24.11 o 11:00. Termin trafił do wolnych terminów i do listy rezerwowej.' },
   { data: '2026-11-22 18:40', imie: 'Ewa S.', powod: 'Przegląd dla syna (8 lat)', pilne: false, sms: '', oddzwonic: true,
     podsumowanie: 'Pytała, czy gabinet przyjmuje dzieci i ile kosztuje przegląd (100 zł). Prosi o telefon w sprawie terminu po 15:00.' },
@@ -196,14 +327,14 @@ const SAMPLE_CALLS = [
     podsumowanie: 'Pytała o cenę higienizacji (350 albo 440 zł). Dostała link do zapisu w ZnanyLekarz.' },
 ];
 const RECALL = [
-  { kiedy: ['pon', '23.11'], imie: 'Anna P.', ostatnio: 'ostatnia higienizacja 19.05', zabieg: 'Higienizacja', cena: 350,
-    status: 'Przypomnienie wysłane w piątek. Zapisana na czwartek 26.11, 10:00 (ZnanyLekarz).', zapisany: true },
+  { kiedy: ['pon', '23.11'], imie: 'Anna P.', ostatnio: 'ostatnia higienizacja 19.05', zabieg: 'Higienizacja', cena: 350, zapisany: true,
+    status: 'Przypomnienie wysłane w piątek. Zapisana na czwartek 26.11, 10:00 (ZnanyLekarz).' },
   { kiedy: ['wt', '24.11'], imie: 'Piotr M.', ostatnio: 'ostatni przegląd 21.05', zabieg: 'Przegląd', cena: 100,
     status: 'Przypomnienie wysłane w piątek, bez odpowiedzi. Drugie przypomnienie w środę.' },
   { kiedy: ['śr', '25.11'], imie: 'Katarzyna D.', ostatnio: 'ostatnia higienizacja 25.05', zabieg: 'Higienizacja', cena: 440,
     status: 'Przypomnienie wychodzi dziś o 9:30.' },
-  { kiedy: ['czw', '26.11'], imie: 'Jan Z.', ostatnio: 'ostatni przegląd 26.05', zabieg: 'Przegląd', cena: 100,
-    status: 'Zapisany na piątek 27.11, 16:30 (ZnanyLekarz).', zapisany: true },
+  { kiedy: ['czw', '26.11'], imie: 'Jan Z.', ostatnio: 'ostatni przegląd 26.05', zabieg: 'Przegląd', cena: 100, zapisany: true,
+    status: 'Zapisany na piątek 27.11, 16:30 (ZnanyLekarz).' },
   { kiedy: ['pt', '27.11'], imie: 'Barbara K.', ostatnio: 'ostatnia higienizacja 27.05', zabieg: 'Higienizacja', cena: 350,
     status: 'Przypomnienie wychodzi w środę.' },
 ];
@@ -226,7 +357,10 @@ function el(tag, attrs, ...children) {
   }
   return node;
 }
-const zl = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} zł`;
+const grouped = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const zl = (n) => `${grouped(n)} zł`;
+const tens = (n) => Math.round(n / 10) * 10;
+const dec = (n) => n.toFixed(1).replace('.', ',');
 const plural = (n, one, few, many) => {
   if (n === 1) return one;
   const d = n % 10, t = n % 100;
@@ -238,8 +372,10 @@ function storageAdd(key, value) {
   try { const list = storageGet(key); if (!list.includes(value)) list.push(value); localStorage.setItem(key, JSON.stringify(list.slice(-20))); } catch (e) { /* tryb prywatny */ }
 }
 
+// ── 01–03 Ekran recepcji ─────────────────────────────────────────────────────
 let liveCalls = [];
 const seenAtLoad = new Set();
+const announced = new Set();
 let firstFeed = true;
 
 function whenCell(day, time) {
@@ -256,10 +392,13 @@ function callRow(c, kind) {
     : el('span', { class: 'tag tag-sample' }, 'przykład');
   const chips = [];
   if (c.pilne) chips.push(el('span', { class: 'chip chip-urgent' }, 'Pilne'));
+  if (c.zabieg === 'odwołanie') chips.push(el('span', { class: 'chip' }, 'Odwołana wizyta → lista rezerwowa'));
   if (c.sms) chips.push(el('span', { class: 'chip' }, `SMS z linkiem ${c.sms}`));
   if (c.oddzwonic) chips.push(el('span', { class: 'chip' }, 'Oddzwonić'));
   const fresh = kind === 'live' && !seenAtLoad.has(c.id) && !firstFeed;
-  return el('li', { class: fresh ? 'row fresh' : 'row' },
+  const attrs = { class: fresh ? 'row fresh' : 'row' };
+  if (kind === 'live') attrs.id = `call-${c.id}`;
+  return el('li', attrs,
     whenCell(day, time),
     el('div', {},
       el('p', { class: 'who' }, c.imie || 'Bez imienia', kind === 'live' && c.telefon ? el('span', { class: 'muted' }, ` · ${c.telefon}`) : null, tag),
@@ -269,8 +408,7 @@ function callRow(c, kind) {
 }
 
 function renderCalls() {
-  const list = $('calls');
-  list.replaceChildren(...liveCalls.map((c) => callRow(c, 'live')), ...SAMPLE_CALLS.map((c) => callRow(c, 'sample')));
+  $('calls').replaceChildren(...liveCalls.map((c) => callRow(c, 'live')), ...SAMPLE_CALLS.map((c) => callRow(c, 'sample')));
   const all = [...liveCalls, ...SAMPLE_CALLS];
   const urgent = all.filter((c) => c.pilne).length;
   const sms = all.filter((c) => c.sms).length;
@@ -298,6 +436,15 @@ function renderSlots() {
   $('slots-sub').textContent = `${SLOTS.length} wolne terminy w tym tygodniu · lista rezerwowa: 4 osoby`;
 }
 
+function announceOwnCall() {
+  const mine = storageGet('topdent_calls');
+  const ready = liveCalls.find((c) => mine.includes(c.id) && !seenAtLoad.has(c.id) && !announced.has(c.id));
+  if (!ready) return;
+  announced.add(ready.id);
+  $('ready-link').setAttribute('href', `#call-${ready.id}`);
+  $('ready').style.display = 'block';
+}
+
 async function refreshCalls() {
   try {
     const r = await fetch(CONFIG.feedUrl, { cache: 'no-store' });
@@ -306,6 +453,7 @@ async function refreshCalls() {
     liveCalls = Array.isArray(data.rozmowy) ? data.rozmowy : [];
     if (firstFeed) liveCalls.forEach((c) => seenAtLoad.add(c.id));
     renderCalls();
+    if (!firstFeed) announceOwnCall();
     firstFeed = false;
   } catch (e) { /* bez połączenia zostają przykłady */ }
 }
@@ -315,6 +463,69 @@ function scheduleRefresh() {
   setTimeout(async () => { await refreshCalls(); scheduleRefresh(); }, Date.now() < fastUntil ? 10000 : 60000);
 }
 
+// ── Opinie w Google: prognoza z 4,3 przy 123 opiniach ────────────────────────
+function renderReviews() {
+  const base = 4.3 * 123;
+  const after = (months) => (base + 5 * 8 * months) / (123 + 8 * months);
+  for (const m of [3, 6, 12]) $(`rv${m}`).textContent = `${dec(after(m))} · ${123 + 8 * m} opinii`;
+}
+
+// ── 05 Kalkulator ────────────────────────────────────────────────────────────
+const RR = 1.14, RR_LO = 1.03, RR_HI = 1.26;
+const WEEKS_PER_MONTH = 52 / 12;
+function calc() {
+  const v = (id) => Number($(id).value);
+  const due = v('c-due'), back = v('c-back') / 100, calls = v('c-calls'), conv = v('c-conv') / 100;
+  const cancel = v('c-cancel'), fill = v('c-fill') / 100;
+  $('o-due').textContent = `${due} ${plural(due, 'pacjent', 'pacjentów', 'pacjentów')}`;
+  $('o-back').textContent = `${Math.round(back * 100)}%`;
+  $('o-calls').textContent = String(calls);
+  $('o-conv').textContent = `${Math.round(conv * 100)}%`;
+  $('o-cancel').textContent = String(cancel);
+  $('o-fill').textContent = `${Math.round(fill * 100)}%`;
+
+  const extra = (rr) => due * (Math.min(back * rr, 1) - back);
+  const returns = extra(RR), returnsLo = extra(RR_LO), returnsHi = extra(RR_HI);
+  const phoneVisits = calls * WEEKS_PER_MONTH * conv;
+  const filled = cancel * fill;
+  const lines = [
+    [`Powroty: +${dec(returns)} pacjenta × 225 zł (przedział z badania ${grouped(tens(returnsLo * 225))}–${zl(tens(returnsHi * 225))})`, returns * 225],
+    [`Telefony odebrane po godzinach: ${dec(phoneVisits)} wizyty × 250 zł`, phoneVisits * 250],
+    [`Lista rezerwowa: ${dec(filled)} wizyty × 250 zł`, filled * 250],
+  ];
+  const total = lines.reduce((s, l) => s + l[1], 0);
+  $('c-total').textContent = zl(Math.round(total / 10) * 10);
+  $('c-lines').replaceChildren(...lines.map(([label, value]) => el('tr', {}, el('td', {}, label), el('td', {}, zl(value)))));
+  $('c-year').textContent = `Rocznie ok. ${zl(Math.round(total * 12 / 100) * 100)} przychodu.`;
+}
+
+// ── 04 Przykładowe przypomnienie ─────────────────────────────────────────────
+$('demo-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const status = $('demo-status');
+  const numer = form.numer.value.trim();
+  if (numer.replace(/\D/g, '').length < 9) {
+    status.className = 'status err';
+    status.textContent = 'Proszę wpisać 9 cyfr numeru komórki, np. 600 100 200.';
+    return;
+  }
+  $('btn-send').disabled = true;
+  status.className = 'status';
+  status.textContent = 'Wysyłam…';
+  try {
+    const r = await fetch(CONFIG.demoUrl, { method: 'POST', body: new URLSearchParams({ numer, imie: form.imie.value.trim() }) });
+    const data = await r.json();
+    status.className = data.ok ? 'status' : 'status err';
+    status.textContent = data.message || (data.ok ? 'Wysłane.' : 'Nie udało się wysłać SMS-a.');
+  } catch (e) {
+    status.className = 'status err';
+    status.textContent = 'Nie udało się połączyć. Proszę spróbować za chwilę.';
+  } finally {
+    $('btn-send').disabled = false;
+  }
+});
+
 // ── Rozmowa ──────────────────────────────────────────────────────────────────
 const btnCall = $('btn-call');
 const btnEnd = $('btn-end');
@@ -323,6 +534,7 @@ let session = null;
 let timer = null;
 let startedAt = 0;
 let errored = false;
+let rateLimited = false;
 
 function setStatus(text, isError) {
   statusEl.textContent = text;
@@ -333,9 +545,11 @@ function setState(state, err) {
   clearInterval(timer);
   if (state === 'connecting') {
     errored = false;
+    rateLimited = false;
     btnCall.disabled = true;
     $('btn-label').textContent = 'Łączę…';
     btnEnd.style.display = 'none';
+    $('ready').style.display = 'none';
     setStatus('Łączę z recepcją Top Dent…');
   } else if (state === 'live') {
     btnCall.disabled = true;
@@ -361,7 +575,9 @@ function setState(state, err) {
     $('btn-label').textContent = 'Spróbuj jeszcze raz';
     btnEnd.style.display = 'none';
     const msg = String((err && (err.name || '')) + ' ' + (err && (err.message || err))).toLowerCase();
-    if (msg.includes('notallowed') || msg.includes('permission') || msg.includes('microphone') || msg.includes('mikrofon')) {
+    if (rateLimited) {
+      setStatus('W ostatniej godzinie było bardzo dużo rozmów z tym prototypem. Proszę spróbować za kilka minut.', true);
+    } else if (msg.includes('notallowed') || msg.includes('permission') || msg.includes('microphone') || msg.includes('mikrofon')) {
       setStatus('Przeglądarka nie dała dostępu do mikrofonu. Proszę kliknąć ikonę kłódki obok adresu strony, zezwolić na mikrofon i spróbować jeszcze raz.', true);
     } else {
       setStatus('Nie udało się połączyć. Proszę spróbować za chwilę albo zadzwonić: +48 736 840 712.', true);
@@ -369,10 +585,12 @@ function setState(state, err) {
   }
 }
 
-function proxyFetch(url, init) {
+async function proxyFetch(url, init) {
   // Token rozmowy wydaje n8n (klucz Retella zostaje na serwerze). Zwykły POST bez nagłówków = bez preflightu CORS.
   if (String(url).endsWith('/v3/create-web-call')) {
-    return fetch(CONFIG.tokenUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: (init && init.body) || '{}' });
+    const r = await fetch(CONFIG.tokenUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: (init && init.body) || '{}' });
+    if (r.status === 429) rateLimited = true;
+    return r;
   }
   return fetch(url, init);
 }
@@ -410,6 +628,9 @@ btnEnd.addEventListener('click', () => { if (session) session.end(); });
 renderCalls();
 renderRecall();
 renderSlots();
+renderReviews();
+calc();
+document.querySelectorAll('.calc input[type=range]').forEach((input) => input.addEventListener('input', calc));
 document.body.dataset.rendered = String(document.querySelectorAll('.row').length);
 refreshCalls();
 scheduleRefresh();
