@@ -80,7 +80,6 @@
   .field input { width: 100%; min-height: 52px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); font-size: 18px; letter-spacing: .02em; transition: border-color .2s, box-shadow .2s; }
   .field input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 4px var(--brand-soft); }
   .field small { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
-  .field.invalid input { border-color: var(--urgent); }
   .btn-call { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 58px; border-radius: 16px; background: var(--brand); color: #fff; font-size: 18px; font-weight: 700; transition: background .2s, transform .1s; }
   .btn-call:hover { background: var(--brand-dark); }
   .btn-call:active { transform: scale(.99); }
@@ -226,12 +225,7 @@
         <div><b>Ania, wirtualna recepcjonistka</b><span>odbiera, gdy recepcja nie może</span></div>
       </div>
       <h2>Proszę zadzwonić jak pacjent</h2>
-      <p class="intro">Ania zna godziny, lekarzy i cennik Top Dent, zapisze prośbę o wizytę i na życzenie wyśle SMS z linkiem do ZnanyLekarz.</p>
-      <div class="field" id="phone-field">
-        <label for="phone">Numer telefonu, z którego Pani dzwoni</label>
-        <input id="phone" inputmode="tel" autocomplete="tel" placeholder="600 100 200" maxlength="16">
-        <small>Przy prawdziwym połączeniu system zna numer sam. Tu wpisuje się go raz, dlatego Ania nie musi o niego pytać.</small>
-      </div>
+      <p class="intro">Ania zna godziny, lekarzy i cennik Top Dent, zapisze prośbę o wizytę z numerem do oddzwonienia i na życzenie wyśle SMS z linkiem do ZnanyLekarz.</p>
       <button class="btn btn-call" id="btn-call" type="button"><svg class="i"><use href="#i-phone"/></svg><span id="btn-label">Zadzwoń do recepcji</span></button>
       <div class="live" id="live"><span class="wave"><i></i><i></i><i></i><i></i></span><span id="live-text">Rozmowa trwa · 0:00</span></div>
       <button class="btn btn-end" id="btn-end" type="button">Zakończ rozmowę</button>
@@ -574,8 +568,6 @@ $('demo-form').addEventListener('submit', async (event) => {
 });
 
 // ── Rozmowa ──────────────────────────────────────────────────────────────────
-const phone = $('phone');
-phone.value = storageGet('topdent_phone', '');
 const btnCall = $('btn-call');
 const btnEnd = $('btn-end');
 const statusEl = $('status');
@@ -583,12 +575,6 @@ let session = null;
 let timer = null;
 let errored = false;
 let rateLimited = false;
-
-function phoneDigits() {
-  let d = phone.value.replace(/\D/g, '');
-  if (d.startsWith('0048')) d = d.slice(4); else if (d.length === 11 && d.startsWith('48')) d = d.slice(2);
-  return d.length === 9 ? d : '';
-}
 
 function setStatus(text, isError) {
   statusEl.textContent = text;
@@ -636,9 +622,9 @@ function setState(state, err) {
 }
 
 async function proxyFetch(url, init) {
-  // Token rozmowy wydaje n8n (klucz Retella zostaje na serwerze); numer dzwoniącego idzie razem z prośbą.
+  // Token rozmowy wydaje n8n (klucz Retella zostaje na serwerze). Numer do kontaktu Ania bierze z rozmowy.
   if (String(url).endsWith('/v3/create-web-call')) {
-    const r = await fetch(CONFIG.tokenUrl, { method: 'POST', body: new URLSearchParams({ numer: phoneDigits() }) });
+    const r = await fetch(CONFIG.tokenUrl, { method: 'POST', body: new URLSearchParams({ zrodlo: 'strona' }) });
     if (r.status === 429) rateLimited = true;
     return r;
   }
@@ -656,14 +642,6 @@ const sdkReady = import(CONFIG.sdkUrl).then((sdk) => {
 
 btnCall.addEventListener('click', async () => {
   if (session && session.status !== 'ended') return;
-  if (!phoneDigits()) {
-    $('phone-field').classList.add('invalid');
-    setStatus('Proszę wpisać numer telefonu (9 cyfr). Ania będzie go znała tak, jak recepcja widzi numer na wyświetlaczu.', true);
-    phone.focus();
-    return;
-  }
-  $('phone-field').classList.remove('invalid');
-  storageSet('topdent_phone', phone.value.trim());
   setState('connecting');
   try {
     const client = await sdkReady;
@@ -682,7 +660,6 @@ btnCall.addEventListener('click', async () => {
   }
 });
 btnEnd.addEventListener('click', () => { if (session) session.end(); });
-phone.addEventListener('input', () => $('phone-field').classList.remove('invalid'));
 
 renderCalls();
 renderRecall();
